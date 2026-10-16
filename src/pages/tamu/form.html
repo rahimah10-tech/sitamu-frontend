@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Formulir Buku Tamu Digital"
+    })
+    <style>
+        .signature-wrapper {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            background-color: #ffffff;
+            position: relative;
+            touch-action: none;
+            overflow: hidden;
+        }
+        .signature-wrapper.is-invalid {
+            border-color: #dc3545;
+        }
+        #signatureCanvas {
+            width: 100%;
+            height: 160px;
+            display: block;
+            cursor: crosshair;
+        }
+        .signature-guide-line {
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            bottom: 35px;
+            border-bottom: 1px dashed #94a3b8;
+            pointer-events: none;
+        }
+        .signature-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(148, 163, 184, 0.35);
+            font-size: 13px;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body class="bg-soft">
+    <main>
+        <section class="min-vh-100 py-4 py-lg-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+
+                        <!-- Brand Header -->
+                        <div class="text-center mb-3">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle p-2 mb-2 shadow-sm" style="width: 48px; height: 48px;">
+                                <i class="fas fa-book-open fa-lg"></i>
+                            </div>
+                            <h2 class="h4 fw-bolder mb-1 text-gray-900">Buku Tamu Digital</h2>
+                            <p class="text-muted small mb-1">Dinas Perindustrian dan Perdagangan Provinsi Jawa Timur</p>
+                        </div>
+
+                        <!-- Badge Lokasi (Read-only) -->
+                        <div class="card border-0 shadow-sm rounded-3 mb-3 bg-white">
+                            <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-soft-primary text-primary rounded-circle p-2 me-2">
+                                        <i class="fas fa-map-marker-alt fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted font-small d-block">Lokasi Kunjungan Saat Ini:</span>
+                                        <span class="fw-bold fs-7 text-gray-900" id="badgeLocationText">Kantor Dinas Perindustrian dan Perdagangan Prov. Jatim</span>
+                                    </div>
+                                </div>
+                                <span class="badge bg-success" id="badgeQRLabel"><i class="fas fa-check-circle me-1"></i>QR Valid</span>
+                            </div>
+                        </div>
+
+                        <!-- Returning Guest Notice Banner (if applicable) -->
+                        <div id="returningGuestNotice" class="alert alert-info border-0 shadow-sm d-none mb-3">
+                            <div class="d-flex align-items-start">
+                                <i class="fas fa-user-check text-info fa-2x me-3 mt-1"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Selamat Datang Kembali!</h6>
+                                    <p class="font-small mb-1">
+                                        Data profil Anda (<strong id="noticeGuestName">Dewi Lestari</strong>) telah <strong>terisi otomatis dan terkunci</strong> sesuai kunjungan sebelumnya. Anda hanya perlu memilih <strong>Keperluan baru</strong> dan membubuhkan <strong>Tanda Tangan</strong>.
+                                    </p>
+                                    <a href="riwayat.html" class="small fw-bold text-info text-decoration-underline">
+                                        <i class="fas fa-history me-1"></i>Lihat Riwayat Kunjungan Sebelumnya
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Card -->
+                        <div class="card border-0 shadow-sm rounded-3">
+                            <div class="card-header bg-white border-bottom py-3">
+                                <h5 class="card-title mb-0 fs-6 fw-bold text-gray-800">
+                                    <i class="fas fa-edit me-2 text-primary"></i>Isi Data Kunjungan
+                                </h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <form id="guestForm" novalidate>
+
+                                    <!-- Section 1: Akun & Keperluan -->
+                                    <div class="mb-4">
+                                        <h6 class="fs-7 text-uppercase fw-bold text-muted mb-3 border-bottom pb-2">
+                                            1. Akun & Maksud Kunjungan
+                                        </h6>
+
+                                        <!-- Email Terverifikasi (Terkunci / Read-Only) -->
+                                        <div class="mb-3">
+                                            <label class="form-label small fw-bold text-gray-700">
+                                                Email Terverifikasi (Google Account) <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light text-muted">
+                                                    <i class="fas fa-lock text-success"></i>
+                                                </span>
+                                                <input type="email" class="form-control bg-light" id="inputEmail" readonly required>
+                                                <button class="btn btn-outline-secondary" type="button" id="btnChangeAccount" title="Ganti Akun Google">
+                                                    <i class="fas fa-sync-alt me-1"></i> Ganti
+                                                </button>
+                                            </div>
+                                            <div class="form-text font-small text-muted">Email terkunci sesuai verifikasi login Google Anda demi integritas data.</div>
+                                        </div>
+
+                                        <!-- Keperluan (Dropdown Kategori) -->
+                                        <div class="mb-3">
+                                            <label for="selectCategory" class="form-label small fw-bold text-gray-700">
+                                                Keperluan Kunjungan <span class="text-danger">*</span>
+                                            </label>
+                                            <select class="form-select" id="selectCategory" required>
+                                                <option value="" selected disabled>-- Pilih Kategori Keperluan --</option>
+                                                <!-- Dynamic via JS -->
+                                            </select>
+                                            <div class="invalid-feedback">Silakan pilih kategori keperluan Anda.</div>
+                                        </div>
+
+                                        <!-- Rincian Keperluan (Input Teks Dinamis) -->
+                                        <div class="mb-3 d-none" id="detailsWrapper">
+                                            <label for="inputDetails" class="form-label small fw-bold text-gray-700">
+                                                Rincian Keperluan / Pertanyaan <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea class="form-control" id="inputDetails" rows="3" placeholder="Tuliskan secara jelas rincian keperluan atau maksud kedatangan Anda..." required></textarea>
+                                            <div class="invalid-feedback">Rincian keperluan wajib diisi.</div>
+                                            <div class="form-text font-small text-muted" id="categoryBidangHint"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Section 2: Data Diri Tamu -->
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                                            <h6 class="fs-7 text-uppercase fw-bold text-muted mb-0">
+                                                2. Identitas Diri Tamu
+                                            </h6>
+                                            <span class="badge bg-light text-muted fw-normal d-none" id="badgeLockedFields">
+                                                <i class="fas fa-lock me-1"></i>Field Terkunci (Tamu Terdaftar)
+                                            </span>
+                                        </div>
+
+                                        <!-- Kelompok Rentan (Dropdown Kategori) -->
+                                        <div class="mb-3">
+                                            <label for="selectVulnerable" class="form-label small fw-bold text-gray-700">
+                                                Kelompok Rentan <span class="text-danger">*</span>
+                                            </label>
+                                            <select class="form-select" id="selectVulnerable" required>
+                                                <option value="" selected disabled>-- Pilih Status Kelompok Rentan --</option>
+                                                <option value="Bukan Kelompok Rentan">Bukan Kelompok Rentan (Umum)</option>
+                                                <option value="Lansia">Lanjut Usia (Lansia)</option>
+                                                <option value="Ibu Hamil / Menyusui">Ibu Hamil / Menyusui</option>
+                                                <option value="Penyandang Disabilitas">Penyandang Disabilitas</option>
+                                                <option value="Membawa Balita">Membawa Anak Balita</option>
+                                            </select>
+                                            <div class="invalid-feedback">Status kelompok rentan wajib dipilih.</div>
+                                            <div class="form-text font-small text-muted">Informasi ini membantu petugas memberikan prioritas layanan ramah disabilitas dan lansia.</div>
+                                        </div>
+
+                                        <!-- Nama Lengkap -->
+                                        <div class="mb-3">
+                                            <label for="inputName" class="form-label small fw-bold text-gray-700">
+                                                Nama Lengkap <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-user text-muted"></i></span>
+                                                <input type="text" class="form-control" id="inputName" placeholder="Contoh: Budi Santoso, S.T." required>
+                                                <div class="invalid-feedback">Nama lengkap wajib diisi.</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Instansi / Perusahaan -->
+                                        <div class="mb-3">
+                                            <label for="inputAgency" class="form-label small fw-bold text-gray-700">
+                                                Instansi / Perusahaan / Lembaga <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-building text-muted"></i></span>
+                                                <input type="text" class="form-control" id="inputAgency" placeholder="Contoh: PT Maju Jaya / Pribadi / Dinas Koperasi" required>
+                                                <div class="invalid-feedback">Instansi atau perusahaan wajib diisi (isi 'Pribadi' jika perseorangan).</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Nomor Telepon / WhatsApp -->
+                                        <div class="mb-3">
+                                            <label for="inputPhone" class="form-label small fw-bold text-gray-700">
+                                                Nomor Telepon / WhatsApp <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fab fa-whatsapp text-success"></i></span>
+                                                <input type="tel" class="form-control" id="inputPhone" placeholder="Contoh: 081234567890" required>
+                                                <div class="invalid-feedback">Nomor Telepon / WhatsApp wajib diisi.</div>
+                                            </div>
+                                            <div class="form-text font-small text-muted">Digunakan petugas untuk konfirmasi tindak lanjut atau notifikasi panggilan.</div>
+                                        </div>
+
+                                        <!-- Alamat -->
+                                        <div class="mb-3">
+                                            <label for="inputAddress" class="form-label small fw-bold text-gray-700">
+                                                Alamat Lengkap / Domisili <span class="text-danger">*</span>
+                                            </label>
+                                            <textarea class="form-control" id="inputAddress" rows="2" placeholder="Contoh: Jl. Ahmad Yani No. 12, Surabaya" required></textarea>
+                                            <div class="invalid-feedback">Alamat lengkap wajib diisi.</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Section 3: Tanda Tangan Digital & Persetujuan UU PDP -->
+                                    <div class="mb-4">
+                                        <h6 class="fs-7 text-uppercase fw-bold text-muted mb-3 border-bottom pb-2">
+                                            3. Tanda Tangan & Persetujuan
+                                        </h6>
+
+                                        <!-- Tanda Tangan Canvas -->
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <label class="form-label small fw-bold text-gray-700 mb-0">
+                                                    Tanda Tangan Digital <span class="text-danger">*</span>
+                                                </label>
+                                                <button type="button" class="btn btn-outline-danger btn-xs" id="btnClearSignature">
+                                                    <i class="fas fa-eraser me-1"></i> Hapus Tanda Tangan
+                                                </button>
+                                            </div>
+                                            <div class="signature-wrapper" id="signatureWrapper">
+                                                <div class="signature-watermark">
+                                                    <i class="fas fa-signature me-1"></i>Bubuhkan tanda tangan di sini
+                                                </div>
+                                                <div class="signature-guide-line"></div>
+                                                <canvas id="signatureCanvas"></canvas>
+                                            </div>
+                                            <input type="hidden" id="hiddenSignature" required>
+                                            <div class="text-danger font-small mt-1 d-none" id="signatureError">
+                                                Tanda tangan digital wajib dibubuhkan pada kotak di atas.
+                                            </div>
+                                        </div>
+
+                                        <!-- Checkbox Persetujuan UU PDP -->
+                                        <div class="p-3 bg-light rounded-2 border mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="checkPDP" required>
+                                                <label class="form-check-label small text-gray-800" for="checkPDP">
+                                                    Saya menyetujui pemrosesan dan penyimpanan data pribadi yang saya isi dalam formulir ini oleh Dinas Perindustrian dan Perdagangan Provinsi Jawa Timur sesuai ketentuan <strong>Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)</strong> untuk keperluan pencatatan dan pelayanan tamu kedinasan. <span class="text-danger">*</span>
+                                                </label>
+                                                <div class="invalid-feedback">Persetujuan pemrosesan data pribadi wajib dicentang.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tombol Kirim Formulir -->
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center" id="btnSubmitForm">
+                                            <i class="fas fa-paper-plane me-2"></i>
+                                            <span>Kirim Formulir Buku Tamu</span>
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Back link -->
+                        <div class="text-center mt-4">
+                            <a href="login-google.html" class="text-muted small">
+                                <i class="fas fa-arrow-left me-1"></i> Kembali ke Pemilihan Akun
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            // Query Params & Session
+            const urlParams = new URLSearchParams(window.location.search);
+            const session = SiTamuStore.getSession();
+
+            const emailParam = urlParams.get('email') || session.email || 'tamu@gmail.com';
+            const locIdParam = urlParams.get('locId') || session.locId || 'LOC-01';
+            const tokenParam = urlParams.get('token') || session.token || 'QR-DISPERINDAG-LOBBY-UTAMA';
+
+            const location = SiTamuStore.getLocationById(locIdParam);
+            if (location) {
+                document.getElementById('badgeLocationText').textContent = location.name;
+            }
+
+            // Populate locked email
+            const inputEmail = document.getElementById('inputEmail');
+            inputEmail.value = emailParam;
+
+            document.getElementById('btnChangeAccount').addEventListener('click', function () {
+                window.location.href = `login-google.html?locId=${encodeURIComponent(locIdParam)}&token=${encodeURIComponent(tokenParam)}`;
+            });
+
+            // Populate Keperluan Dropdown
+            const selectCategory = document.getElementById('selectCategory');
+            const categories = SiTamuStore.getCategories();
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.id;
+                opt.textContent = cat.name;
+                selectCategory.appendChild(opt);
+            });
+
+            // Handle Category Change -> show Rincian input dynamically with customized placeholder
+            const detailsWrapper = document.getElementById('detailsWrapper');
+            const inputDetails = document.getElementById('inputDetails');
+            const categoryBidangHint = document.getElementById('categoryBidangHint');
+
+            selectCategory.addEventListener('change', function () {
+                const selectedCat = categories.find(c => c.id === this.value);
+                if (selectedCat) {
+                    detailsWrapper.classList.remove('d-none');
+                    inputDetails.placeholder = selectedCat.placeholder;
+                    inputDetails.focus();
+                } else {
+                    detailsWrapper.classList.add('d-none');
+                }
+            });
+
+            // Check if Returning Guest
+            const prevProfile = SiTamuStore.findGuestPreviousProfile(emailParam);
+            const inputName = document.getElementById('inputName');
+            const selectVulnerable = document.getElementById('selectVulnerable');
+            const inputAgency = document.getElementById('inputAgency');
+            const inputPhone = document.getElementById('inputPhone');
+            const inputAddress = document.getElementById('inputAddress');
+            const returningNotice = document.getElementById('returningGuestNotice');
+            const badgeLockedFields = document.getElementById('badgeLockedFields');
+
+            if (prevProfile) {
+                // Populate profile fields
+                inputName.value = prevProfile.guestName || '';
+                selectVulnerable.value = prevProfile.guestCategory || 'Bukan Kelompok Rentan';
+                inputAgency.value = prevProfile.guestAgency || '';
+                inputPhone.value = prevProfile.guestPhone || '';
+                inputAddress.value = prevProfile.guestAddress || '';
+
+                // LOCK / DISABLE profile fields per requirement!
+                inputName.disabled = true;
+                selectVulnerable.disabled = true;
+                inputAgency.disabled = true;
+                inputPhone.disabled = true;
+                inputAddress.disabled = true;
+
+                // Add visual indicator class
+                [inputName, selectVulnerable, inputAgency, inputPhone, inputAddress].forEach(el => {
+                    el.classList.add('bg-light');
+                });
+
+                // Show notice
+                document.getElementById('noticeGuestName').textContent = prevProfile.guestName;
+                returningNotice.classList.remove('d-none');
+                badgeLockedFields.classList.remove('d-none');
+            }
+
+            // Init Signature Pad
+            const sigPad = SiTamuUI.initSignaturePad('signatureCanvas', 'btnClearSignature', 'hiddenSignature');
+            const signatureWrapper = document.getElementById('signatureWrapper');
+            const signatureError = document.getElementById('signatureError');
+
+            // Form Submit Handler
+            const guestForm = document.getElementById('guestForm');
+            guestForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Validate Signature
+                const sigData = sigPad.getDataUrl();
+                let isSigValid = !sigPad.isEmpty() && sigData.length > 50;
+
+                if (!isSigValid) {
+                    signatureWrapper.classList.add('is-invalid');
+                    signatureError.classList.remove('d-none');
+                } else {
+                    signatureWrapper.classList.remove('is-invalid');
+                    signatureError.classList.add('d-none');
+                }
+
+                // Check standard Bootstrap validation
+                if (!guestForm.checkValidity() || !isSigValid) {
+                    e.stopPropagation();
+                    guestForm.classList.add('was-validated');
+                    SiTamuUI.showToast('Data Belum Lengkap', 'Mohon periksa isian formulir dan bubuhkan tanda tangan.', 'error');
+                    return;
+                }
+
+                // Disable submit button during processing
+                const btnSubmit = document.getElementById('btnSubmitForm');
+                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Menyimpan Kunjungan...';
+
+                // Collect formData
+                const formData = {
+                    locationId: locIdParam,
+                    locationName: location ? location.name : 'Kantor Dinas Perindustrian dan Perdagangan Prov. Jatim',
+                    qrToken: tokenParam,
+                    guestEmail: emailParam,
+                    guestName: inputName.value.trim(),
+                    guestCategory: selectVulnerable.value,
+                    guestAgency: inputAgency.value.trim(),
+                    guestPhone: inputPhone.value.trim(),
+                    guestAddress: inputAddress.value.trim(),
+                    categoryId: selectCategory.value,
+                    details: inputDetails.value.trim(),
+                    signatureData: sigData
+                };
+
+                // Store in SiTamuStore (server arrival timestamp & queue number automatically generated)
+                setTimeout(() => {
+                    const newVisit = SiTamuStore.createVisit(formData);
+
+                    // Redirect to Confirmation Page
+                    window.location.href = `konfirmasi.html?visitId=${encodeURIComponent(newVisit.id)}`;
+                }, 400);
+            });
+        });
+    </script>
+</body>
+
+</html>

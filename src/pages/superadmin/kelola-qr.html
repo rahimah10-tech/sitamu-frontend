@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Master Kelola & Regenerasi QR Code"
+    })
+    <style>
+        .qr-preview-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidenav -->
+    @@include('./sitamu/_sidenav.html', {
+        "path": "../..",
+        "role": "superadmin",
+        "page": "kelola-qr"
+    })
+
+    <main class="content">
+        <!-- Topbar -->
+        @@include('./sitamu/_topbar.html', {
+            "path": "../..",
+            "role": "superadmin"
+        })
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div>
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
+                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="dashboard.html">Super Admin</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Kelola QR Code</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">
+                    <i class="fas fa-qrcode me-2 text-primary"></i>Master Kelola & Regenerasi QR Code
+                </h1>
+                <p class="text-muted small mb-0">Pengaturan token akses buku tamu digital, penerbitan QR titik baru, dan regenerasi token keamanan untuk mencabut QR lama.</p>
+            </div>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center shadow-sm" id="btnOpenAddQR" data-bs-toggle="modal" data-bs-target="#modalAddQR">
+                    <i class="fas fa-plus me-2"></i>
+                    <span>Buat QR Titik Baru</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Security Alert Banner -->
+        <div class="alert alert-soft-warning border-0 shadow-sm rounded-3 py-3 px-4 mb-4 d-flex align-items-center">
+            <i class="fas fa-shield-alt fa-2x text-warning me-3"></i>
+            <div>
+                <h6 class="fw-bold mb-1 text-gray-900">Fitur Keamanan: Regenerasi Token QR Code</h6>
+                <p class="small mb-0 text-muted">
+                    Super Admin memiliki wewenang khusus untuk melakukan <strong>Regenerasi QR Code</strong> jika kode QR fisik diduga disalahgunakan atau bocor. Tindakan regenerasi secara permanen <strong>mencabut (revoke) token lama</strong> sehingga QR fisik lama tidak dapat lagi dipakai untuk check-in.
+                </p>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
+                <h5 class="card-title mb-0 fs-6 fw-bold text-gray-800">Daftar Titik QR Code Terpasang</h5>
+                <span class="badge bg-primary" id="badgeTotalQRs">0 Titik QR Terdaftar</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-bottom font-small text-uppercase" style="width: 70px;">Preview</th>
+                            <th class="border-bottom font-small text-uppercase">Titik Masuk / Meja</th>
+                            <th class="border-bottom font-small text-uppercase">Lokasi Fisik</th>
+                            <th class="border-bottom font-small text-uppercase">Token Aktif</th>
+                            <th class="border-bottom font-small text-uppercase text-center" style="width: 100px;">Status</th>
+                            <th class="border-bottom font-small text-uppercase text-center" style="width: 100px;">Total Scan</th>
+                            <th class="border-bottom font-small text-uppercase text-end" style="width: 250px;">Aksi Keamanan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyMasterQRs">
+                        <!-- Dynamic -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL 1: REGENERASI QR CODE (Wewenang Super Admin) -->
+    <div class="modal fade" id="modalRegenerateQR" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title h6 mb-0">
+                        <i class="fas fa-sync-alt me-2"></i>Konfirmasi Regenerasi Token QR Code
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-soft-warning p-3 mb-3 small" id="regenTargetInfo">
+                        <!-- Dynamic Info -->
+                    </div>
+                    <p class="small text-gray-800 mb-2">
+                        Apakah Anda yakin ingin <strong>mencabut token QR saat ini</strong> dan menerbitkan token baru?
+                    </p>
+                    <div class="alert alert-danger py-2 px-3 small mb-0">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        <strong>Perhatian:</strong> Setelah token diregenerasi, poster fisik yang sudah dicetak sebelumnya <strong>TIDAK AKAN BISA DIGUNAKAN LAGI</strong>. Anda harus mencetak ulang poster SiTamu dengan token baru.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="btnConfirmRegenerate">
+                        <i class="fas fa-sync-alt me-1"></i> Ya, Cabut & Regenerasi Token
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: BUAT QR TITIK BARU -->
+    <div class="modal fade" id="modalAddQR" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title h6 mb-0"><i class="fas fa-qrcode me-2"></i>Buat QR Code Titik Baru</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="formAddQR">
+                        <div class="mb-3">
+                            <label for="selectNewQRLocation" class="form-label small fw-bold text-gray-800">
+                                Pilih Lokasi Fisik: <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select form-select-sm" id="selectNewQRLocation" required>
+                                <!-- Dynamic -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputNewQRLabel" class="form-label small fw-bold text-gray-800">
+                                Label Pintu / Titik Masuk: <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control form-control-sm" id="inputNewQRLabel" placeholder="Contoh: Pintu Barat (Gedung Pelayanan B)" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnSaveNewQR">
+                        <i class="fas fa-plus me-1"></i> Terbitkan QR Code
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: PREVIEW & CETAK POSTER -->
+    <div class="modal fade" id="modalPosterQR" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title h6 mb-0"><i class="fas fa-print me-2"></i>Pratinjau Signage Poster SiTamu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-center bg-light" id="posterPrintArea">
+                    <div class="card border border-2 border-primary shadow-sm rounded-4 mx-auto p-4 bg-white" style="max-width: 500px;">
+                        <div class="border-bottom pb-3 mb-3">
+                            <h6 class="text-primary fw-bold mb-0 text-uppercase letter-spacing-1">PEMERINTAH PROVINSI JAWA TIMUR</h6>
+                            <h5 class="fw-bolder mb-1 text-gray-900">DINAS PERINDUSTRIAN DAN PERDAGANGAN</h5>
+                            <span class="badge bg-primary px-3 py-1 font-small">BUKU TAMU DIGITAL (SITAMU)</span>
+                        </div>
+
+                        <div class="my-3">
+                            <h6 class="fw-bold text-gray-800 mb-1" id="posterLocationName">-</h6>
+                            <span class="text-muted small" id="posterDoorLabel">-</span>
+                        </div>
+
+                        <div class="qr-preview-box shadow-sm my-2">
+                            <svg width="200" height="200" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="100" fill="white" />
+                                <rect x="10" y="10" width="25" height="25" fill="#1e293b" />
+                                <rect x="14" y="14" width="17" height="17" fill="white" />
+                                <rect x="18" y="18" width="9" height="9" fill="#1e293b" />
+                                <rect x="65" y="10" width="25" height="25" fill="#1e293b" />
+                                <rect x="69" y="14" width="17" height="17" fill="white" />
+                                <rect x="73" y="18" width="9" height="9" fill="#1e293b" />
+                                <rect x="10" y="65" width="25" height="25" fill="#1e293b" />
+                                <rect x="14" y="69" width="17" height="17" fill="white" />
+                                <rect x="18" y="73" width="9" height="9" fill="#1e293b" />
+                                <circle cx="50" cy="50" r="10" fill="#2563eb" />
+                            </svg>
+                        </div>
+
+                        <div class="mt-2 mb-3">
+                            <code class="small text-muted bg-light px-2 py-1 rounded" id="posterTokenText">QR-TOKEN</code>
+                        </div>
+
+                        <div class="border-top pt-3 text-start small text-muted">
+                            <p class="fw-bold mb-1 text-gray-800 text-center">Petunjuk Tamu:</p>
+                            <ol class="mb-0 ps-3">
+                                <li>Pindai QR Code di atas menggunakan kamera smartphone.</li>
+                                <li>Login dengan Akun Google Anda.</li>
+                                <li>Isi keperluan dan bubuhkan tanda tangan digital.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">
+                        <i class="fas fa-print me-1"></i> Cetak Poster Signage
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            let targetQRId = null;
+            const modalRegen = new bootstrap.Modal(document.getElementById('modalRegenerateQR'));
+            const modalAdd = new bootstrap.Modal(document.getElementById('modalAddQR'));
+            const modalPoster = new bootstrap.Modal(document.getElementById('modalPosterQR'));
+
+            function renderQRs() {
+                const db = SiTamuStore.getDb();
+                const qrs = db.qr_codes || [];
+                const tbody = document.getElementById('tbodyMasterQRs');
+                document.getElementById('badgeTotalQRs').textContent = `${qrs.length} Titik QR Terdaftar`;
+
+                if (qrs.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="fas fa-qrcode fa-3x mb-2 text-gray-400 d-block"></i>
+                                Belum ada QR Code terdaftar.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = qrs.map(qr => {
+                    const isAktif = qr.status === 'Aktif';
+                    return `
+                        <tr>
+                            <td>
+                                <div class="p-1 bg-white border rounded text-center" style="width: 48px; height: 48px;">
+                                    <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+                                        <rect width="100" height="100" fill="white"/>
+                                        <rect x="10" y="10" width="25" height="25" fill="#1e293b"/>
+                                        <rect x="65" y="10" width="25" height="25" fill="#1e293b"/>
+                                        <rect x="10" y="65" width="25" height="25" fill="#1e293b"/>
+                                        <circle cx="50" cy="50" r="10" fill="#2563eb"/>
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <strong class="text-gray-900 fs-7">${qr.label}</strong>
+                            </td>
+                            <td>
+                                <span class="font-small text-gray-900"><i class="fas fa-map-marker-alt text-danger me-1"></i>${qr.locationName}</span>
+                            </td>
+                            <td>
+                                <code class="font-small text-primary fw-bold">${qr.token}</code>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge ${isAktif ? 'bg-success' : 'bg-danger'} font-small px-2 py-1">${qr.status}</span>
+                            </td>
+                            <td class="text-center font-small fw-bold text-gray-800">${qr.scanCount || 0}</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-outline-warning btn-xs me-1" onclick="window.openRegenerateModal('${qr.id}')" title="Cabut token lama & buat baru">
+                                    <i class="fas fa-sync-alt me-1"></i> Regenerasi
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-xs me-1" onclick="window.previewPoster('${qr.id}')" title="Cetak poster signage">
+                                    <i class="fas fa-print me-1"></i> Poster
+                                </button>
+                                <button type="button" class="btn ${isAktif ? 'btn-outline-danger' : 'btn-outline-success'} btn-xs" onclick="window.toggleQR('${qr.id}')">
+                                    <i class="fas ${isAktif ? 'fa-ban' : 'fa-check'}"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // REGENERATE MODAL
+            window.openRegenerateModal = function (id) {
+                const db = SiTamuStore.getDb();
+                const qr = (db.qr_codes || []).find(q => q.id === id);
+                if (!qr) return;
+
+                targetQRId = id;
+                document.getElementById('regenTargetInfo').innerHTML = `
+                    <div class="fw-bold fs-7 text-gray-900">${qr.label}</div>
+                    <div class="text-muted font-small">${qr.locationName}</div>
+                    <div class="mt-2 text-danger fw-bold font-small">
+                        <i class="fas fa-ban me-1"></i>Token yang akan dicabut: <code>${qr.token}</code>
+                    </div>
+                `;
+                modalRegen.show();
+            };
+
+            document.getElementById('btnConfirmRegenerate').addEventListener('click', function () {
+                if (!targetQRId) return;
+                const newQR = SiTamuStore.regenerateQRCode(targetQRId, 'Bambang Soediro (Super Admin)');
+                modalRegen.hide();
+                if (newQR) {
+                    SiTamuUI.showToast('Regenerasi Berhasil', `Token lama telah DICABUT. Token baru aktif: ${newQR.token}`, 'success');
+                    renderQRs();
+                }
+            });
+
+            // TOGGLE STATUS
+            window.toggleQR = function (id) {
+                const qr = SiTamuStore.toggleQRStatus(id, 'Bambang Soediro (Super Admin)');
+                if (qr) {
+                    SiTamuUI.showToast('Status QR Diubah', `QR "${qr.label}" kini berstatus ${qr.status}.`, 'info');
+                    renderQRs();
+                }
+            };
+
+            // PREVIEW POSTER
+            window.previewPoster = function (id) {
+                const db = SiTamuStore.getDb();
+                const qr = (db.qr_codes || []).find(q => q.id === id);
+                if (!qr) return;
+
+                document.getElementById('posterLocationName').textContent = qr.locationName;
+                document.getElementById('posterDoorLabel').textContent = qr.label;
+                document.getElementById('posterTokenText').textContent = qr.token;
+                modalPoster.show();
+            };
+
+            // ADD QR MODAL
+            document.getElementById('btnOpenAddQR').addEventListener('click', function () {
+                const db = SiTamuStore.getDb();
+                const locations = (db.locations || []).filter(l => l.status === 'Aktif');
+                const sel = document.getElementById('selectNewQRLocation');
+                sel.innerHTML = locations.map(l => `<option value="${l.id}">${l.name}</option>`).join('');
+                document.getElementById('inputNewQRLabel').value = '';
+                modalAdd.show();
+            });
+
+            document.getElementById('btnSaveNewQR').addEventListener('click', function () {
+                const locId = document.getElementById('selectNewQRLocation').value;
+                const label = document.getElementById('inputNewQRLabel').value.trim();
+
+                if (!label) {
+                    SiTamuUI.showToast('Label Wajib Diisi', 'Silakan masukkan label titik masuk.', 'danger');
+                    return;
+                }
+
+                const db = SiTamuStore.getDb();
+                const loc = (db.locations || []).find(l => l.id === locId);
+                const locName = loc ? loc.name : 'Lokasi Terpilih';
+
+                SiTamuStore.addQRCode({
+                    label: label,
+                    locationId: locId,
+                    locationName: locName
+                }, 'Bambang Soediro (Super Admin)');
+
+                modalAdd.hide();
+                SiTamuUI.showToast('QR Berhasil Dibuat', `Titik QR "${label}" berhasil ditambahkan.`, 'success');
+                renderQRs();
+            });
+
+            renderQRs();
+        });
+    </script>
+</body>
+
+</html>

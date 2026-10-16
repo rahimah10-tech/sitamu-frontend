@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Monitoring Admin (Semua Lokasi)"
+    })
+</head>
+
+<body>
+    <!-- Sidenav -->
+    @@include('./sitamu/_sidenav.html', {
+        "path": "../..",
+        "role": "admin",
+        "page": "dashboard"
+    })
+
+    <main class="content">
+        <!-- Topbar -->
+        @@include('./sitamu/_topbar.html', {
+            "path": "../..",
+            "role": "admin"
+        })
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div>
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
+                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
+                        <li class="breadcrumb-item">Admin</li>
+                        <li class="breadcrumb-item active" aria-current="page">Monitoring Kunjungan</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">
+                    <i class="fas fa-chart-line me-2 text-primary"></i>Monitoring Kunjungan (Semua Lokasi)
+                </h1>
+                <p class="text-muted small mb-0">Pengawasan operasional harian seluruh titik layanan, penyesuaian status, dan pengelolaan draf kunjungan.</p>
+            </div>
+            <div class="btn-toolbar mb-2 mb-md-0 gap-2">
+                <a href="kelola-qr.html" class="btn btn-sm btn-primary d-inline-flex align-items-center shadow-sm">
+                    <i class="fas fa-qrcode me-2"></i>
+                    <span>Buat QR Lokasi</span>
+                </a>
+                <button type="button" class="btn btn-sm btn-outline-gray-600 d-inline-flex align-items-center" id="btnAdminRefresh">
+                    <i class="fas fa-sync-alt me-2"></i>
+                    <span>Segarkan</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Total Kunjungan</h6>
+                                <h3 class="fw-bolder mb-0 text-gray-900" id="kpiAdminTotal">0</h3>
+                                <span class="font-small text-muted">Seluruh titik layanan</span>
+                            </div>
+                            <div class="avatar bg-soft-primary text-primary rounded-circle p-3 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-layer-group fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Tamu Aktif Berjalan</h6>
+                                <h3 class="fw-bolder mb-0 text-warning" id="kpiAdminActive">0</h3>
+                                <span class="font-small text-warning fw-bold">Menunggu & Diproses</span>
+                            </div>
+                            <div class="avatar bg-soft-warning text-warning rounded-circle p-3 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-walking fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Kunjungan Draf</h6>
+                                <h3 class="fw-bolder mb-0 text-secondary" id="kpiAdminDraft">0</h3>
+                                <span class="font-small text-muted">Penyesuaian Data</span>
+                            </div>
+                            <div class="avatar bg-soft-secondary text-gray-700 rounded-circle p-3 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-file-alt fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Selesai Dilayani</h6>
+                                <h3 class="fw-bolder mb-0 text-success" id="kpiAdminCompleted">0</h3>
+                                <span class="font-small text-success fw-bold"><i class="fas fa-check-circle me-1"></i>Tuntas</span>
+                            </div>
+                            <div class="avatar bg-soft-success text-success rounded-circle p-3 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-check-double fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Monitoring Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-header bg-white border-bottom py-3">
+                <div class="row g-2 align-items-center justify-content-between">
+                    <div class="col-12 col-md-5">
+                        <div class="input-group input-group-merge">
+                            <span class="input-group-text"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" class="form-control form-control-sm" id="adminSearch" placeholder="Cari nama tamu, instansi, atau no. urut...">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-auto d-flex flex-wrap gap-2">
+                        <select class="form-select form-select-sm" id="adminFilterLoc" style="width: auto;">
+                            <option value="ALL">Semua Lokasi</option>
+                            <!-- Dynamic -->
+                        </select>
+                        <select class="form-select form-select-sm" id="adminFilterStatus" style="width: auto;">
+                            <option value="ALL">Semua Status</option>
+                            <option value="Menunggu">Menunggu</option>
+                            <option value="Diproses">Diproses</option>
+                            <option value="Draf">Draf</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Dibatalkan">Dibatalkan</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-bottom font-small text-uppercase" style="width: 85px;">No. Urut</th>
+                            <th class="border-bottom font-small text-uppercase" style="width: 140px;">Jam Datang</th>
+                            <th class="border-bottom font-small text-uppercase">Lokasi</th>
+                            <th class="border-bottom font-small text-uppercase">Tamu & Instansi</th>
+                            <th class="border-bottom font-small text-uppercase">Keperluan & Bidang</th>
+                            <th class="border-bottom font-small text-uppercase">PIC Petugas</th>
+                            <th class="border-bottom font-small text-uppercase" style="width: 110px;">Status</th>
+                            <th class="border-bottom font-small text-uppercase text-end" style="width: 140px;">Aksi Admin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyAdminVisits">
+                        <!-- Dynamic -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer bg-white border-top py-3 d-flex align-items-center justify-content-between">
+                <span class="text-muted font-small" id="adminTableCount">Menampilkan 0 kunjungan</span>
+                <span class="font-small text-muted">
+                    <i class="fas fa-shield-alt text-primary me-1"></i>Wewenang Admin: Pantau semua lokasi, ubah status (Menunggu/Diproses), batalkan (alasan wajib), dan turunkan ke Draf.
+                </span>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL 1: TURUNKAN STATUS KE DRAF (Fitur Khusus Admin) -->
+    <div class="modal fade" id="modalDowngradeDraft" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title h6 mb-0">
+                        <i class="fas fa-file-alt me-2"></i>Turunkan Status Kunjungan ke Draf
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-soft-secondary p-3 mb-3 small" id="draftTargetInfo">
+                        <!-- Target Guest Info -->
+                    </div>
+                    <p class="small text-gray-800 mb-3">
+                        Apakah Anda yakin ingin menurunkan status kunjungan ini ke <strong>Draf</strong>?
+                    </p>
+                    <div class="alert alert-warning py-2 px-3 small mb-0">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        Status Draf memungkinkan resepsionis dan tamu untuk menyesuaikan atau mengoreksi data yang salah input sebelum diproses lebih lanjut oleh PIC.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-dark btn-sm" id="btnConfirmDowngrade">
+                        <i class="fas fa-arrow-down me-1"></i> Ya, Turunkan ke Draf
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: UBAH STATUS (MENUNGGU / DIPROSES) -->
+    <div class="modal fade" id="modalUpdateStatus" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title h6 mb-0"><i class="fas fa-exchange-alt me-2"></i>Ubah Status Kunjungan</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-soft-primary p-3 mb-3 small" id="updateStatusTargetInfo">
+                        <!-- Target -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="selectNewStatus" class="form-label small fw-bold text-gray-800">Pilih Status Baru:</label>
+                        <select class="form-select form-select-sm" id="selectNewStatus">
+                            <option value="Menunggu">Menunggu</option>
+                            <option value="Diproses">Diproses</option>
+                        </select>
+                        <div class="form-text small text-muted mt-2">
+                            <i class="fas fa-info-circle me-1 text-primary"></i><strong>Catatan:</strong> Status <em>Selesai</em> hanya terjadi secara otomatis saat PIC menyelesaikan pelayanan dan menyimpan hasil/solusi.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnConfirmStatusChange">
+                        <i class="fas fa-check me-1"></i> Simpan Status
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: BATALKAN KUNJUNGAN (Wajib Alasan) -->
+    <div class="modal fade" id="modalAdminCancel" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title h6 mb-0"><i class="fas fa-times-circle me-2"></i>Batalkan Kunjungan Tamu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="small text-gray-800 mb-3" id="adminCancelTargetText"></p>
+                    <div class="mb-3">
+                        <label for="adminCancelReasonSelect" class="form-label small fw-bold text-gray-800">
+                            Alasan Pembatalan <span class="text-danger">* (Wajib Diisi)</span>
+                        </label>
+                        <select class="form-select mb-2" id="adminCancelReasonSelect" required>
+                            <option value="" selected disabled>-- Pilih Alasan Pembatalan --</option>
+                            <option value="Tamu meninggalkan lokasi sebelum dilayani">Tamu meninggalkan lokasi sebelum dilayani</option>
+                            <option value="Tamu salah tujuan dinas / diarahkan ke instansi lain">Tamu salah tujuan dinas / diarahkan ke instansi lain</option>
+                            <option value="Data identitas atau keperluan tidak valid / fiktif">Data identitas atau keperluan tidak valid / fiktif</option>
+                            <option value="Permintaan pembatalan langsung oleh tamu">Permintaan pembatalan langsung oleh tamu</option>
+                            <option value="Lainnya">Lainnya (Wajib tuliskan penjelasan)</option>
+                        </select>
+                        <textarea class="form-control d-none" id="adminCancelReasonText" rows="2" placeholder="Tuliskan secara jelas alasan pembatalan..."></textarea>
+                    </div>
+                    <div class="alert alert-danger py-2 px-3 small mb-0">
+                        <i class="fas fa-shield-alt me-1"></i> Pembatalan oleh Admin dicatat ke dalam <strong>Audit Log</strong> sistem.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="btnAdminConfirmCancel" disabled>
+                        <i class="fas fa-trash me-1"></i> Ya, Batalkan Kunjungan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: DETAIL LENGKAP -->
+    <div class="modal fade" id="modalAdminDetail" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-gray-800 text-white">
+                    <h5 class="modal-title h6 mb-0"><i class="fas fa-id-card me-2"></i>Detail Kunjungan (Admin View)</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="adminDetailBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            const tbody = document.getElementById('tbodyAdminVisits');
+            const searchInput = document.getElementById('adminSearch');
+            const filterLoc = document.getElementById('adminFilterLoc');
+            const filterStatus = document.getElementById('adminFilterStatus');
+            const tableCount = document.getElementById('adminTableCount');
+
+            // Populate Locations Filter
+            const locations = SiTamuStore.getLocations();
+            locations.forEach(loc => {
+                const opt = document.createElement('option');
+                opt.value = loc.id;
+                opt.textContent = loc.name;
+                filterLoc.appendChild(opt);
+            });
+
+            let currentActionVisit = null;
+
+            function updateKPIs(all) {
+                const total = all.length;
+                const active = all.filter(v => v.status === 'Menunggu' || v.status === 'Diproses').length;
+                const draft = all.filter(v => v.status === 'Draf').length;
+                const completed = all.filter(v => v.status === 'Selesai').length;
+
+                document.getElementById('kpiAdminTotal').textContent = total;
+                document.getElementById('kpiAdminActive').textContent = active;
+                document.getElementById('kpiAdminDraft').textContent = draft;
+                document.getElementById('kpiAdminCompleted').textContent = completed;
+            }
+
+            function renderTable() {
+                const allVisits = SiTamuStore.getVisits();
+                updateKPIs(allVisits);
+
+                let filtered = [...allVisits];
+
+                const q = searchInput.value.toLowerCase().trim();
+                if (q) {
+                    filtered = filtered.filter(v =>
+                        (v.guestName && v.guestName.toLowerCase().includes(q)) ||
+                        (v.guestAgency && v.guestAgency.toLowerCase().includes(q)) ||
+                        (v.queueNumber && v.queueNumber.toLowerCase().includes(q)) ||
+                        (v.categoryName && v.categoryName.toLowerCase().includes(q))
+                    );
+                }
+
+                if (filterLoc.value !== 'ALL') {
+                    filtered = filtered.filter(v => v.locationId === filterLoc.value);
+                }
+
+                if (filterStatus.value !== 'ALL') {
+                    filtered = filtered.filter(v => v.status === filterStatus.value);
+                }
+
+                tableCount.textContent = `Menampilkan ${filtered.length} dari ${allVisits.length} kunjungan`;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-muted">
+                                <i class="fas fa-inbox fa-3x mb-2 text-gray-400 d-block"></i>
+                                Tidak ada data kunjungan yang cocok dengan filter.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map(v => {
+                    const formattedDate = SiTamuUI.formatDateTime(v.createdAt);
+                    const statusBadge = SiTamuUI.getStatusBadge(v.status);
+
+                    let picText = v.picName ? `<strong>${v.picName}</strong><br><small class="text-muted">${v.picDepartment}</small>` : '<span class="text-danger small fst-italic">Belum Ditugaskan</span>';
+
+                    const isClosed = v.status === 'Selesai' || v.status === 'Dibatalkan';
+                    const isDraft = v.status === 'Draf';
+
+                    return `
+                        <tr>
+                            <td><span class="badge bg-gray-800 text-white font-small px-2 py-1">#${v.queueNumber}</span></td>
+                            <td><span class="font-small text-gray-900">${formattedDate}</span></td>
+                            <td><div class="font-small text-gray-900 text-truncate" style="max-width: 140px;" title="${v.locationName}"><i class="fas fa-map-marker-alt text-danger me-1"></i>${v.locationName}</div></td>
+                            <td>
+                                <div class="fw-bold fs-7 text-gray-900">${v.guestName}</div>
+                                <div class="text-muted font-small">${v.guestAgency || 'Pribadi'}</div>
+                            </td>
+                            <td>
+                                <div class="font-small fw-bold text-gray-900">${v.categoryName}</div>
+                                <div class="font-small text-muted"><i class="fas fa-sitemap text-primary me-1"></i>${v.bidang}</div>
+                            </td>
+                            <td>${picText}</td>
+                            <td>${statusBadge}</td>
+                            <td class="text-end">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-gray-600 btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-cog me-1"></i> Aksi
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                                        <li>
+                                            <a class="dropdown-item font-small" href="javascript:void(0)" onclick="window.viewAdminDetail('${v.id}')">
+                                                <i class="fas fa-eye me-2 text-primary"></i>Lihat Detail
+                                            </a>
+                                        </li>
+                                        ${!isClosed ? `
+                                            <li>
+                                                <a class="dropdown-item font-small" href="javascript:void(0)" onclick="window.openStatusModal('${v.id}')">
+                                                    <i class="fas fa-exchange-alt me-2 text-info"></i>Ubah Status (Menunggu/Diproses)
+                                                </a>
+                                            </li>
+                                            ${!isDraft ? `
+                                                <li>
+                                                    <a class="dropdown-item font-small" href="javascript:void(0)" onclick="window.openDowngradeModal('${v.id}')">
+                                                        <i class="fas fa-arrow-down me-2 text-secondary"></i>Turunkan ke Draf
+                                                    </a>
+                                                </li>
+                                            ` : ''}
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item font-small text-danger" href="javascript:void(0)" onclick="window.openAdminCancelModal('${v.id}')">
+                                                    <i class="fas fa-times-circle me-2"></i>Batalkan Kunjungan
+                                                </a>
+                                            </li>
+                                        ` : `
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <span class="dropdown-item-text font-small text-muted fst-italic">
+                                                    <i class="fas fa-lock me-1"></i>Kunjungan Tuntas / Ditutup
+                                                </span>
+                                            </li>
+                                        `}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // MODAL DETAIL
+            window.viewAdminDetail = function (id) {
+                const v = SiTamuStore.getVisitById(id);
+                if (!v) return;
+
+                let sigPreview = '<span class="text-muted font-small">Tidak ada tanda tangan</span>';
+                if (v.signatureData) {
+                    if (v.signatureData.startsWith('data:image/svg+xml;utf8,<svg')) {
+                        const svgContent = v.signatureData.replace('data:image/svg+xml;utf8,', '');
+                        sigPreview = `<div style="max-height: 80px; max-width: 180px; border: 1px solid #cbd5e1; border-radius: 6px; padding: 4px; background: #fff;">${svgContent}</div>`;
+                    } else {
+                        sigPreview = `<img src="${v.signatureData}" alt="Tanda Tangan" style="max-height: 80px; border: 1px solid #cbd5e1; border-radius: 6px; padding: 4px; background: #fff;">`;
+                    }
+                }
+
+                document.getElementById('adminDetailBody').innerHTML = `
+                    <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                        <div>
+                            <span class="badge bg-gray-800 text-white me-2">#${v.queueNumber}</span>
+                            <span class="fw-bold fs-6">${v.guestName}</span>
+                        </div>
+                        <div>${SiTamuUI.getStatusBadge(v.status)}</div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label class="text-muted font-small d-block mb-0">Titik Lokasi:</label>
+                            <span class="fw-bold text-gray-900">${v.locationName}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="text-muted font-small d-block mb-0">Instansi & Kontak:</label>
+                            <span class="text-gray-900">${v.guestAgency || 'Pribadi'} • ${v.guestPhone}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="text-muted font-small d-block mb-0">Keperluan & Bidang:</label>
+                            <span class="fw-bold text-primary">${v.categoryName}</span>
+                            <div class="small text-muted">${v.bidang}</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="text-muted font-small d-block mb-0">PIC Ditugaskan:</label>
+                            <span class="text-gray-900">${v.picName || 'Belum ada PIC'}</span>
+                        </div>
+                        <div class="col-12 border-top pt-2">
+                            <label class="text-muted font-small d-block mb-0">Rincian Pertanyaan Tamu:</label>
+                            <div class="small text-gray-800">${v.details || '-'}</div>
+                        </div>
+                        ${v.hasil ? `
+                            <div class="col-12 border-top pt-2">
+                                <label class="text-muted font-small d-block mb-1 text-success fw-bold">Hasil Pelayanan PIC:</label>
+                                <div class="p-3 bg-soft-success border border-success rounded-2 text-gray-900 small">${v.hasil}</div>
+                            </div>
+                        ` : ''}
+                        <div class="col-12 border-top pt-2">
+                            <label class="text-muted font-small d-block mb-1">Tanda Tangan Digital Tamu:</label>
+                            ${sigPreview}
+                        </div>
+                    </div>
+                `;
+
+                const modal = new bootstrap.Modal(document.getElementById('modalAdminDetail'));
+                modal.show();
+            };
+
+            // MODAL UBAH STATUS (HANYA MENUNGGU / DIPROSES)
+            window.openStatusModal = function (id) {
+                currentActionVisit = SiTamuStore.getVisitById(id);
+                if (!currentActionVisit) return;
+
+                if (currentActionVisit.status === 'Selesai' || currentActionVisit.status === 'Dibatalkan') {
+                    SiTamuUI.showToast('Tidak Dapat Diubah', 'Kunjungan yang sudah Selesai atau Dibatalkan tidak dapat diubah statusnya secara manual oleh Admin.', 'warning');
+                    return;
+                }
+
+                document.getElementById('updateStatusTargetInfo').innerHTML = `
+                    <div class="d-flex align-items-center justify-content-between">
+                        <strong>#${currentActionVisit.queueNumber} - ${currentActionVisit.guestName}</strong>
+                        ${SiTamuUI.getStatusBadge(currentActionVisit.status)}
+                    </div>
+                    <div class="text-muted font-small mt-1">Keperluan: ${currentActionVisit.categoryName}</div>
+                `;
+
+                document.getElementById('selectNewStatus').value = currentActionVisit.status === 'Diproses' ? 'Diproses' : 'Menunggu';
+                const modal = new bootstrap.Modal(document.getElementById('modalUpdateStatus'));
+                modal.show();
+            };
+
+            document.getElementById('btnConfirmStatusChange').addEventListener('click', function () {
+                if (!currentActionVisit) return;
+                const newStatus = document.getElementById('selectNewStatus').value;
+                const success = SiTamuStore.adminUpdateVisitStatus(currentActionVisit.id, newStatus, 'Ahmad Zaki (Admin)');
+                bootstrap.Modal.getInstance(document.getElementById('modalUpdateStatus')).hide();
+                if (success) {
+                    SiTamuUI.showToast('Status Diperbarui', `Status #${currentActionVisit.queueNumber} diubah menjadi ${newStatus}.`, 'success');
+                } else {
+                    SiTamuUI.showToast('Gagal', 'Status tidak dapat diubah ke nilai tersebut.', 'danger');
+                }
+                renderTable();
+            });
+
+            // MODAL TURUNKAN KE DRAF (Fitur Khusus Admin)
+            window.openDowngradeModal = function (id) {
+                currentActionVisit = SiTamuStore.getVisitById(id);
+                if (!currentActionVisit) return;
+
+                document.getElementById('draftTargetInfo').innerHTML = `
+                    <div class="d-flex align-items-center justify-content-between">
+                        <strong>#${currentActionVisit.queueNumber} - ${currentActionVisit.guestName}</strong>
+                        ${SiTamuUI.getStatusBadge(currentActionVisit.status)}
+                    </div>
+                    <div class="font-small text-muted mt-1">Keperluan: ${currentActionVisit.categoryName}</div>
+                `;
+
+                const modal = new bootstrap.Modal(document.getElementById('modalDowngradeDraft'));
+                modal.show();
+            };
+
+            document.getElementById('btnConfirmDowngrade').addEventListener('click', function () {
+                if (!currentActionVisit) return;
+                SiTamuStore.downgradeToDraft(currentActionVisit.id, 'Ahmad Zaki (Admin)');
+                bootstrap.Modal.getInstance(document.getElementById('modalDowngradeDraft')).hide();
+                SiTamuUI.showToast('Status Diturunkan ke Draf', `Kunjungan #${currentActionVisit.queueNumber} sekarang berstatus Draf.`, 'info');
+                renderTable();
+            });
+
+            // MODAL CANCEL (Wajib Alasan)
+            window.openAdminCancelModal = function (id) {
+                currentActionVisit = SiTamuStore.getVisitById(id);
+                if (!currentActionVisit) return;
+
+                document.getElementById('adminCancelTargetText').innerHTML = `
+                    Apakah Anda yakin ingin membatalkan kunjungan <strong>#${currentActionVisit.queueNumber} - ${currentActionVisit.guestName}</strong>?
+                `;
+
+                const reasonSelect = document.getElementById('adminCancelReasonSelect');
+                const reasonText = document.getElementById('adminCancelReasonText');
+                const btnConfirm = document.getElementById('btnAdminConfirmCancel');
+
+                reasonSelect.value = '';
+                reasonText.value = '';
+                reasonText.classList.add('d-none');
+                btnConfirm.disabled = true;
+
+                function checkCancelValid() {
+                    const rVal = reasonSelect.value;
+                    let valid = rVal !== '';
+                    if (rVal === 'Lainnya') {
+                        valid = reasonText.value.trim().length > 3;
+                    }
+                    btnConfirm.disabled = !valid;
+                }
+
+                reasonSelect.addEventListener('change', function () {
+                    if (this.value === 'Lainnya') {
+                        reasonText.classList.remove('d-none');
+                        reasonText.focus();
+                    } else {
+                        reasonText.classList.add('d-none');
+                    }
+                    checkCancelValid();
+                });
+
+                reasonText.addEventListener('input', checkCancelValid);
+
+                const modal = new bootstrap.Modal(document.getElementById('modalAdminCancel'));
+                modal.show();
+            };
+
+            document.getElementById('btnAdminConfirmCancel').addEventListener('click', function () {
+                if (!currentActionVisit) return;
+                const reasonSelect = document.getElementById('adminCancelReasonSelect').value;
+                const reasonText = document.getElementById('adminCancelReasonText').value.trim();
+                const finalReason = reasonSelect === 'Lainnya' ? reasonText : reasonSelect;
+
+                if (!finalReason) return;
+
+                SiTamuStore.cancelVisit(currentActionVisit.id, finalReason, 'Ahmad Zaki', 'Admin');
+                bootstrap.Modal.getInstance(document.getElementById('modalAdminCancel')).hide();
+                SiTamuUI.showToast('Kunjungan Dibatalkan', `Kunjungan #${currentActionVisit.queueNumber} telah dibatalkan dengan alasan dicatat ke audit log.`, 'info');
+                renderTable();
+            });
+
+            // Events
+            searchInput.addEventListener('input', renderTable);
+            filterLoc.addEventListener('change', renderTable);
+            filterStatus.addEventListener('change', renderTable);
+            document.getElementById('btnAdminRefresh').addEventListener('click', function () {
+                renderTable();
+                SiTamuUI.showToast('Data Dimutakhirkan', 'Seluruh kunjungan berhasil diperbarui.', 'success');
+            });
+
+            renderTable();
+        });
+    </script>
+</body>
+
+</html>

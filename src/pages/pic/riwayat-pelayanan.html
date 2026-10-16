@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Riwayat Pelayanan PIC"
+    })
+</head>
+
+<body>
+    <!-- Sidenav -->
+    @@include('./sitamu/_sidenav.html', {
+        "path": "../..",
+        "role": "pic",
+        "page": "riwayat-pelayanan"
+    })
+
+    <main class="content">
+        <!-- Topbar -->
+        @@include('./sitamu/_topbar.html', {
+            "path": "../..",
+            "role": "pic"
+        })
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div>
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
+                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="dashboard.html">PIC</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Riwayat Pelayanan</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">
+                    <i class="fas fa-clipboard-check me-2 text-success"></i>Riwayat Pelayanan Departemen
+                </h1>
+                <p class="text-muted small mb-0">Arsip seluruh kunjungan tamu yang telah selesai dilayani oleh akun PIC Anda.</p>
+            </div>
+            <div>
+                <a href="dashboard.html" class="btn btn-sm btn-outline-gray-600">
+                    <i class="fas fa-arrow-left me-1"></i> Kembali ke Penugasan
+                </a>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-header bg-white border-bottom py-3">
+                <div class="row g-2 align-items-center justify-content-between">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group input-group-merge">
+                            <span class="input-group-text"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" class="form-control form-control-sm" id="searchRiwayat" placeholder="Cari nama tamu, instansi, atau kata kunci hasil...">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-auto">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()">
+                            <i class="fas fa-print me-1"></i> Cetak Laporan
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-bottom font-small text-uppercase" style="width: 90px;">No. Urut</th>
+                            <th class="border-bottom font-small text-uppercase" style="width: 140px;">Waktu Selesai</th>
+                            <th class="border-bottom font-small text-uppercase">Tamu & Instansi</th>
+                            <th class="border-bottom font-small text-uppercase">Keperluan</th>
+                            <th class="border-bottom font-small text-uppercase">Hasil / Solusi yang Diberikan</th>
+                            <th class="border-bottom font-small text-uppercase text-end" style="width: 100px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyRiwayatPic">
+                        <!-- Dynamic -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer bg-white border-top py-3">
+                <span class="text-muted font-small" id="riwayatCountInfo">Menampilkan 0 kunjungan selesai</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detail Modal -->
+    <div class="modal fade" id="modalDetailHistory" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-gray-800 text-white">
+                    <h5 class="modal-title h6 mb-0">Detail Kunjungan Selesai</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="detailHistoryBody">
+                    <!-- Dynamic -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            const session = SiTamuStore.getSession();
+            const currentPicId = session.picId || 'pic-1';
+
+            const tbody = document.getElementById('tbodyRiwayatPic');
+            const searchInput = document.getElementById('searchRiwayat');
+            const countInfo = document.getElementById('riwayatCountInfo');
+
+            function renderTable() {
+                const allVisits = SiTamuStore.getVisits({ status: 'Selesai', picId: currentPicId });
+                const query = searchInput.value.toLowerCase().trim();
+
+                let filtered = allVisits;
+                if (query) {
+                    filtered = filtered.filter(v =>
+                        (v.guestName && v.guestName.toLowerCase().includes(query)) ||
+                        (v.guestAgency && v.guestAgency.toLowerCase().includes(query)) ||
+                        (v.hasil && v.hasil.toLowerCase().includes(query)) ||
+                        (v.queueNumber && v.queueNumber.toLowerCase().includes(query))
+                    );
+                }
+
+                countInfo.textContent = `Menampilkan ${filtered.length} dari ${allVisits.length} kunjungan selesai`;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fas fa-clipboard-list fa-3x mb-3 text-gray-400 d-block"></i>
+                                <h6 class="fw-bold mb-1">Belum Ada Riwayat Kunjungan</h6>
+                                <p class="small mb-0">Riwayat kunjungan yang telah selesai Anda layani akan tercatat di sini.</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map(v => {
+                    const formattedDate = SiTamuUI.formatDateTime(v.completedAt || v.createdAt);
+
+                    return `
+                        <tr>
+                            <td>
+                                <span class="badge bg-gray-800 text-white font-small px-2 py-1">#${v.queueNumber}</span>
+                            </td>
+                            <td>
+                                <span class="font-small text-gray-900">${formattedDate}</span>
+                            </td>
+                            <td>
+                                <div class="fw-bold fs-7 text-gray-900">${v.guestName}</div>
+                                <div class="text-muted font-small">${v.guestAgency || 'Pribadi'}</div>
+                            </td>
+                            <td>
+                                <div class="font-small text-primary fw-bold">${v.categoryName}</div>
+                            </td>
+                            <td>
+                                <div class="small text-gray-900 text-truncate" style="max-width: 320px;" title="${v.hasil || ''}">
+                                    ${v.hasil || '-'}
+                                </div>
+                            </td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-outline-gray-600 btn-xs" onclick="window.viewHistoryDetail('${v.id}')">
+                                    <i class="fas fa-eye me-1"></i> Detail
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            window.viewHistoryDetail = function (id) {
+                const v = SiTamuStore.getVisitById(id);
+                if (!v) return;
+
+                document.getElementById('detailHistoryBody').innerHTML = `
+                    <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                        <div>
+                            <span class="badge bg-gray-800 text-white me-2">#${v.queueNumber}</span>
+                            <span class="fw-bold fs-6">${v.guestName}</span>
+                        </div>
+                        <span class="badge bg-success">Selesai</span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label class="text-muted font-small d-block mb-0">Instansi / Perusahaan:</label>
+                            <span class="fw-bold text-gray-900">${v.guestAgency || '-'}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="text-muted font-small d-block mb-0">No. WhatsApp / Email:</label>
+                            <span class="text-gray-900">${v.guestPhone} • ${v.guestEmail}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="text-muted font-small d-block mb-0">Jam Kedatangan:</label>
+                            <span class="text-gray-900">${SiTamuUI.formatDateTime(v.createdAt)}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="text-muted font-small d-block mb-0">Waktu Selesai:</label>
+                            <span class="text-gray-900">${SiTamuUI.formatDateTime(v.completedAt)}</span>
+                        </div>
+                        <div class="col-12 border-top pt-2">
+                            <label class="text-muted font-small d-block mb-0">Keperluan Kunjungan:</label>
+                            <span class="fw-bold text-primary">${v.categoryName}</span>
+                            <div class="text-muted small mt-1">${v.details || '-'}</div>
+                        </div>
+                        <div class="col-12 border-top pt-2">
+                            <label class="text-muted font-small d-block mb-1">Hasil / Solusi yang Diberikan:</label>
+                            <div class="p-3 bg-soft-success border border-success rounded-2 text-gray-900 small">
+                                ${v.hasil || '-'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const modal = new bootstrap.Modal(document.getElementById('modalDetailHistory'));
+                modal.show();
+            };
+
+            searchInput.addEventListener('input', renderTable);
+            renderTable();
+        });
+    </script>
+</body>
+
+</html>

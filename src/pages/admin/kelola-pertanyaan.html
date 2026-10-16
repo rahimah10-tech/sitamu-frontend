@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Kelola Pertanyaan & Keperluan Form"
+    })
+</head>
+
+<body>
+    <!-- Sidenav -->
+    @@include('./sitamu/_sidenav.html', {
+        "path": "../..",
+        "role": "admin",
+        "page": "kelola-pertanyaan"
+    })
+
+    <main class="content">
+        <!-- Topbar -->
+        @@include('./sitamu/_topbar.html', {
+            "path": "../..",
+            "role": "admin"
+        })
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div>
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
+                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="dashboard.html">Admin</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Kelola Pertanyaan</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">
+                    <i class="fas fa-question-circle me-2 text-primary"></i>Kelola Pertanyaan & Kategori Form
+                </h1>
+                <p class="text-muted small mb-0">Atur opsi kategori keperluan kunjungan yang tampil pada formulir tamu dan pemetaan otomatis ke bidang tujuan.</p>
+            </div>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center shadow-sm" id="btnOpenAddCategory">
+                    <i class="fas fa-plus me-2"></i>
+                    <span>Tambah Kategori Baru</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Info Alert -->
+        <div class="alert alert-soft-primary border-0 shadow-sm rounded-3 py-3 px-4 mb-4 d-flex align-items-center">
+            <i class="fas fa-info-circle fa-2x text-primary me-3"></i>
+            <div>
+                <h6 class="fw-bold mb-1">Pemetaan Bidang Otomatis</h6>
+                <p class="small mb-0 text-muted">
+                    Setiap kategori keperluan yang dibuat di sini memiliki <strong>Bidang Tujuan</strong> yang otomatis terisi. Kolom bidang ini akan tampil di dashboard resepsionis untuk mempermudah penugasan PIC tanpa membingungkan tamu.
+                </p>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
+                <h5 class="card-title mb-0 fs-6 fw-bold text-gray-800">Daftar Kategori Keperluan & Pertanyaan</h5>
+                <span class="badge bg-primary" id="badgeTotalCat">0 Kategori Aktif</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-bottom font-small text-uppercase" style="width: 80px;">Kode</th>
+                            <th class="border-bottom font-small text-uppercase">Nama Kategori Keperluan</th>
+                            <th class="border-bottom font-small text-uppercase">Bidang Terkait (Otomatis)</th>
+                            <th class="border-bottom font-small text-uppercase">Contoh Rincian (Placeholder Tamu)</th>
+                            <th class="border-bottom font-small text-uppercase text-end" style="width: 140px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyCategories">
+                        <!-- Dynamic -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL TAMBAH / EDIT KATEGORI -->
+    <div class="modal fade" id="modalCategoryForm" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title h6 mb-0" id="modalCategoryTitle">
+                        <i class="fas fa-edit me-2"></i>Tambah Kategori Keperluan
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="formCategory">
+                        <input type="hidden" id="editCategoryId">
+                        <div class="mb-3">
+                            <label for="inputCategoryName" class="form-label small fw-bold text-gray-800">
+                                Nama Kategori Keperluan: <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control form-control-sm" id="inputCategoryName" placeholder="Contoh: Konsultasi Ekspor Produk Halal" required>
+                            <div class="form-text font-small text-muted">Teks ini akan tampil pada dropdown pilihan tamu.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputCategoryBidang" class="form-label small fw-bold text-gray-800">
+                                Bidang / Departemen Tujuan: <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control form-control-sm" id="inputCategoryBidang" placeholder="Contoh: Bidang Perdagangan Luar Negeri" required>
+                            <div class="form-text font-small text-muted">Akan dicatat otomatis di sistem untuk panduan resepsionis.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputCategoryPlaceholder" class="form-label small fw-bold text-gray-800">
+                                Placeholder Rincian Pertanyaan: <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control form-control-sm" id="inputCategoryPlaceholder" rows="2" placeholder="Contoh: Tuliskan produk atau negara tujuan ekspor..." required></textarea>
+                            <div class="form-text font-small text-muted">Petunjuk yang muncul pada kotak rincian pertanyaan tamu.</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnSaveCategory">
+                        <i class="fas fa-save me-1"></i> Simpan Kategori
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            const tbody = document.getElementById('tbodyCategories');
+            const badgeTotal = document.getElementById('badgeTotalCat');
+
+            function renderTable() {
+                const cats = SiTamuStore.getCategories();
+                badgeTotal.textContent = `${cats.length} Kategori Aktif`;
+
+                tbody.innerHTML = cats.map(c => {
+                    return `
+                        <tr>
+                            <td><span class="badge bg-gray-800 font-monospace">${c.code || c.id}</span></td>
+                            <td>
+                                <div class="fw-bold text-gray-900 fs-7">${c.name}</div>
+                            </td>
+                            <td>
+                                <span class="badge bg-soft-primary text-primary border border-primary font-small">
+                                    <i class="fas fa-sitemap me-1"></i>${c.bidang}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="small text-muted text-truncate" style="max-width: 320px;" title="${c.placeholder}">
+                                    ${c.placeholder}
+                                </div>
+                            </td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-gray-600 btn-xs" onclick="window.editCategory('${c.id}')" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger btn-xs" onclick="window.deleteCategory('${c.id}')" title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // Open Add Modal
+            document.getElementById('btnOpenAddCategory').addEventListener('click', function () {
+                document.getElementById('modalCategoryTitle').innerHTML = '<i class="fas fa-plus me-2"></i>Tambah Kategori Keperluan Baru';
+                document.getElementById('editCategoryId').value = '';
+                document.getElementById('inputCategoryName').value = '';
+                document.getElementById('inputCategoryBidang').value = '';
+                document.getElementById('inputCategoryPlaceholder').value = '';
+
+                const modal = new bootstrap.Modal(document.getElementById('modalCategoryForm'));
+                modal.show();
+            });
+
+            // Edit Category
+            window.editCategory = function (id) {
+                const cat = SiTamuStore.getCategoryById(id);
+                if (!cat) return;
+
+                document.getElementById('modalCategoryTitle').innerHTML = '<i class="fas fa-edit me-2"></i>Edit Kategori Keperluan';
+                document.getElementById('editCategoryId').value = cat.id;
+                document.getElementById('inputCategoryName').value = cat.name;
+                document.getElementById('inputCategoryBidang').value = cat.bidang;
+                document.getElementById('inputCategoryPlaceholder').value = cat.placeholder;
+
+                const modal = new bootstrap.Modal(document.getElementById('modalCategoryForm'));
+                modal.show();
+            };
+
+            // Save Category
+            document.getElementById('btnSaveCategory').addEventListener('click', function () {
+                const editId = document.getElementById('editCategoryId').value;
+                const name = document.getElementById('inputCategoryName').value.trim();
+                const bidang = document.getElementById('inputCategoryBidang').value.trim();
+                const placeholder = document.getElementById('inputCategoryPlaceholder').value.trim();
+
+                if (!name || !bidang || !placeholder) {
+                    SiTamuUI.showToast('Data Belum Lengkap', 'Mohon lengkapi seluruh field.', 'warning');
+                    return;
+                }
+
+                SiTamuStore.saveCategory({
+                    id: editId || null,
+                    name: name,
+                    bidang: bidang,
+                    placeholder: placeholder
+                }, 'Ahmad Zaki (Admin)');
+
+                bootstrap.Modal.getInstance(document.getElementById('modalCategoryForm')).hide();
+                SiTamuUI.showToast('Kategori Tersimpan', `Kategori "${name}" berhasil disimpan.`, 'success');
+                renderTable();
+            });
+
+            // Delete Category
+            window.deleteCategory = function (id) {
+                const cat = SiTamuStore.getCategoryById(id);
+                if (!cat) return;
+
+                if (confirm(`Apakah Anda yakin ingin menghapus kategori "${cat.name}"?`)) {
+                    SiTamuStore.deleteCategory(id, 'Ahmad Zaki (Admin)');
+                    SiTamuUI.showToast('Kategori Dihapus', 'Kategori telah dihapus dari sistem.', 'info');
+                    renderTable();
+                }
+            };
+
+            renderTable();
+        });
+    </script>
+</body>
+
+</html>

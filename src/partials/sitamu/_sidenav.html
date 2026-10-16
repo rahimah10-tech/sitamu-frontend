@@ -1,0 +1,196 @@
+<nav id="sidebarMenu" class="sidebar d-lg-block bg-gray-800 text-white collapse" data-simplebar>
+  <div class="sidebar-inner px-4 pt-3">
+    <!-- User Card (Mobile) -->
+    <div class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
+      <div class="d-flex align-items-center">
+        <div class="avatar-lg me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold">
+          ST
+        </div>
+        <div class="d-block">
+          <h2 class="h6 mb-1 text-white" id="sidebarMobileUser">Petugas SiTamu</h2>
+          <span class="badge bg-secondary text-dark text-capitalize" id="sidebarMobileRole">@@role</span>
+        </div>
+      </div>
+      <div class="collapse-close d-md-none">
+        <a href="#sidebarMenu" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="true" aria-label="Toggle navigation">
+          <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Navigation List -->
+    <ul class="nav flex-column pt-3 pt-md-0">
+      <!-- Brand Logo -->
+      <li class="nav-item mb-3">
+        <a href="@@path/index.html" class="nav-link d-flex align-items-center ps-0">
+          <span class="sidebar-icon me-2">
+            <span class="badge bg-primary text-white p-2 rounded-circle">
+              <i class="fas fa-qrcode fa-lg"></i>
+            </span>
+          </span>
+          <div>
+            <span class="sidebar-text fw-bolder fs-6 text-white letter-spacing-1">SiTamu</span>
+            <div class="font-small text-muted" style="font-size: 11px;">Disperindag Jatim</div>
+          </div>
+        </a>
+      </li>
+
+      <!-- Role Badge Header -->
+      <li class="nav-item mb-2">
+        <div class="bg-gray-700 p-2 rounded-2 text-center">
+          <span class="font-small text-muted text-uppercase d-block mb-1" style="font-size: 10px;">Panel Operasional</span>
+          <span class="badge bg-info text-dark text-uppercase px-3 py-1 fw-bold">
+            <i class="fas fa-user-shield me-1"></i> @@role
+          </span>
+        </div>
+      </li>
+
+      @@if (context.role === 'resepsionis') {
+        <!-- Resepsionis Menus -->
+        <li class="nav-item @@if (context.page === 'dashboard') { active }">
+          <a href="@@path/pages/resepsionis/dashboard.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-concierge-bell me-2"></i></span>
+            <span class="sidebar-text">Tamu Aktif</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'qr-darurat') { active }">
+          <a href="@@path/pages/resepsionis/qr-darurat.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-first-aid me-2 text-warning"></i></span>
+            <span class="sidebar-text">QR Darurat / Manual</span>
+          </a>
+        </li>
+      }
+
+      @@if (context.role === 'pic') {
+        <!-- PIC Menus -->
+        <li class="nav-item @@if (context.page === 'dashboard') { active }">
+          <a href="@@path/pages/pic/dashboard.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-tasks me-2"></i></span>
+            <span class="sidebar-text">Penugasan Saya</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'riwayat-pelayanan') { active }">
+          <a href="@@path/pages/pic/riwayat-pelayanan.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-clipboard-check me-2"></i></span>
+            <span class="sidebar-text">Riwayat Pelayanan</span>
+          </a>
+        </li>
+      }
+
+      @@if (context.role === 'admin') {
+        <!-- Admin Menus -->
+        <li class="nav-item @@if (context.page === 'dashboard') { active }">
+          <a href="@@path/pages/admin/dashboard.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-chart-line me-2"></i></span>
+            <span class="sidebar-text">Pantau Semua Lokasi</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'kelola-qr') { active }">
+          <a href="@@path/pages/admin/kelola-qr.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-qrcode me-2"></i></span>
+            <span class="sidebar-text">Buat QR Lokasi</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'kelola-pertanyaan') { active }">
+          <a href="@@path/pages/admin/kelola-pertanyaan.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-question-circle me-2"></i></span>
+            <span class="sidebar-text">Kelola Pertanyaan Form</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'history') { active }">
+          <a href="@@path/pages/admin/history.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-file-export me-2"></i></span>
+            <span class="sidebar-text">History & Ekspor</span>
+          </a>
+        </li>
+      }
+
+      @@if (context.role === 'superadmin') {
+        <!-- Super Admin Menus -->
+        <li class="nav-item @@if (context.page === 'dashboard') { active }">
+          <a href="@@path/pages/superadmin/dashboard.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-tachometer-alt me-2"></i></span>
+            <span class="sidebar-text">Overview Sistem</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'kelola-lokasi') { active }">
+          <a href="@@path/pages/superadmin/kelola-lokasi.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-map-marked-alt me-2"></i></span>
+            <span class="sidebar-text">Kelola Lokasi</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'kelola-qr') { active }">
+          <a href="@@path/pages/superadmin/kelola-qr.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-qrcode me-2"></i></span>
+            <span class="sidebar-text">Kelola QR Code</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'kelola-akun') { active }">
+          <a href="@@path/pages/superadmin/kelola-akun.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-users-cog me-2"></i></span>
+            <span class="sidebar-text">Kelola Akun Petugas</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'history-reopen') { active }">
+          <a href="@@path/pages/superadmin/history-reopen.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-redo-alt me-2 text-warning"></i></span>
+            <span class="sidebar-text">Buka Kembali Kunjungan</span>
+          </a>
+        </li>
+        <li class="nav-item @@if (context.page === 'audit-log') { active }">
+          <a href="@@path/pages/superadmin/audit-log.html" class="nav-link">
+            <span class="sidebar-icon"><i class="fas fa-history me-2 text-info"></i></span>
+            <span class="sidebar-text">Audit Log Sistem</span>
+          </a>
+        </li>
+      }
+
+      <!-- Separator for Quick Role Switcher -->
+      <li role="separator" class="dropdown-divider my-3 border-gray-700"></li>
+
+      <li class="nav-item">
+        <span class="font-small text-muted text-uppercase px-3 d-block mb-1" style="font-size: 10px;">
+          Ganti Peran Cepat (Demo):
+        </span>
+      </li>
+      <li class="nav-item">
+        <a href="@@path/pages/tamu/scan.html" class="nav-link py-1 font-small text-gray-300">
+          <span class="sidebar-icon"><i class="fas fa-mobile-alt me-2 text-success"></i></span>
+          <span class="sidebar-text">Portal Tamu (Scan)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="@@path/pages/resepsionis/dashboard.html" class="nav-link py-1 font-small @@if (context.role === 'resepsionis') { text-warning fw-bold } else { text-gray-300 }">
+          <span class="sidebar-icon"><i class="fas fa-bell me-2"></i></span>
+          <span class="sidebar-text">Resepsionis</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="@@path/pages/pic/dashboard.html" class="nav-link py-1 font-small @@if (context.role === 'pic') { text-warning fw-bold } else { text-gray-300 }">
+          <span class="sidebar-icon"><i class="fas fa-user-tie me-2"></i></span>
+          <span class="sidebar-text">PIC Departemen</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="@@path/pages/admin/dashboard.html" class="nav-link py-1 font-small @@if (context.role === 'admin') { text-warning fw-bold } else { text-gray-300 }">
+          <span class="sidebar-icon"><i class="fas fa-user-shield me-2"></i></span>
+          <span class="sidebar-text">Admin Lokasi</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="@@path/pages/superadmin/dashboard.html" class="nav-link py-1 font-small @@if (context.role === 'superadmin') { text-warning fw-bold } else { text-gray-300 }">
+          <span class="sidebar-icon"><i class="fas fa-crown me-2 text-warning"></i></span>
+          <span class="sidebar-text">Super Admin</span>
+        </a>
+      </li>
+
+      <!-- Reset Mock Data Button -->
+      <li class="nav-item mt-4 pt-2 border-top border-gray-700">
+        <button type="button" class="btn btn-outline-danger btn-xs w-100 d-flex align-items-center justify-content-center" onclick="if(confirm('Reset semua data mock SiTamu ke kondisi awal?')){SiTamuStore.reset();location.reload();}">
+          <i class="fas fa-undo-alt me-1"></i> Reset Data Mock
+        </button>
+      </li>
+
+    </ul>
+  </div>
+</nav>

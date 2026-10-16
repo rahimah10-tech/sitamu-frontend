@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Riwayat Kunjungan Tamu"
+    })
+    <style>
+        .timeline-card {
+            border-left: 4px solid #0369a1;
+            transition: all 0.2s ease;
+        }
+        .timeline-card.status-selesai {
+            border-left-color: #10b981;
+        }
+        .timeline-card.status-diproses {
+            border-left-color: #0ea5e9;
+        }
+        .timeline-card.status-menunggu {
+            border-left-color: #f59e0b;
+        }
+        .timeline-card.status-dibatalkan {
+            border-left-color: #ef4444;
+        }
+    </style>
+</head>
+
+<body class="bg-soft">
+    <main>
+        <section class="min-vh-100 py-4 py-lg-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+
+                        <!-- Brand Header -->
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary text-white rounded-circle p-2 me-3 shadow-sm d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                                    <i class="fas fa-history fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h2 class="h5 fw-bolder mb-0 text-gray-900">Riwayat Kunjungan Tamu</h2>
+                                    <span class="text-muted small">Catatan riwayat & hasil pelayanan Anda</span>
+                                </div>
+                            </div>
+                            <a href="../../index.html" class="btn btn-outline-gray-600 btn-sm">
+                                <i class="fas fa-home me-1"></i> Beranda
+                            </a>
+                        </div>
+
+                        <!-- Active Guest Identity Banner -->
+                        <div class="card border-0 shadow-sm rounded-3 mb-4 bg-white">
+                            <div class="card-body p-3 d-sm-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center mb-2 mb-sm-0">
+                                    <div class="avatar bg-soft-primary text-primary rounded-circle me-3 d-flex align-items-center justify-content-center fw-bold" style="width: 44px; height: 44px;" id="avatarInitial">
+                                        DL
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold fs-7 text-gray-900" id="currentGuestName">Dewi Lestari, S.T.</h6>
+                                        <div class="font-small text-muted" id="currentGuestEmail">dewi.lestari@gmail.com</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <a id="btnNewVisit" href="form.html" class="btn btn-primary btn-sm d-flex align-items-center">
+                                        <i class="fas fa-plus me-1"></i> Isi Formulir Baru
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Search / Switch Guest Email or Phone Filter -->
+                        <div class="card border-0 shadow-sm rounded-3 mb-4">
+                            <div class="card-body p-3">
+                                <form id="formSearchHistory" class="row g-2 align-items-center">
+                                    <div class="col-12 col-sm-8">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text"><i class="fas fa-search text-muted"></i></span>
+                                            <input type="text" class="form-control" id="searchIdentifier" placeholder="Cari berdasarkan Email atau No. WhatsApp...">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4 d-grid">
+                                        <button type="submit" class="btn btn-gray-800 btn-sm">
+                                            Periksa Riwayat
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Visit History List -->
+                        <div id="historyListContainer">
+                            <!-- Rendered dynamically -->
+                        </div>
+
+                        <!-- Help footer -->
+                        <div class="text-center mt-4">
+                            <p class="text-muted small mb-1">
+                                Butuh informasi lebih lanjut mengenai status kunjungan Anda?
+                            </p>
+                            <span class="text-muted font-small">
+                                Hubungi Meja Resepsionis Disperindag Jatim di (031) 8432417 atau datang langsung ke Lobby.
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const session = SiTamuStore.getSession();
+            let guestEmail = urlParams.get('email') || session.email || 'dewi.lestari@gmail.com';
+
+            const searchInput = document.getElementById('searchIdentifier');
+            const searchForm = document.getElementById('formSearchHistory');
+            const container = document.getElementById('historyListContainer');
+            const btnNewVisit = document.getElementById('btnNewVisit');
+
+            searchInput.value = guestEmail;
+
+            function renderHistory(email) {
+                const visits = SiTamuStore.getGuestHistory(email);
+
+                // Update Profile card
+                const profile = SiTamuStore.findGuestPreviousProfile(email);
+                const guestName = profile ? profile.guestName : (visits.length > 0 ? visits[0].guestName : 'Tamu');
+                document.getElementById('currentGuestName').textContent = guestName;
+                document.getElementById('currentGuestEmail').textContent = email;
+
+                const initials = guestName.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+                document.getElementById('avatarInitial').textContent = initials || 'TM';
+
+                // update link to new visit form
+                btnNewVisit.href = `form.html?email=${encodeURIComponent(email)}`;
+
+                if (!visits || visits.length === 0) {
+                    container.innerHTML = `
+                        <div class="card border-0 shadow-sm rounded-3 text-center p-5">
+                            <div class="text-muted mb-3">
+                                <i class="fas fa-folder-open fa-3x"></i>
+                            </div>
+                            <h6 class="fw-bold text-gray-800">Belum Ada Riwayat Kunjungan</h6>
+                            <p class="text-muted small mb-3">Tidak ditemukan catatan riwayat kunjungan untuk email: <strong>${email}</strong>.</p>
+                            <div>
+                                <a href="form.html?email=${encodeURIComponent(email)}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-pen me-1"></i> Isi Formulir Kunjungan Baru
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = visits.map((v, i) => {
+                    const statusClass = 'status-' + (v.status || '').toLowerCase();
+                    const statusBadge = SiTamuUI.getStatusBadge(v.status);
+                    const formattedDate = SiTamuUI.formatDateTime(v.createdAt);
+
+                    let picDisplay = '<span class="text-muted fst-italic">Menunggu penugasan PIC oleh Resepsionis</span>';
+                    if (v.picName) {
+                        picDisplay = `<strong>${v.picName}</strong> <span class="text-muted">(${v.picDepartment})</span>`;
+                    }
+
+                    let hasilSection = '';
+                    if (v.status === 'Selesai' && v.hasil) {
+                        hasilSection = `
+                            <div class="mt-3 p-3 bg-soft-success border border-success rounded-2">
+                                <div class="d-flex align-items-center mb-1 text-success fw-bold font-small">
+                                    <i class="fas fa-clipboard-check me-1"></i> Hasil / Solusi dari PIC:
+                                </div>
+                                <div class="small text-gray-900">${v.hasil}</div>
+                                <div class="text-muted font-small mt-2 text-end">
+                                    <i class="fas fa-clock me-1"></i> Diselesaikan pada: ${SiTamuUI.formatDateTime(v.completedAt)}
+                                </div>
+                            </div>
+                        `;
+                    } else if (v.status === 'Diproses') {
+                        hasilSection = `
+                            <div class="mt-3 p-3 bg-soft-info border border-info rounded-2 small text-info">
+                                <i class="fas fa-spinner fa-spin me-1"></i> <strong>Kunjungan sedang dilayani oleh PIC.</strong> Hasil pelayanan akan ditampilkan di sini setelah PIC menyelesaikan sesi.
+                            </div>
+                        `;
+                    } else if (v.status === 'Dibatalkan') {
+                        hasilSection = `
+                            <div class="mt-3 p-3 bg-soft-danger border border-danger rounded-2 small text-danger">
+                                <i class="fas fa-times-circle me-1"></i> <strong>Kunjungan Dibatalkan:</strong> ${v.cancellationReason || 'Tidak ada keterangan'}
+                            </div>
+                        `;
+                    }
+
+                    return `
+                        <div class="card border-0 shadow-sm rounded-3 mb-3 timeline-card ${statusClass}">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="badge bg-gray-800 text-white font-small px-2 py-1">
+                                        #${v.queueNumber}
+                                    </span>
+                                    <div>${statusBadge}</div>
+                                </div>
+
+                                <h6 class="fw-bold text-gray-900 mb-1 fs-6">${v.categoryName}</h6>
+                                <p class="text-muted small mb-2">${v.details || '-'}</p>
+
+                                <div class="bg-light p-2 rounded-2 mb-2 font-small">
+                                    <div class="row g-2">
+                                        <div class="col-sm-6">
+                                            <i class="fas fa-map-marker-alt text-danger me-1"></i> ${v.locationName}
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <i class="far fa-calendar-alt text-muted me-1"></i> ${formattedDate}
+                                        </div>
+                                        <div class="col-12 border-top pt-1 mt-1">
+                                            <i class="fas fa-user-tie text-primary me-1"></i> PIC Petugas: ${picDisplay}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                ${hasilSection}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            renderHistory(guestEmail);
+
+            // Handle manual search
+            searchForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const q = searchInput.value.trim();
+                if (q) {
+                    guestEmail = q;
+                    renderHistory(guestEmail);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

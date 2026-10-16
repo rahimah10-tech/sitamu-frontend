@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Pindai QR Code Lokasi"
+    })
+    <style>
+        .scanner-box {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            height: 260px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+        .scanner-laser {
+            position: absolute;
+            left: 5%;
+            width: 90%;
+            height: 3px;
+            background: #10b981;
+            box-shadow: 0 0 12px #10b981;
+            animation: laserScan 2.4s ease-in-out infinite;
+        }
+        @keyframes laserScan {
+            0% { top: 15%; opacity: 0.2; }
+            50% { top: 85%; opacity: 1; }
+            100% { top: 15%; opacity: 0.2; }
+        }
+        .scanner-frame {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.45);
+        }
+    </style>
+</head>
+
+<body class="bg-soft">
+    <main>
+        <section class="min-vh-100 d-flex align-items-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+                        <!-- Brand Header -->
+                        <div class="text-center mb-4">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle p-3 mb-2 shadow-sm" style="width: 60px; height: 60px;">
+                                <i class="fas fa-qrcode fa-2x"></i>
+                            </div>
+                            <h2 class="h4 fw-bolder mb-1 text-gray-900">SiTamu</h2>
+                            <p class="text-muted small mb-0">Sistem Informasi Buku Tamu Digital</p>
+                            <span class="badge bg-secondary text-dark mt-1">Dinas Perindustrian & Perdagangan Prov. Jatim</span>
+                        </div>
+
+                        <!-- Step indicator -->
+                        <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+                            <div class="text-center flex-fill">
+                                <span class="badge bg-primary text-white rounded-pill px-3 py-2 mb-1">1</span>
+                                <div class="small fw-bold text-primary">Scan QR</div>
+                            </div>
+                            <div class="flex-fill border-top border-2 border-gray-300" style="margin-top: -18px;"></div>
+                            <div class="text-center flex-fill">
+                                <span class="badge bg-gray-300 text-gray-700 rounded-pill px-3 py-2 mb-1">2</span>
+                                <div class="small text-muted">Akun Google</div>
+                            </div>
+                            <div class="flex-fill border-top border-2 border-gray-300" style="margin-top: -18px;"></div>
+                            <div class="text-center flex-fill">
+                                <span class="badge bg-gray-300 text-gray-700 rounded-pill px-3 py-2 mb-1">3</span>
+                                <div class="small text-muted">Buku Tamu</div>
+                            </div>
+                        </div>
+
+                        <!-- Scanner Card -->
+                        <div class="card border-0 shadow-sm rounded-3">
+                            <div class="card-body p-4 text-center">
+                                <h5 class="fw-bold mb-1">Pindai QR Code di Lokasi</h5>
+                                <p class="text-muted small mb-3">Arahkan kamera ke QR Code yang terpasang di meja resepsionis atau pintu masuk.</p>
+
+                                <!-- Visual Simulation of Camera Viewfinder -->
+                                <div class="scanner-box mb-3 text-white">
+                                    <div class="scanner-frame"></div>
+                                    <div class="scanner-laser"></div>
+                                    <div class="z-2">
+                                        <i class="fas fa-camera text-white-50 fa-2x mb-2 d-block"></i>
+                                        <span class="small text-white-50">Menunggu QR Code...</span>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info py-2 px-3 small text-start d-flex align-items-center mb-3">
+                                    <i class="fas fa-info-circle fa-lg me-2 text-info"></i>
+                                    <div>
+                                        <strong>Mode Simulasi Pengujian:</strong> Pilih salah satu titik masuk aktif di bawah untuk melanjutkan pengisian form.
+                                    </div>
+                                </div>
+
+                                <!-- Entrance selector / mock scan triggers -->
+                                <div class="text-start mb-3">
+                                    <label class="form-label small fw-bold text-gray-700">Pilih Titik Lokasi Masuk:</label>
+                                    <div class="list-group list-group-flush border rounded-2" id="qrListContainer">
+                                        <!-- Rendered via JS -->
+                                    </div>
+                                </div>
+
+                                <!-- Action button -->
+                                <div class="d-grid gap-2">
+                                    <button id="btnContinue" class="btn btn-primary d-flex align-items-center justify-content-center" disabled>
+                                        <span>Lanjut Verifikasi Akun</span>
+                                        <i class="fas fa-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+
+                                <!-- QR Inactive Exception Test Button -->
+                                <div class="mt-3 pt-3 border-top">
+                                    <button class="btn btn-link btn-sm text-danger text-decoration-none" type="button" id="btnTestInvalidQR">
+                                        <i class="fas fa-exclamation-triangle me-1"></i> Uji Kasus: QR Tidak Aktif / Rusak
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Emergency Assistance / Petugas Callout -->
+                        <div class="card border-0 shadow-sm rounded-3 mt-3 bg-white">
+                            <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-soft-warning text-warning rounded-circle p-2 me-2">
+                                        <i class="fas fa-hands-helping fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold fs-7">Kendala Scan QR?</h6>
+                                        <span class="text-muted font-small">Hubungi petugas resepsionis untuk QR Darurat</span>
+                                    </div>
+                                </div>
+                                <a href="../auth/login.html" class="btn btn-outline-gray-600 btn-xs">
+                                    Login Petugas
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a href="../../index.html" class="text-muted small">
+                                <i class="fas fa-home me-1"></i> Kembali ke Demo Hub SiTamu
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal QR Inactive / Invalid Exception -->
+    <div class="modal fade" id="modalInvalidQR" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title h6 mb-0"><i class="fas fa-ban me-2"></i>QR Code Tidak Aktif</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <div class="text-danger mb-3">
+                        <i class="fas fa-qrcode fa-3x"></i>
+                    </div>
+                    <h6 class="fw-bold">Token QR Tidak Valid atau Telah Kedaluwarsa</h6>
+                    <p class="text-muted small mb-0">QR Code lokasi yang Anda pindai saat ini berstatus tidak aktif atau telah diperbarui oleh administrator. Kunjungan tidak dapat dicatat melalui QR ini.</p>
+                    <div class="alert alert-warning py-2 mt-3 text-start small">
+                        <strong>Solusi:</strong> Silakan hubungi petugas resepsionis di meja depan untuk meminta pencatatan manual atau penerbitan QR Darurat (UC-RESP-02).
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <a href="../resepsionis/dashboard.html" class="btn btn-primary btn-sm">Buka Meja Resepsionis</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+            const qrList = SiTamuStore.getQRCodes();
+            const container = document.getElementById('qrListContainer');
+            const btnContinue = document.getElementById('btnContinue');
+            let selectedQR = null;
+
+            // Render available QR codes
+            container.innerHTML = qrList.map((qr, idx) => `
+                <label class="list-group-item list-group-item-action d-flex align-items-center justify-content-between p-3 cursor-pointer ${idx === 0 ? 'bg-soft-primary' : ''}">
+                    <div class="d-flex align-items-center">
+                        <input class="form-check-input me-3" type="radio" name="qrRadio" value="${qr.token}" ${idx === 0 ? 'checked' : ''}>
+                        <div>
+                            <div class="fw-bold text-gray-900">${qr.label}</div>
+                            <div class="small text-muted"><i class="fas fa-map-marker-alt text-danger me-1"></i>${qr.locationName}</div>
+                        </div>
+                    </div>
+                    <span class="badge bg-success">${qr.status}</span>
+                </label>
+            `).join('');
+
+            // Select first by default
+            if (qrList.length > 0) {
+                selectedQR = qrList[0];
+                btnContinue.disabled = false;
+            }
+
+            // Radio change event
+            container.addEventListener('change', function (e) {
+                if (e.target.name === 'qrRadio') {
+                    const token = e.target.value;
+                    selectedQR = qrList.find(q => q.token === token);
+                    btnContinue.disabled = !selectedQR;
+
+                    // visual highlight
+                    container.querySelectorAll('.list-group-item').forEach(item => {
+                        item.classList.remove('bg-soft-primary');
+                    });
+                    e.target.closest('.list-group-item').classList.add('bg-soft-primary');
+                }
+            });
+
+            // Continue to Google Auth
+            btnContinue.addEventListener('click', function () {
+                if (!selectedQR) return;
+                // Pass token and location in query string
+                const targetUrl = `login-google.html?token=${encodeURIComponent(selectedQR.token)}&locId=${encodeURIComponent(selectedQR.locationId)}`;
+                window.location.href = targetUrl;
+            });
+
+            // Exception test button
+            document.getElementById('btnTestInvalidQR').addEventListener('click', function () {
+                const modal = new bootstrap.Modal(document.getElementById('modalInvalidQR'));
+                modal.show();
+            });
+        });
+    </script>
+</body>
+
+</html>

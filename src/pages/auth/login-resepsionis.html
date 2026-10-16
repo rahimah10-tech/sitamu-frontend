@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Masuk Resepsionis Lobby"
+    })
+</head>
+
+<body class="bg-soft">
+    <main>
+        <section class="min-vh-100 d-flex align-items-center py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="text-center mb-4">
+                            <span class="badge bg-info text-white px-3 py-1 font-small mb-2 text-uppercase">
+                                <i class="fas fa-concierge-bell me-1"></i>Portal Petugas Front Desk
+                            </span>
+                            <h2 class="h3 fw-bold text-gray-900 mb-1">Masuk Resepsionis</h2>
+                            <p class="text-muted small mb-0">Sistem Buku Tamu Digital — Disperindag Prov. Jatim</p>
+                        </div>
+
+                        <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 bg-white mb-4">
+                            <div class="d-flex align-items-center p-3 bg-soft-info rounded-3 mb-4">
+                                <div class="avatar bg-info text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-concierge-bell fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-gray-900">Petugas Resepsionis</h6>
+                                    <small class="text-muted">Kelola antrean tamu, disposisi PIC, & QR darurat</small>
+                                </div>
+                            </div>
+
+                            <form id="formLoginResp">
+                                <div class="mb-3">
+                                    <label for="selectLocation" class="form-label small fw-bold text-gray-800">
+                                        Lokasi Meja Resepsionis: <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-map-marker-alt text-danger"></i></span>
+                                        <select class="form-select form-select-sm" id="selectLocation" required>
+                                            <option value="LOC-01">Kantor Dinas Perindustrian dan Perdagangan Prov. Jatim (Lobby Utama)</option>
+                                            <option value="LOC-02">UPT Perlindungan Konsumen & Metrologi Legal Surabaya</option>
+                                            <option value="LOC-03">UPT Pengembangan Mutu Produk Industri & Teknologi Kreatif</option>
+                                        </select>
+                                    </div>
+                                    <span class="font-small text-muted mt-1 d-block">Resepsionis mengelola antrean pada titik lokasi ini.</span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="inputEmail" class="form-label small fw-bold text-gray-800">Email Kedinasan / Username</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope text-muted"></i></span>
+                                        <input type="text" class="form-control form-control-sm" id="inputEmail" value="resepsionis@disperindag.jatimprov.go.id" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="inputPassword" class="form-label small fw-bold text-gray-800">Kata Sandi</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-lock text-muted"></i></span>
+                                        <input type="password" class="form-control form-control-sm" id="inputPassword" value="password123" required>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                                        <label class="form-check-label font-small text-muted" for="rememberMe">Ingat sesi meja</label>
+                                    </div>
+                                    <a href="login.html" class="font-small text-primary">Ganti Role Lain &rarr;</a>
+                                </div>
+
+                                <button type="submit" class="btn btn-info text-white btn-sm w-100 py-2 shadow-sm fw-bold">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Masuk Dashboard Resepsionis
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Secondary navigation -->
+                        <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
+                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                <a href="login.html" class="small text-muted text-decoration-none">
+                                    <i class="fas fa-th-large me-1"></i>Portal Semua Role
+                                </a>
+                                <span class="text-muted">•</span>
+                                <a href="../tamu/scan.html" class="small text-muted text-decoration-none">
+                                    <i class="fas fa-qrcode me-1"></i>Alur Scan Tamu
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Core Scripts -->
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            document.getElementById('formLoginResp').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const locId = document.getElementById('selectLocation').value;
+                const db = SiTamuStore.getDb();
+                const loc = (db.locations || []).find(l => l.id === locId);
+                const locName = loc ? loc.name : 'Kantor Dinas Perindustrian dan Perdagangan Prov. Jatim';
+
+                // Save active location in session
+                sessionStorage.setItem('sitamu_active_location_id', locId);
+                sessionStorage.setItem('sitamu_active_location_name', locName);
+                sessionStorage.setItem('sitamu_user_role', 'resepsionis');
+
+                SiTamuUI.showToast('Login Resepsionis Berhasil', `Selamat bertugas di ${locName}. Mengarahkan...`, 'success');
+                setTimeout(function () {
+                    window.location.href = '../resepsionis/dashboard.html';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+
+</html>

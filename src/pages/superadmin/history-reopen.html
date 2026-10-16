@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Buka Kembali Kunjungan (Reopen)"
+    })
+</head>
+
+<body>
+    <!-- Sidenav -->
+    @@include('./sitamu/_sidenav.html', {
+        "path": "../..",
+        "role": "superadmin",
+        "page": "history-reopen"
+    })
+
+    <main class="content">
+        <!-- Topbar -->
+        @@include('./sitamu/_topbar.html', {
+            "path": "../..",
+            "role": "superadmin"
+        })
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div>
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
+                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="dashboard.html">Super Admin</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Buka Kembali Kunjungan</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">
+                    <i class="fas fa-redo-alt me-2 text-warning"></i>Buka Kembali Kunjungan (Reopen)
+                </h1>
+                <p class="text-muted small mb-0">Wewenang khusus Super Admin untuk mengaktifkan kembali kunjungan yang telah berstatus Selesai atau Dibatalkan.</p>
+            </div>
+            <div>
+                <a href="audit-log.html" class="btn btn-sm btn-outline-gray-600 d-inline-flex align-items-center">
+                    <i class="fas fa-history me-2"></i>
+                    <span>Periksa Log Reopen</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Privilege Policy Callout -->
+        <div class="alert alert-soft-success border-0 shadow-sm rounded-3 py-3 px-4 mb-4 d-flex align-items-center">
+            <i class="fas fa-check-shield fa-2x text-success me-3"></i>
+            <div>
+                <h6 class="fw-bold mb-1 text-gray-900">Ketentuan Khusus Reopen oleh Super Admin</h6>
+                <p class="small mb-0 text-muted">
+                    Sesuai alur operasional SiTamu, tindakan <strong>Buka Kembali (Reopen) oleh Super Admin TIDAK MEWAJIBKAN pengisian alasan</strong>. Setiap tindakan reopen akan otomatis dicatat ke dalam <em>Audit Log Sistem</em> dan status kunjungan dikembalikan ke <code>Diproses</code> (jika sudah ada PIC) atau <code>Menunggu</code>.
+                </p>
+            </div>
+        </div>
+
+        <!-- Filter & Table Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-header bg-white border-bottom py-3">
+                <div class="row g-2 align-items-center justify-content-between">
+                    <div class="col-12 col-md-5">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" class="form-control" id="searchReopen" placeholder="Cari nama tamu, nomor antrean, instansi...">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-auto d-flex gap-2">
+                        <select class="form-select form-select-sm" id="filterReopenStatus">
+                            <option value="ALL">Semua Status Tertutup (Selesai & Batal)</option>
+                            <option value="Selesai">Hanya Selesai</option>
+                            <option value="Dibatalkan">Hanya Dibatalkan</option>
+                        </select>
+                        <select class="form-select form-select-sm" id="filterReopenLocation">
+                            <option value="ALL">Semua Lokasi</option>
+                            <!-- Dynamic -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-bottom font-small text-uppercase" style="width: 85px;">No. Urut</th>
+                            <th class="border-bottom font-small text-uppercase" style="width: 140px;">Jam Datang</th>
+                            <th class="border-bottom font-small text-uppercase">Lokasi</th>
+                            <th class="border-bottom font-small text-uppercase">Tamu & Instansi</th>
+                            <th class="border-bottom font-small text-uppercase">Keperluan & PIC</th>
+                            <th class="border-bottom font-small text-uppercase" style="width: 110px;">Status</th>
+                            <th class="border-bottom font-small text-uppercase text-end" style="width: 170px;">Aksi Reopen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyReopen">
+                        <!-- Dynamic -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer bg-white border-top py-3 d-flex align-items-center justify-content-between">
+                <span class="text-muted font-small" id="reopenCountLabel">Menampilkan 0 kunjungan</span>
+                <span class="font-small text-muted">
+                    <i class="fas fa-info-circle text-primary me-1"></i>Hanya kunjungan berstatus Selesai atau Dibatalkan yang dapat dibuka kembali.
+                </span>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL KONFIRMASI REOPEN (TANPA WAJIB ALASAN) -->
+    <div class="modal fade" id="modalConfirmReopen" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title h6 mb-0">
+                        <i class="fas fa-redo-alt me-2"></i>Buka Kembali Kunjungan Tamu
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-soft-warning p-3 mb-3 small" id="reopenTargetInfo">
+                        <!-- Dynamic -->
+                    </div>
+                    <p class="small text-gray-800 mb-2">
+                        Apakah Anda ingin mengaktifkan kembali kunjungan ini ke antrean aktif?
+                    </p>
+                    <div class="p-3 bg-light rounded-3 small border mb-0 text-muted">
+                        <i class="fas fa-info-circle text-primary me-1"></i>
+                        Status kunjungan akan otomatis kembali ke <strong>Diproses</strong> (jika sudah ada PIC terkait) atau <strong>Menunggu</strong> sehingga dapat dilayani kembali oleh petugas.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="btnExecuteReopen">
+                        <i class="fas fa-redo-alt me-1"></i> Ya, Buka Kembali Kunjungan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            let targetVisitId = null;
+            const tbody = document.getElementById('tbodyReopen');
+            const searchInput = document.getElementById('searchReopen');
+            const filterStatus = document.getElementById('filterReopenStatus');
+            const filterLocation = document.getElementById('filterReopenLocation');
+            const countLabel = document.getElementById('reopenCountLabel');
+            const modalReopen = new bootstrap.Modal(document.getElementById('modalConfirmReopen'));
+
+            function populateLocations() {
+                const db = SiTamuStore.getDb();
+                const locations = db.locations || [];
+                filterLocation.innerHTML = '<option value="ALL">Semua Lokasi</option>' +
+                    locations.map(l => `<option value="${l.id}">${l.name}</option>`).join('');
+            }
+
+            function renderReopenTable() {
+                const db = SiTamuStore.getDb();
+                const visits = db.visits || [];
+                const q = searchInput.value.toLowerCase().trim();
+                const statusFilter = filterStatus.value;
+                const locFilter = filterLocation.value;
+
+                // Only Selesai or Dibatalkan
+                let closedVisits = visits.filter(v => v.status === 'Selesai' || v.status === 'Dibatalkan');
+
+                if (statusFilter !== 'ALL') {
+                    closedVisits = closedVisits.filter(v => v.status === statusFilter);
+                }
+
+                if (locFilter !== 'ALL') {
+                    closedVisits = closedVisits.filter(v => v.locationId === locFilter);
+                }
+
+                if (q) {
+                    closedVisits = closedVisits.filter(v =>
+                        v.guestName.toLowerCase().includes(q) ||
+                        v.queueNumber.toLowerCase().includes(q) ||
+                        (v.guestAgency && v.guestAgency.toLowerCase().includes(q))
+                    );
+                }
+
+                countLabel.textContent = `Menampilkan ${closedVisits.length} kunjungan tertutup`;
+
+                if (closedVisits.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="fas fa-check-double fa-3x mb-2 text-gray-400 d-block"></i>
+                                Tidak ada data kunjungan tertutup yang cocok dengan kriteria.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = closedVisits.map(v => {
+                    const formattedDate = SiTamuUI.formatDateTime(v.createdAt);
+                    const statusBadge = SiTamuUI.getStatusBadge(v.status);
+                    const picText = v.picName ? `<strong>${v.picName}</strong>` : '<span class="text-muted small">Tanpa PIC</span>';
+
+                    return `
+                        <tr>
+                            <td><span class="badge bg-gray-800 text-white font-small px-2 py-1">#${v.queueNumber}</span></td>
+                            <td><span class="font-small text-gray-900">${formattedDate}</span></td>
+                            <td><div class="font-small text-gray-900 text-truncate" style="max-width: 140px;" title="${v.locationName}"><i class="fas fa-map-marker-alt text-danger me-1"></i>${v.locationName}</div></td>
+                            <td>
+                                <strong class="fs-7 text-gray-900 d-block">${v.guestName}</strong>
+                                <small class="text-muted font-small">${v.guestAgency || 'Pribadi'}</small>
+                            </td>
+                            <td>
+                                <div class="font-small fw-bold text-gray-900">${v.categoryName}</div>
+                                <div class="font-small text-muted">${picText}</div>
+                            </td>
+                            <td>${statusBadge}</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-warning btn-xs shadow-sm" onclick="window.openReopenDialog('${v.id}')">
+                                    <i class="fas fa-redo-alt me-1"></i> Buka Kembali
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // OPEN REOPEN DIALOG
+            window.openReopenDialog = function (id) {
+                const v = SiTamuStore.getVisitById(id);
+                if (!v) return;
+
+                targetVisitId = id;
+                document.getElementById('reopenTargetInfo').innerHTML = `
+                    <div class="d-flex align-items-center justify-content-between">
+                        <strong>#${v.queueNumber} - ${v.guestName}</strong>
+                        ${SiTamuUI.getStatusBadge(v.status)}
+                    </div>
+                    <div class="text-muted font-small mt-1">Keperluan: ${v.categoryName}</div>
+                    <div class="text-muted font-small">Lokasi: ${v.locationName}</div>
+                `;
+                modalReopen.show();
+            };
+
+            // EXECUTE REOPEN
+            document.getElementById('btnExecuteReopen').addEventListener('click', function () {
+                if (!targetVisitId) return;
+                const success = SiTamuStore.reopenVisit(targetVisitId, 'Bambang Soediro (Super Admin)');
+                modalReopen.hide();
+
+                if (success) {
+                    const v = SiTamuStore.getVisitById(targetVisitId);
+                    SiTamuUI.showToast('Kunjungan Dibuka Kembali', `Kunjungan #${v.queueNumber} (${v.guestName}) berhasil diaktifkan kembali ke status ${v.status}.`, 'success');
+                    renderReopenTable();
+                }
+            });
+
+            searchInput.addEventListener('input', renderReopenTable);
+            filterStatus.addEventListener('change', renderReopenTable);
+            filterLocation.addEventListener('change', renderReopenTable);
+
+            populateLocations();
+            renderReopenTable();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Masuk PIC Departemen"
+    })
+</head>
+
+<body class="bg-soft">
+    <main>
+        <section class="min-vh-100 d-flex align-items-center py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="text-center mb-4">
+                            <span class="badge bg-success text-white px-3 py-1 font-small mb-2 text-uppercase">
+                                <i class="fas fa-user-tie me-1"></i>Portal Petugas Konsultasi / Bidang
+                            </span>
+                            <h2 class="h3 fw-bold text-gray-900 mb-1">Masuk PIC Departemen</h2>
+                            <p class="text-muted small mb-0">Sistem Buku Tamu Digital — Disperindag Prov. Jatim</p>
+                        </div>
+
+                        <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 bg-white mb-4">
+                            <div class="d-flex align-items-center p-3 bg-soft-success rounded-3 mb-4">
+                                <div class="avatar bg-success text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-user-tie fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-0 text-gray-900">Petugas PIC (Person In Charge)</h6>
+                                    <small class="text-muted">Terima disposisi tamu & isi hasil/solusi konsultasi</small>
+                                </div>
+                            </div>
+
+                            <form id="formLoginPic">
+                                <div class="mb-3">
+                                    <label for="selectPicOfficer" class="form-label small fw-bold text-gray-800">
+                                        Pilih Akun Petugas PIC: <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user-check text-success"></i></span>
+                                        <select class="form-select form-select-sm" id="selectPicOfficer" required>
+                                            <option value="pic-1" data-email="andri.pic@disperindag.jatimprov.go.id">Andri Prasetyo, S.E. — Perdagangan Luar Negeri</option>
+                                            <option value="pic-2" data-email="siti.pic@disperindag.jatimprov.go.id">Siti Rahmawati, S.Sos. — Perdagangan Dalam Negeri</option>
+                                            <option value="pic-3" data-email="budi.pic@disperindag.jatimprov.go.id">Budi Santoso, S.T. — Pembangunan SD Industri</option>
+                                            <option value="pic-4" data-email="dedi.pic@disperindag.jatimprov.go.id">Dedi Firmansyah, S.Si. — UPT Metrologi Legal</option>
+                                            <option value="pic-5" data-email="nurul.pic@disperindag.jatimprov.go.id">Nurul Aini, S.H. — Perlindungan Konsumen</option>
+                                            <option value="pic-6" data-email="hendra.pic@disperindag.jatimprov.go.id">Ir. Hendra Kusuma — Sekretariat Dinas</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="inputEmail" class="form-label small fw-bold text-gray-800">Email Kedinasan</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope text-muted"></i></span>
+                                        <input type="text" class="form-control form-control-sm" id="inputEmail" value="andri.pic@disperindag.jatimprov.go.id" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="inputPassword" class="form-label small fw-bold text-gray-800">Kata Sandi</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-lock text-muted"></i></span>
+                                        <input type="password" class="form-control form-control-sm" id="inputPassword" value="password123" required>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-soft-success p-2 mb-4 small">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Setiap PIC memiliki akun personal masing-masing. Saat PIC menyimpan hasil pelayanan, status kunjungan <strong>otomatis berubah menjadi Selesai</strong>.
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                                        <label class="form-check-label font-small text-muted" for="rememberMe">Ingat akun saya</label>
+                                    </div>
+                                    <a href="login.html" class="font-small text-primary">Ganti Role Lain &rarr;</a>
+                                </div>
+
+                                <button type="submit" class="btn btn-success text-white btn-sm w-100 py-2 shadow-sm fw-bold">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Masuk Dashboard PIC
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Secondary navigation -->
+                        <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
+                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                <a href="login.html" class="small text-muted text-decoration-none">
+                                    <i class="fas fa-th-large me-1"></i>Portal Semua Role
+                                </a>
+                                <span class="text-muted">•</span>
+                                <a href="../tamu/scan.html" class="small text-muted text-decoration-none">
+                                    <i class="fas fa-qrcode me-1"></i>Alur Scan Tamu
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Core Scripts -->
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            const selectOfficer = document.getElementById('selectPicOfficer');
+            const inputEmail = document.getElementById('inputEmail');
+
+            selectOfficer.addEventListener('change', function () {
+                const opt = selectOfficer.options[selectOfficer.selectedIndex];
+                inputEmail.value = opt.getAttribute('data-email');
+            });
+
+            document.getElementById('formLoginPic').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const picId = selectOfficer.value;
+                const opt = selectOfficer.options[selectOfficer.selectedIndex];
+                const picName = opt.text.split(' — ')[0];
+
+                sessionStorage.setItem('sitamu_active_pic_id', picId);
+                sessionStorage.setItem('sitamu_active_pic_name', picName);
+                sessionStorage.setItem('sitamu_user_role', 'pic');
+
+                SiTamuUI.showToast('Login PIC Berhasil', `Selamat datang, ${picName}. Mengarahkan ke antrean disposisi...`, 'success');
+                setTimeout(function () {
+                    window.location.href = '../pic/dashboard.html';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Konfirmasi Kunjungan"
+    })
+    <style>
+        .queue-badge-box {
+            background: linear-gradient(135deg, #0369a1 0%, #0c4a6e 100%);
+            color: #ffffff;
+            border-radius: 16px;
+            padding: 24px 20px;
+            box-shadow: 0 10px 25px -5px rgba(3, 105, 161, 0.35);
+        }
+        @media print {
+            body { background: white !important; }
+            .no-print { display: none !important; }
+            .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+        }
+    </style>
+</head>
+
+<body class="bg-soft">
+    <main>
+        <section class="min-vh-100 py-4 py-lg-5 d-flex align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+
+                        <!-- Success Icon Header -->
+                        <div class="text-center mb-4 no-print">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle p-3 mb-2 shadow-sm" style="width: 64px; height: 64px;">
+                                <i class="fas fa-check fa-2x"></i>
+                            </div>
+                            <h2 class="h4 fw-bolder mb-1 text-gray-900">Pendaftaran Berhasil!</h2>
+                            <p class="text-muted small mb-0">Kunjungan Anda telah resmi tercatat di sistem buku tamu digital.</p>
+                        </div>
+
+                        <!-- Ticket / Queue Number Card -->
+                        <div class="card border-0 shadow-sm rounded-3 mb-3 overflow-hidden">
+                            <div class="queue-badge-box text-center">
+                                <span class="badge bg-white text-dark mb-2 px-3 py-1 font-small text-uppercase fw-bold">Bukti Kunjungan Digital</span>
+                                <div class="text-white-50 font-small mb-1">NOMOR URUT PENCATATAN</div>
+                                <h1 class="display-3 fw-bolder mb-0 text-white letter-spacing-1" id="displayQueueNumber">#A-015</h1>
+                                <div class="mt-2 text-white-50 font-small" id="displayTimestamp">
+                                    <i class="far fa-clock me-1"></i> Jam Datang: 16 Okt 2026, 10:45 WIB
+                                </div>
+                            </div>
+
+                            <div class="card-body p-4">
+                                <!-- Important Notice per PRD -->
+                                <div class="alert alert-soft-warning py-2 px-3 small d-flex align-items-center mb-4">
+                                    <i class="fas fa-info-circle fa-lg me-2 text-warning"></i>
+                                    <div>
+                                        <strong>Catatan:</strong> Nomor urut di atas adalah nomor pencatatan buku tamu. Urutan pelayanan tetap diproses petugas berdasarkan jam kedatangan.
+                                    </div>
+                                </div>
+
+                                <!-- Visit Details Table -->
+                                <h6 class="fs-7 text-uppercase fw-bold text-muted mb-3 border-bottom pb-2">
+                                    Rincian Data Kunjungan
+                                </h6>
+
+                                <div class="table-responsive">
+                                    <table class="table table-borderless table-sm mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-muted small" style="width: 35%;">Status Kunjungan</td>
+                                                <td class="small fw-bold">
+                                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Menunggu</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted small">Lokasi</td>
+                                                <td class="small fw-bold text-gray-900" id="detailLocation">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted small">Nama Tamu</td>
+                                                <td class="small fw-bold text-gray-900" id="detailName">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted small">Kelompok Rentan</td>
+                                                <td class="small text-gray-800" id="detailVulnerable">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted small">Instansi / Perusahaan</td>
+                                                <td class="small text-gray-800" id="detailAgency">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted small">Email & Telepon</td>
+                                                <td class="small text-gray-800" id="detailContact">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted small">Keperluan</td>
+                                                <td class="small fw-bold text-primary" id="detailCategory">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted small align-top">Rincian</td>
+                                                <td class="small text-gray-700" id="detailDetails">-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="card border-0 shadow-sm rounded-3 p-3 no-print">
+                            <div class="d-grid gap-2">
+                                <a id="btnViewHistory" href="riwayat.html" class="btn btn-primary d-flex align-items-center justify-content-center py-2">
+                                    <i class="fas fa-history me-2"></i>
+                                    <span>Lihat Riwayat Kunjungan Saya</span>
+                                </a>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <button class="btn btn-outline-gray-600 w-100 btn-sm py-2" onclick="window.print()">
+                                            <i class="fas fa-print me-1"></i> Cetak / Simpan
+                                        </button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="../../index.html" class="btn btn-outline-secondary w-100 btn-sm py-2">
+                                            <i class="fas fa-home me-1"></i> Selesai
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Footer assistance -->
+                        <div class="text-center mt-3 text-muted font-small no-print">
+                            Silakan menunggu di area lobby. Petugas resepsionis atau PIC akan segera memanggil nama Anda.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const visitId = urlParams.get('visitId');
+
+            let visit = null;
+            if (visitId) {
+                visit = SiTamuStore.getVisitById(visitId);
+            }
+
+            // Fallback: get the latest visit
+            if (!visit) {
+                const allVisits = SiTamuStore.getVisits();
+                if (allVisits.length > 0) visit = allVisits[0];
+            }
+
+            if (visit) {
+                document.getElementById('displayQueueNumber').textContent = '#' + visit.queueNumber;
+                document.getElementById('displayTimestamp').innerHTML = `<i class="far fa-clock me-1"></i> Jam Datang Server: ${SiTamuUI.formatDateTime(visit.createdAt)}`;
+                document.getElementById('detailLocation').textContent = visit.locationName;
+                document.getElementById('detailName').textContent = visit.guestName;
+                document.getElementById('detailVulnerable').textContent = visit.guestCategory || 'Bukan Kelompok Rentan';
+                document.getElementById('detailAgency').textContent = visit.guestAgency || '-';
+                document.getElementById('detailContact').textContent = `${visit.guestEmail} • ${visit.guestPhone}`;
+                document.getElementById('detailCategory').textContent = visit.categoryName;
+                document.getElementById('detailDetails').textContent = visit.details || '-';
+
+                // update history link
+                document.getElementById('btnViewHistory').href = `riwayat.html?email=${encodeURIComponent(visit.guestEmail)}`;
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Portal Masuk Petugas (Login)"
+    })
+</head>
+
+<body class="bg-soft">
+    <main>
+        <section class="min-vh-100 d-flex align-items-center py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                        <div class="text-center mb-4">
+                            <span class="badge bg-primary text-white px-3 py-1 font-small mb-2 text-uppercase">
+                                <i class="fas fa-book-open me-1"></i>Sistem Buku Tamu Digital
+                            </span>
+                            <h2 class="h3 fw-bold text-gray-900 mb-1">Masuk Petugas SiTamu</h2>
+                            <p class="text-muted small mb-0">Dinas Perindustrian dan Perdagangan Provinsi Jawa Timur</p>
+                        </div>
+
+                        <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 bg-white mb-4">
+                            <!-- Quick Role Switcher Buttons for Easy Testing -->
+                            <div class="mb-4 text-center">
+                                <label class="form-label small fw-bold text-gray-700 d-block mb-2">
+                                    <i class="fas fa-bolt text-warning me-1"></i>Pilih Masuk Cepat sebagai Peran:
+                                </label>
+                                <div class="btn-group w-100 shadow-sm" role="group">
+                                    <button type="button" class="btn btn-outline-info btn-sm active" id="btnRoleResp" onclick="selectRole('resepsionis')">
+                                        <i class="fas fa-concierge-bell d-block mb-1"></i>
+                                        <span>Resepsionis</span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-success btn-sm" id="btnRolePic" onclick="selectRole('pic')">
+                                        <i class="fas fa-user-tie d-block mb-1"></i>
+                                        <span>PIC</span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="btnRoleAdmin" onclick="selectRole('admin')">
+                                        <i class="fas fa-user-shield d-block mb-1"></i>
+                                        <span>Admin</span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark btn-sm" id="btnRoleSA" onclick="selectRole('superadmin')">
+                                        <i class="fas fa-crown d-block mb-1 text-warning"></i>
+                                        <span>Super Admin</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <form id="formLogin">
+                                <div class="mb-3">
+                                    <label for="inputEmail" class="form-label small fw-bold text-gray-800">Email Kedinasan / Username</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-user text-muted"></i></span>
+                                        <input type="text" class="form-control form-control-sm" id="inputEmail" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="inputPassword" class="form-label small fw-bold text-gray-800">Kata Sandi</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-lock text-muted"></i></span>
+                                        <input type="password" class="form-control form-control-sm" id="inputPassword" value="password123" required>
+                                    </div>
+                                </div>
+
+                                <!-- Dynamic role-specific description box -->
+                                <div class="alert alert-soft-info p-2 mb-3 small" id="roleInfoBox">
+                                    <!-- Dynamic -->
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-sm w-100 py-2 shadow-sm fw-bold">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Masuk ke Dashboard
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Dedicated Role Login Links Card -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                            <h6 class="fw-bold fs-7 text-gray-800 mb-3 text-center">
+                                <i class="fas fa-external-link-alt text-primary me-2"></i>Halaman Login Khusus per Peran
+                            </h6>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <a href="login-resepsionis.html" class="btn btn-outline-info btn-xs w-100 py-2 text-start">
+                                        <i class="fas fa-concierge-bell me-1"></i>
+                                        <strong class="font-small d-block">Login Resepsionis</strong>
+                                        <small class="text-muted font-small">Meja front desk</small>
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="login-pic.html" class="btn btn-outline-success btn-xs w-100 py-2 text-start">
+                                        <i class="fas fa-user-tie me-1"></i>
+                                        <strong class="font-small d-block">Login PIC</strong>
+                                        <small class="text-muted font-small">Petugas bidang</small>
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="login-admin.html" class="btn btn-outline-primary btn-xs w-100 py-2 text-start">
+                                        <i class="fas fa-user-shield me-1"></i>
+                                        <strong class="font-small d-block">Login Admin</strong>
+                                        <small class="text-muted font-small">Semua lokasi</small>
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="login-superadmin.html" class="btn btn-outline-dark btn-xs w-100 py-2 text-start">
+                                        <i class="fas fa-crown text-warning me-1"></i>
+                                        <strong class="font-small d-block">Login Super Admin</strong>
+                                        <small class="text-muted font-small">Pusat kontrol</small>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Guest entry link -->
+                        <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
+                            <span class="small text-muted mb-2 d-block">Anda adalah Tamu / Pengunjung?</span>
+                            <a href="../tamu/scan.html" class="btn btn-outline-primary btn-sm fw-bold">
+                                <i class="fas fa-qrcode me-2"></i>Menuju Alur Scan QR Tamu
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Core Scripts -->
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        const roleData = {
+            resepsionis: {
+                email: 'resepsionis@disperindag.jatimprov.go.id',
+                name: 'Mega Wijaya (Resepsionis Lobby)',
+                info: '<strong>Akses Resepsionis:</strong> Penugasan PIC, antrean berjalan, penerbitan QR darurat, pendaftaran tamu manual.',
+                targetUrl: '../resepsionis/dashboard.html',
+                btnId: 'btnRoleResp'
+            },
+            pic: {
+                email: 'andri.pic@disperindag.jatimprov.go.id',
+                name: 'Andri Prasetyo, S.E. (PIC Ekspor)',
+                info: '<strong>Akses PIC:</strong> Penerimaan disposisi tamu, pengisian hasil/solusi konsultasi (status otomatis Selesai).',
+                targetUrl: '../pic/dashboard.html',
+                btnId: 'btnRolePic'
+            },
+            admin: {
+                email: 'admin@disperindag.jatimprov.go.id',
+                name: 'Ahmad Zaki, S.Kom. (Admin Operasional)',
+                info: '<strong>Akses Admin:</strong> Monitoring seluruh lokasi (tanpa batas lokasi), ubah status (Menunggu/Diproses), batalkan kunjungan, turunkan ke draf, kelola QR & pertanyaan form.',
+                targetUrl: '../admin/dashboard.html',
+                btnId: 'btnRoleAdmin'
+            },
+            superadmin: {
+                email: 'superadmin@disperindag.jatimprov.go.id',
+                name: 'Bambang Soediro, M.M. (Super Admin)',
+                info: '<strong>Akses Super Admin:</strong> Master lokasi, regenerasi token QR (cabut QR lama), kelola akun petugas, reopen kunjungan tanpa syarat alasan, dan audit log sistem.',
+                targetUrl: '../superadmin/dashboard.html',
+                btnId: 'btnRoleSA'
+            }
+        };
+
+        let currentRole = 'resepsionis';
+
+        function selectRole(role) {
+            currentRole = role;
+            document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(roleData[role].btnId).classList.add('active');
+            document.getElementById('inputEmail').value = roleData[role].email;
+            document.getElementById('roleInfoBox').innerHTML = `<i class="fas fa-info-circle me-1"></i>${roleData[role].info}`;
+        }
+
+        document.getElementById('formLogin').addEventListener('submit', function (e) {
+            e.preventDefault();
+            SiTamuUI.showToast('Login Berhasil', `Selamat datang, ${roleData[currentRole].name}. Mengarahkan ke dashboard...`, 'success');
+            setTimeout(function () {
+                window.location.href = roleData[currentRole].targetUrl;
+            }, 500);
+        });
+
+        // Initialize default
+        selectRole('resepsionis');
+    </script>
+</body>
+
+</html>

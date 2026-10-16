@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — History & Ekspor Laporan Admin"
+    })
+    <style>
+        @media print {
+            .sidebar, .navbar, .btn-toolbar, .no-print, .card-header {
+                display: none !important;
+            }
+            .content {
+                margin-left: 0 !important;
+                padding: 0 !important;
+            }
+            body {
+                background: white !important;
+            }
+            .card {
+                box-shadow: none !important;
+                border: none !important;
+            }
+            .print-only-header {
+                display: block !important;
+            }
+        }
+        .print-only-header {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidenav -->
+    @@include('./sitamu/_sidenav.html', {
+        "path": "../..",
+        "role": "admin",
+        "page": "history"
+    })
+
+    <main class="content">
+        <!-- Topbar -->
+        @@include('./sitamu/_topbar.html', {
+            "path": "../..",
+            "role": "admin"
+        })
+
+        <!-- Print-only official header -->
+        <div class="print-only-header text-center mb-4 border-bottom pb-3">
+            <h4 class="fw-bold mb-1">PEMERINTAH PROVINSI JAWA TIMUR</h4>
+            <h5 class="fw-bold mb-1">DINAS PERINDUSTRIAN DAN PERDAGANGAN</h5>
+            <p class="small mb-0">Jl. Siwalankerto No. 4-6, Wonocolo, Surabaya • Telp: (031) 8432417</p>
+            <h6 class="fw-bold text-uppercase mt-3 mb-0">LAPORAN BUKU TAMU DIGITAL (SITAMU)</h6>
+        </div>
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 no-print">
+            <div>
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
+                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="dashboard.html">Admin</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">History & Ekspor</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">
+                    <i class="fas fa-file-export me-2 text-primary"></i>History & Ekspor Kunjungan
+                </h1>
+                <p class="text-muted small mb-0">Pencarian data arsip seluruh lokasi dan ekspor laporan ke format CSV, Excel, serta cetak PDF bertanda tangan.</p>
+            </div>
+            <div class="btn-toolbar mb-2 mb-md-0 gap-2">
+                <button type="button" class="btn btn-sm btn-outline-success d-inline-flex align-items-center shadow-sm" id="btnExportCSV">
+                    <i class="fas fa-file-csv me-2"></i>
+                    <span>Ekspor CSV</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center shadow-sm" id="btnExportExcel">
+                    <i class="fas fa-file-excel me-2"></i>
+                    <span>Ekspor Excel</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center shadow-sm" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i>
+                    <span>Cetak PDF</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4 no-print">
+            <div class="card-body p-3">
+                <div class="row g-2 align-items-center">
+                    <div class="col-12 col-md-4">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" class="form-control" id="searchHistory" placeholder="Cari nama tamu, instansi, atau no. urut...">
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <select class="form-select form-select-sm" id="historyFilterLoc">
+                            <option value="ALL">Semua Lokasi</option>
+                            <!-- Dynamic -->
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <select class="form-select form-select-sm" id="historyFilterStatus">
+                            <option value="ALL">Semua Status</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Diproses">Diproses</option>
+                            <option value="Menunggu">Menunggu</option>
+                            <option value="Dibatalkan">Dibatalkan</option>
+                            <option value="Draf">Draf</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-2 d-grid">
+                        <button type="button" class="btn btn-outline-gray-600 btn-sm" id="btnResetFilters">
+                            <i class="fas fa-redo me-1"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="tableHistoryExport">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-bottom font-small text-uppercase" style="width: 85px;">No. Urut</th>
+                            <th class="border-bottom font-small text-uppercase" style="width: 140px;">Waktu Datang</th>
+                            <th class="border-bottom font-small text-uppercase">Lokasi</th>
+                            <th class="border-bottom font-small text-uppercase">Tamu & Instansi</th>
+                            <th class="border-bottom font-small text-uppercase">Keperluan & Hasil Solusi</th>
+                            <th class="border-bottom font-small text-uppercase">PIC</th>
+                            <th class="border-bottom font-small text-uppercase">Tanda Tangan</th>
+                            <th class="border-bottom font-small text-uppercase" style="width: 100px;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyHistory">
+                        <!-- Dynamic -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer bg-white border-top py-3 no-print">
+                <span class="text-muted font-small" id="historyCountText">Menampilkan 0 kunjungan</span>
+            </div>
+        </div>
+    </main>
+
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            const tbody = document.getElementById('tbodyHistory');
+            const searchInput = document.getElementById('searchHistory');
+            const filterLoc = document.getElementById('historyFilterLoc');
+            const filterStatus = document.getElementById('historyFilterStatus');
+            const countText = document.getElementById('historyCountText');
+
+            // Populate Locations
+            const locations = SiTamuStore.getLocations();
+            locations.forEach(loc => {
+                const opt = document.createElement('option');
+                opt.value = loc.id;
+                opt.textContent = loc.name;
+                filterLoc.appendChild(opt);
+            });
+
+            function getFilteredData() {
+                const all = SiTamuStore.getVisits();
+                let filtered = [...all];
+
+                const q = searchInput.value.toLowerCase().trim();
+                if (q) {
+                    filtered = filtered.filter(v =>
+                        (v.guestName && v.guestName.toLowerCase().includes(q)) ||
+                        (v.guestAgency && v.guestAgency.toLowerCase().includes(q)) ||
+                        (v.queueNumber && v.queueNumber.toLowerCase().includes(q)) ||
+                        (v.categoryName && v.categoryName.toLowerCase().includes(q)) ||
+                        (v.hasil && v.hasil.toLowerCase().includes(q))
+                    );
+                }
+
+                if (filterLoc.value !== 'ALL') {
+                    filtered = filtered.filter(v => v.locationId === filterLoc.value);
+                }
+
+                if (filterStatus.value !== 'ALL') {
+                    filtered = filtered.filter(v => v.status === filterStatus.value);
+                }
+
+                return filtered;
+            }
+
+            function renderTable() {
+                const data = getFilteredData();
+                countText.textContent = `Menampilkan ${data.length} arsip kunjungan`;
+
+                if (data.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-muted">
+                                Tidak ada data riwayat kunjungan yang sesuai kriteria pencarian.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = data.map(v => {
+                    const formattedDate = SiTamuUI.formatDateTime(v.createdAt);
+                    const statusBadge = SiTamuUI.getStatusBadge(v.status);
+
+                    let sigHtml = '<span class="text-muted font-small">-</span>';
+                    if (v.signatureData) {
+                        if (v.signatureData.startsWith('data:image/svg+xml;utf8,<svg')) {
+                            const svgContent = v.signatureData.replace('data:image/svg+xml;utf8,', '');
+                            sigHtml = `<div style="max-height: 45px; max-width: 90px; border: 1px solid #ddd; padding: 2px; background: #fff;">${svgContent}</div>`;
+                        } else {
+                            sigHtml = `<img src="${v.signatureData}" alt="TTD" style="max-height: 40px; border: 1px solid #ddd; padding: 2px; background: #fff;">`;
+                        }
+                    }
+
+                    return `
+                        <tr>
+                            <td><span class="badge bg-gray-800 text-white font-small px-2 py-1">#${v.queueNumber}</span></td>
+                            <td><span class="font-small text-gray-900">${formattedDate}</span></td>
+                            <td><div class="font-small text-gray-900 text-truncate" style="max-width: 130px;" title="${v.locationName}">${v.locationName}</div></td>
+                            <td>
+                                <div class="fw-bold fs-7 text-gray-900">${v.guestName}</div>
+                                <div class="text-muted font-small">${v.guestAgency || 'Pribadi'} • ${v.guestPhone}</div>
+                            </td>
+                            <td>
+                                <div class="font-small fw-bold text-gray-900">${v.categoryName}</div>
+                                ${v.hasil ? `<div class="small text-success text-truncate" style="max-width: 250px;" title="${v.hasil}"><i class="fas fa-check-circle me-1"></i>${v.hasil}</div>` : ''}
+                                ${v.cancellationReason ? `<div class="small text-danger text-truncate" style="max-width: 250px;"><i class="fas fa-times-circle me-1"></i>Batal: ${v.cancellationReason}</div>` : ''}
+                            </td>
+                            <td><div class="font-small text-gray-800">${v.picName || '-'}</div></td>
+                            <td>${sigHtml}</td>
+                            <td>${statusBadge}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // EXPORT CSV
+            document.getElementById('btnExportCSV').addEventListener('click', function () {
+                const data = getFilteredData();
+                if (data.length === 0) {
+                    SiTamuUI.showToast('Data Kosong', 'Tidak ada data untuk diekspor.', 'warning');
+                    return;
+                }
+
+                let csvContent = 'data:text/csv;charset=utf-8,';
+                csvContent += 'No Urut,Waktu Kedatangan,Lokasi,Nama Tamu,Instansi,Kelompok Rentan,No Telp,Email,Kategori Keperluan,Rincian,PIC,Status,Waktu Selesai,Hasil Pelayanan,Alasan Batal\r\n';
+
+                data.forEach(v => {
+                    const row = [
+                        `"${v.queueNumber}"`,
+                        `"${SiTamuUI.formatDateTime(v.createdAt)}"`,
+                        `"${v.locationName.replace(/"/g, '""')}"`,
+                        `"${v.guestName.replace(/"/g, '""')}"`,
+                        `"${(v.guestAgency || '').replace(/"/g, '""')}"`,
+                        `"${v.guestCategory || ''}"`,
+                        `"${v.guestPhone || ''}"`,
+                        `"${v.guestEmail || ''}"`,
+                        `"${v.categoryName.replace(/"/g, '""')}"`,
+                        `"${(v.details || '').replace(/"/g, '""')}"`,
+                        `"${(v.picName || '').replace(/"/g, '""')}"`,
+                        `"${v.status}"`,
+                        `"${v.completedAt ? SiTamuUI.formatDateTime(v.completedAt) : ''}"`,
+                        `"${(v.hasil || '').replace(/"/g, '""')}"`,
+                        `"${(v.cancellationReason || '').replace(/"/g, '""')}"`
+                    ];
+                    csvContent += row.join(',') + '\r\n';
+                });
+
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement('a');
+                link.setAttribute('href', encodedUri);
+                link.setAttribute('download', `SiTamu_Laporan_Kunjungan_${new Date().toISOString().slice(0, 10)}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                SiTamuUI.showToast('Ekspor Berhasil', 'File CSV berhasil diunduh.', 'success');
+            });
+
+            // EXPORT EXCEL (HTML Spreadsheet Format)
+            document.getElementById('btnExportExcel').addEventListener('click', function () {
+                const data = getFilteredData();
+                if (data.length === 0) {
+                    SiTamuUI.showToast('Data Kosong', 'Tidak ada data untuk diekspor.', 'warning');
+                    return;
+                }
+
+                let tableHtml = `
+                    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+                    <head><meta charset="utf-8"/></head>
+                    <body>
+                    <h3>LAPORAN BUKU TAMU DIGITAL (SITAMU) — DISPERINDAG JATIM</h3>
+                    <table border="1">
+                        <tr style="background:#0f172a; color:#fff; font-weight:bold;">
+                            <th>No. Urut</th>
+                            <th>Waktu Kedatangan</th>
+                            <th>Lokasi</th>
+                            <th>Nama Tamu</th>
+                            <th>Instansi</th>
+                            <th>Kelompok Rentan</th>
+                            <th>No. WhatsApp</th>
+                            <th>Email</th>
+                            <th>Keperluan</th>
+                            <th>Bidang</th>
+                            <th>PIC Petugas</th>
+                            <th>Status</th>
+                            <th>Hasil / Solusi</th>
+                        </tr>
+                        ${data.map(v => `
+                            <tr>
+                                <td>${v.queueNumber}</td>
+                                <td>${SiTamuUI.formatDateTime(v.createdAt)}</td>
+                                <td>${v.locationName}</td>
+                                <td>${v.guestName}</td>
+                                <td>${v.guestAgency || 'Pribadi'}</td>
+                                <td>${v.guestCategory || '-'}</td>
+                                <td>${v.guestPhone}</td>
+                                <td>${v.guestEmail}</td>
+                                <td>${v.categoryName}</td>
+                                <td>${v.bidang}</td>
+                                <td>${v.picName || '-'}</td>
+                                <td>${v.status}</td>
+                                <td>${v.hasil || v.cancellationReason || '-'}</td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                    </body>
+                    </html>
+                `;
+
+                const blob = new Blob([tableHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `SiTamu_Export_Excel_${new Date().toISOString().slice(0, 10)}.xls`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                SiTamuUI.showToast('Ekspor Berhasil', 'File Excel (.xls) berhasil diunduh.', 'success');
+            });
+
+            // Filters
+            searchInput.addEventListener('input', renderTable);
+            filterLoc.addEventListener('change', renderTable);
+            filterStatus.addEventListener('change', renderTable);
+            document.getElementById('btnResetFilters').addEventListener('click', function () {
+                searchInput.value = '';
+                filterLoc.value = 'ALL';
+                filterStatus.value = 'ALL';
+                renderTable();
+            });
+
+            renderTable();
+        });
+    </script>
+</body>
+
+</html>

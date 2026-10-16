@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Kelola Akun Petugas & Hak Akses"
+    })
+</head>
+
+<body>
+    <!-- Sidenav -->
+    @@include('./sitamu/_sidenav.html', {
+        "path": "../..",
+        "role": "superadmin",
+        "page": "kelola-akun"
+    })
+
+    <main class="content">
+        <!-- Topbar -->
+        @@include('./sitamu/_topbar.html', {
+            "path": "../..",
+            "role": "superadmin"
+        })
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div>
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
+                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="dashboard.html">Super Admin</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Kelola Akun Petugas</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">
+                    <i class="fas fa-users-cog me-2 text-primary"></i>Kelola Akun Petugas & Hak Akses
+                </h1>
+                <p class="text-muted small mb-0">Manajemen pengguna internal: Administrator, Resepsionis, PIC Departemen, dan Super Administrator.</p>
+            </div>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center shadow-sm" id="btnOpenAddAccount" data-bs-toggle="modal" data-bs-target="#modalAccountForm">
+                    <i class="fas fa-user-plus me-2"></i>
+                    <span>Tambah Akun Petugas</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Role Assignment Rule Guidance Banner -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4 bg-light">
+            <div class="card-body p-3">
+                <div class="row g-3 align-items-center">
+                    <div class="col-12 col-md-3 border-end">
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-secondary p-2 me-2"><i class="fas fa-user-shield"></i></span>
+                            <div>
+                                <strong class="fs-7 d-block text-gray-900">Admin Operasional</strong>
+                                <small class="text-muted font-small"><strong>Tanpa Batas Lokasi</strong> (Memantau semua titik)</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3 border-end">
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-info p-2 me-2"><i class="fas fa-concierge-bell"></i></span>
+                            <div>
+                                <strong class="fs-7 d-block text-gray-900">Resepsionis</strong>
+                                <small class="text-muted font-small">Terikat pada <strong>1 Lokasi Fisik</strong></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3 border-end">
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-success p-2 me-2"><i class="fas fa-user-tie"></i></span>
+                            <div>
+                                <strong class="fs-7 d-block text-gray-900">PIC Departemen</strong>
+                                <small class="text-muted font-small">Terikat pada <strong>Bidang Tertentu</strong></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-dark p-2 me-2"><i class="fas fa-crown"></i></span>
+                            <div>
+                                <strong class="fs-7 d-block text-gray-900">Super Admin</strong>
+                                <small class="text-muted font-small">Hak akses sistem & master tertinggi</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-header bg-white border-bottom py-3">
+                <div class="row g-2 align-items-center justify-content-between">
+                    <div class="col-12 col-md-4">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" class="form-control" id="searchAccount" placeholder="Cari nama, email, username...">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-auto d-flex gap-2">
+                        <select class="form-select form-select-sm" id="filterAccountRole">
+                            <option value="ALL">Semua Peran (Role)</option>
+                            <option value="superadmin">Super Admin</option>
+                            <option value="admin">Admin Operasional</option>
+                            <option value="resepsionis">Resepsionis</option>
+                            <option value="pic">PIC Departemen</option>
+                        </select>
+                        <select class="form-select form-select-sm" id="filterAccountStatus">
+                            <option value="ALL">Semua Status</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Nonaktif">Nonaktif</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-bottom font-small text-uppercase">Nama & Email Petugas</th>
+                            <th class="border-bottom font-small text-uppercase">Username</th>
+                            <th class="border-bottom font-small text-uppercase">Peran (Role)</th>
+                            <th class="border-bottom font-small text-uppercase">Cakupan Penugasan</th>
+                            <th class="border-bottom font-small text-uppercase text-center" style="width: 100px;">Status</th>
+                            <th class="border-bottom font-small text-uppercase text-end" style="width: 160px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyAccounts">
+                        <!-- Dynamic -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer bg-white border-top py-3 d-flex align-items-center justify-content-between">
+                <span class="text-muted font-small" id="accountCountLabel">Menampilkan 0 akun</span>
+                <span class="font-small text-muted">
+                    <i class="fas fa-info-circle me-1 text-primary"></i>Admin akun sengaja tidak dibatasi lokasi fisik agar leluasa memantau seluruh titik layanan.
+                </span>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL TAMBAH / EDIT AKUN -->
+    <div class="modal fade" id="modalAccountForm" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title h6 mb-0" id="modalAccountTitle">
+                        <i class="fas fa-user-plus me-2"></i>Tambah Akun Petugas
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="formAccount">
+                        <input type="hidden" id="editAccountId">
+
+                        <div class="mb-3">
+                            <label for="inputAccountName" class="form-label small fw-bold text-gray-800">
+                                Nama Lengkap Petugas: <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control form-control-sm" id="inputAccountName" placeholder="Contoh: Rahmat Hidayat, S.E." required>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label for="inputAccountUsername" class="form-label small fw-bold text-gray-800">
+                                    Username: <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control form-control-sm" id="inputAccountUsername" placeholder="rahmat.pic" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="inputAccountPhone" class="form-label small fw-bold text-gray-800">
+                                    No. Telepon / WA:
+                                </label>
+                                <input type="tel" class="form-control form-control-sm" id="inputAccountPhone" placeholder="0812-xxxx-xxxx">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputAccountEmail" class="form-label small fw-bold text-gray-800">
+                                Email Resmi (Kedinasan): <span class="text-danger">*</span>
+                            </label>
+                            <input type="email" class="form-control form-control-sm" id="inputAccountEmail" placeholder="nama@disperindag.jatimprov.go.id" required>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label for="selectAccountRole" class="form-label small fw-bold text-gray-800">
+                                    Peran (Role): <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select form-select-sm" id="selectAccountRole" required>
+                                    <option value="admin">Admin Operasional</option>
+                                    <option value="resepsionis">Resepsionis</option>
+                                    <option value="pic">PIC Departemen</option>
+                                    <option value="superadmin">Super Admin</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="selectAccountStatus" class="form-label small fw-bold text-gray-800">
+                                    Status Akun:
+                                </label>
+                                <select class="form-select form-select-sm" id="selectAccountStatus">
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Nonaktif">Nonaktif</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- DYNAMIC CONTAINER: ROLE ASSIGNMENT CONSTRAINTS -->
+                        <!-- 1. For Resepsionis: Location selection required -->
+                        <div class="mb-3 d-none" id="groupLocationSelect">
+                            <label for="selectAccountLocation" class="form-label small fw-bold text-gray-800">
+                                Lokasi Fisik Tugas: <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select form-select-sm" id="selectAccountLocation">
+                                <!-- Dynamic -->
+                            </select>
+                            <span class="font-small text-muted mt-1 d-block">Resepsionis hanya mengelola antrean tamu pada lokasi fisik ini.</span>
+                        </div>
+
+                        <!-- 2. For PIC: Department selection required -->
+                        <div class="mb-3 d-none" id="groupDepartmentSelect">
+                            <label for="selectAccountDepartment" class="form-label small fw-bold text-gray-800">
+                                Bidang / Departemen: <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select form-select-sm" id="selectAccountDepartment">
+                                <option value="Perdagangan Luar Negeri">Perdagangan Luar Negeri</option>
+                                <option value="Perdagangan Dalam Negeri">Perdagangan Dalam Negeri</option>
+                                <option value="Pembangunan Sumber Daya Industri">Pembangunan Sumber Daya Industri</option>
+                                <option value="UPT Metrologi Legal">UPT Metrologi Legal</option>
+                                <option value="Perlindungan Konsumen & Tertib Niaga">Perlindungan Konsumen & Tertib Niaga</option>
+                                <option value="Sekretariat Dinas">Sekretariat Dinas</option>
+                            </select>
+                            <span class="font-small text-muted mt-1 d-block">PIC akan menerima disposisi tamu sesuai bidang ini.</span>
+                        </div>
+
+                        <!-- 3. For Admin / Super Admin: Explanatory Callout -->
+                        <div class="alert alert-soft-secondary p-3 mb-0 small" id="groupAdminInfo">
+                            <i class="fas fa-shield-alt text-primary me-2"></i>
+                            <strong>Aturan Khusus Admin:</strong> Akun Admin Operasional secara otomatis <em>TIDAK DIBATASI LOKASI TERTENTU</em> (memiliki akses monitoring seluruh titik layanan Disperindag Prov. Jatim).
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnSaveAccount">
+                        <i class="fas fa-save me-1"></i> Simpan Akun
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            const tbody = document.getElementById('tbodyAccounts');
+            const searchInput = document.getElementById('searchAccount');
+            const filterRole = document.getElementById('filterAccountRole');
+            const filterStatus = document.getElementById('filterAccountStatus');
+            const countLabel = document.getElementById('accountCountLabel');
+            const modalAccount = new bootstrap.Modal(document.getElementById('modalAccountForm'));
+
+            const selectRole = document.getElementById('selectAccountRole');
+            const groupLocation = document.getElementById('groupLocationSelect');
+            const groupDepartment = document.getElementById('groupDepartmentSelect');
+            const groupAdminInfo = document.getElementById('groupAdminInfo');
+
+            function handleRoleChange() {
+                const role = selectRole.value;
+                if (role === 'resepsionis') {
+                    groupLocation.classList.remove('d-none');
+                    groupDepartment.classList.add('d-none');
+                    groupAdminInfo.classList.add('d-none');
+                } else if (role === 'pic') {
+                    groupLocation.classList.add('d-none');
+                    groupDepartment.classList.remove('d-none');
+                    groupAdminInfo.classList.add('d-none');
+                } else {
+                    // admin or superadmin
+                    groupLocation.classList.add('d-none');
+                    groupDepartment.classList.add('d-none');
+                    groupAdminInfo.classList.remove('d-none');
+                }
+            }
+
+            selectRole.addEventListener('change', handleRoleChange);
+
+            function populateLocationsSelect() {
+                const db = SiTamuStore.getDb();
+                const locations = (db.locations || []).filter(l => l.status === 'Aktif');
+                const sel = document.getElementById('selectAccountLocation');
+                sel.innerHTML = locations.map(l => `<option value="${l.id}">${l.name}</option>`).join('');
+            }
+
+            function renderAccounts() {
+                const accounts = SiTamuStore.getAllAccounts();
+                const q = searchInput.value.toLowerCase().trim();
+                const r = filterRole.value;
+                const s = filterStatus.value;
+
+                let filtered = accounts.filter(acc => {
+                    const matchQ = !q || acc.name.toLowerCase().includes(q) || acc.username.toLowerCase().includes(q) || acc.email.toLowerCase().includes(q);
+                    const matchR = r === 'ALL' || acc.role === r;
+                    const matchS = s === 'ALL' || acc.status === s;
+                    return matchQ && matchR && matchS;
+                });
+
+                countLabel.textContent = `Menampilkan ${filtered.length} dari ${accounts.length} akun`;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fas fa-users-slash fa-3x mb-2 text-gray-400 d-block"></i>
+                                Tidak ada akun petugas yang cocok dengan filter.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map(acc => {
+                    const isAktif = acc.status === 'Aktif';
+
+                    let roleBadge = '<span class="badge bg-secondary font-small">Admin</span>';
+                    if (acc.role === 'superadmin') roleBadge = '<span class="badge bg-dark font-small"><i class="fas fa-crown me-1 text-warning"></i>Super Admin</span>';
+                    else if (acc.role === 'admin') roleBadge = '<span class="badge bg-primary font-small"><i class="fas fa-user-shield me-1"></i>Admin</span>';
+                    else if (acc.role === 'resepsionis') roleBadge = '<span class="badge bg-info font-small"><i class="fas fa-concierge-bell me-1"></i>Resepsionis</span>';
+                    else if (acc.role === 'pic') roleBadge = '<span class="badge bg-success font-small"><i class="fas fa-user-tie me-1"></i>PIC</span>';
+
+                    let scopeText = '-';
+                    if (acc.role === 'admin') {
+                        scopeText = '<span class="text-primary fw-bold font-small"><i class="fas fa-globe me-1"></i>Semua Lokasi (Lintas Titik Layanan)</span>';
+                    } else if (acc.role === 'superadmin') {
+                        scopeText = '<span class="text-dark fw-bold font-small"><i class="fas fa-server me-1"></i>Seluruh Sistem Pusat</span>';
+                    } else if (acc.role === 'resepsionis') {
+                        scopeText = `<span class="font-small text-gray-900"><i class="fas fa-map-marker-alt text-danger me-1"></i>${acc.locationName || 'Lokasi Belum Ditentukan'}</span>`;
+                    } else if (acc.role === 'pic') {
+                        scopeText = `<span class="font-small text-gray-900"><i class="fas fa-sitemap text-success me-1"></i>${acc.department || '-'}</span>`;
+                    }
+
+                    return `
+                        <tr>
+                            <td>
+                                <strong class="fs-7 text-gray-900 d-block">${acc.name}</strong>
+                                <small class="text-muted font-small">${acc.email}</small>
+                            </td>
+                            <td><code class="font-small text-gray-800">${acc.username}</code></td>
+                            <td>${roleBadge}</td>
+                            <td>${scopeText}</td>
+                            <td class="text-center">
+                                <span class="badge ${isAktif ? 'bg-success' : 'bg-danger'} font-small px-2 py-1">${acc.status}</span>
+                            </td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-outline-primary btn-xs me-1" onclick="window.editAccount('${acc.id}')">
+                                    <i class="fas fa-edit me-1"></i> Edit
+                                </button>
+                                <button type="button" class="btn ${isAktif ? 'btn-outline-danger' : 'btn-outline-success'} btn-xs" onclick="window.toggleAccount('${acc.id}')">
+                                    <i class="fas ${isAktif ? 'fa-ban' : 'fa-check'}"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // ADD ACCOUNT
+            document.getElementById('btnOpenAddAccount').addEventListener('click', function () {
+                document.getElementById('editAccountId').value = '';
+                document.getElementById('inputAccountName').value = '';
+                document.getElementById('inputAccountUsername').value = '';
+                document.getElementById('inputAccountEmail').value = '';
+                document.getElementById('inputAccountPhone').value = '';
+                document.getElementById('selectAccountRole').value = 'admin';
+                document.getElementById('selectAccountStatus').value = 'Aktif';
+                document.getElementById('modalAccountTitle').innerHTML = '<i class="fas fa-user-plus me-2"></i>Tambah Akun Petugas';
+                handleRoleChange();
+                modalAccount.show();
+            });
+
+            // EDIT ACCOUNT
+            window.editAccount = function (id) {
+                const accounts = SiTamuStore.getAllAccounts();
+                const acc = accounts.find(a => a.id === id);
+                if (!acc) return;
+
+                document.getElementById('editAccountId').value = acc.id;
+                document.getElementById('inputAccountName').value = acc.name;
+                document.getElementById('inputAccountUsername').value = acc.username;
+                document.getElementById('inputAccountEmail').value = acc.email;
+                document.getElementById('inputAccountPhone').value = acc.phone || '';
+                document.getElementById('selectAccountRole').value = acc.role;
+                document.getElementById('selectAccountStatus').value = acc.status;
+                if (acc.locationId) {
+                    document.getElementById('selectAccountLocation').value = acc.locationId;
+                }
+                if (acc.department) {
+                    document.getElementById('selectAccountDepartment').value = acc.department;
+                }
+                document.getElementById('modalAccountTitle').innerHTML = '<i class="fas fa-user-edit me-2"></i>Edit Akun Petugas';
+                handleRoleChange();
+                modalAccount.show();
+            };
+
+            // TOGGLE STATUS
+            window.toggleAccount = function (id) {
+                const acc = SiTamuStore.toggleAccountStatus(id, 'Bambang Soediro (Super Admin)');
+                if (acc) {
+                    SiTamuUI.showToast('Status Akun Diubah', `Akun "${acc.name}" kini berstatus ${acc.status}.`, 'info');
+                    renderAccounts();
+                }
+            };
+
+            // SAVE ACCOUNT
+            document.getElementById('btnSaveAccount').addEventListener('click', function () {
+                const id = document.getElementById('editAccountId').value;
+                const name = document.getElementById('inputAccountName').value.trim();
+                const username = document.getElementById('inputAccountUsername').value.trim();
+                const email = document.getElementById('inputAccountEmail').value.trim();
+                const phone = document.getElementById('inputAccountPhone').value.trim();
+                const role = document.getElementById('selectAccountRole').value;
+                const status = document.getElementById('selectAccountStatus').value;
+
+                if (!name || !username || !email) {
+                    SiTamuUI.showToast('Form Belum Lengkap', 'Nama, Username, dan Email kedinasan wajib diisi.', 'danger');
+                    return;
+                }
+
+                let locId = null;
+                let locName = null;
+                let dept = null;
+
+                if (role === 'resepsionis') {
+                    locId = document.getElementById('selectAccountLocation').value;
+                    const db = SiTamuStore.getDb();
+                    const locObj = (db.locations || []).find(l => l.id === locId);
+                    locName = locObj ? locObj.name : 'Lokasi Terpilih';
+                } else if (role === 'pic') {
+                    dept = document.getElementById('selectAccountDepartment').value;
+                }
+
+                SiTamuStore.saveAccount({
+                    id: id || undefined,
+                    name: name,
+                    username: username,
+                    email: email,
+                    phone: phone,
+                    role: role,
+                    status: status,
+                    locationId: locId,
+                    locationName: locName,
+                    department: dept
+                }, 'Bambang Soediro (Super Admin)');
+
+                modalAccount.hide();
+                SiTamuUI.showToast('Akun Disimpan', `Akun petugas "${name}" berhasil disimpan.`, 'success');
+                renderAccounts();
+            });
+
+            searchInput.addEventListener('input', renderAccounts);
+            filterRole.addEventListener('change', renderAccounts);
+            filterStatus.addEventListener('change', renderAccounts);
+
+            populateLocationsSelect();
+            renderAccounts();
+        });
+    </script>
+</body>
+
+</html>

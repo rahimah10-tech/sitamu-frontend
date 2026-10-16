@@ -1,0 +1,84 @@
+<nav class="navbar navbar-top navbar-expand navbar-dashboard navbar-dark ps-0 pe-2 pb-0">
+  <div class="container-fluid px-0">
+    <div class="d-flex justify-content-between w-100" id="navbarSupportedContent">
+      <div class="d-flex align-items-center">
+        <!-- Mobile Sidebar Toggle -->
+        <button id="sidebar-toggle" class="sidebar-toggle me-3 btn btn-icon-only d-none d-lg-inline-block align-items-center justify-content-center text-gray-700 bg-light">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Current Location Indicator -->
+        <div class="d-flex align-items-center text-gray-800">
+          <span class="badge bg-soft-primary text-primary me-2 p-2 rounded-circle">
+            <i class="fas fa-map-marker-alt"></i>
+          </span>
+          <div class="d-none d-sm-block">
+            <span class="text-muted font-small d-block" style="font-size: 11px;">Lokasi Operasional:</span>
+            <span class="fw-bold fs-7 text-gray-900" id="topbarLocationName">Kantor Disperindag Prov. Jatim</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navbar Right: Role Badge & User Profile -->
+      <ul class="navbar-nav align-items-center">
+        <!-- Live Clock -->
+        <li class="nav-item me-3 d-none d-md-block text-muted font-small" id="topbarLiveClock">
+          <i class="far fa-clock me-1 text-primary"></i> <span id="clockText">16 Okt 2026</span>
+        </li>
+
+        <!-- Active Role Pill -->
+        <li class="nav-item me-2">
+          <span class="badge bg-primary text-white py-2 px-3 fs-7">
+            <i class="fas fa-user-tag me-1"></i> <span class="text-capitalize">@@role</span>
+          </span>
+        </li>
+
+        <!-- User Dropdown -->
+        <li class="nav-item dropdown ms-lg-2">
+          <a class="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="media d-flex align-items-center">
+              <div class="avatar bg-gray-800 text-white rounded-circle me-2 d-flex align-items-center justify-content-center fw-bold" style="width: 36px; height: 36px;" id="topbarAvatar">
+                MW
+              </div>
+              <div class="media-body ms-2 text-dark align-items-center d-none d-lg-block">
+                <span class="mb-0 font-small fw-bold text-gray-900 d-block" id="topbarUserName">Mega Wijaya</span>
+                <span class="text-muted font-small" style="font-size: 11px;" id="topbarUserRole">Petugas Resepsionis</span>
+              </div>
+            </div>
+          </a>
+          <div class="dropdown-menu dashboard-dropdown dropdown-menu-end mt-2 py-1 shadow">
+            <div class="dropdown-item d-flex align-items-center border-bottom pb-2">
+              <div class="avatar bg-primary text-white rounded-circle me-2 d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px;">
+                <i class="fas fa-user-shield"></i>
+              </div>
+              <div>
+                <span class="fw-bold d-block fs-7" id="menuUserName">Mega Wijaya</span>
+                <span class="text-muted font-small" style="font-size: 11px;" id="menuUserEmail">resepsionis@disperindag.jatimprov.go.id</span>
+              </div>
+            </div>
+            <a class="dropdown-item d-flex align-items-center" href="@@path/pages/tamu/scan.html">
+              <i class="fas fa-mobile-alt me-2 text-success"></i> Buka Portal Tamu
+            </a>
+            <div role="separator" class="dropdown-divider my-1"></div>
+            <a class="dropdown-item d-flex align-items-center text-danger" href="@@path/index.html">
+              <i class="fas fa-sign-out-alt me-2"></i> Keluar / Ganti Akun
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Live clock update
+  function updateTopbarClock() {
+    const el = document.getElementById('clockText');
+    if (el) {
+      const now = new Date();
+      el.textContent = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + ' WIB';
+    }
+  }
+  setInterval(updateTopbarClock, 1000);
+  updateTopbarClock();
+</script>

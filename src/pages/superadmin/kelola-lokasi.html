@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Kelola Master Lokasi Fisik"
+    })
+</head>
+
+<body>
+    <!-- Sidenav -->
+    @@include('./sitamu/_sidenav.html', {
+        "path": "../..",
+        "role": "superadmin",
+        "page": "kelola-lokasi"
+    })
+
+    <main class="content">
+        <!-- Topbar -->
+        @@include('./sitamu/_topbar.html', {
+            "path": "../..",
+            "role": "superadmin"
+        })
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div>
+                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
+                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="dashboard.html">Super Admin</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Kelola Lokasi</li>
+                    </ol>
+                </nav>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">
+                    <i class="fas fa-map-marked-alt me-2 text-primary"></i>Kelola Master Lokasi Fisik
+                </h1>
+                <p class="text-muted small mb-0">Pengaturan entitas fisik kantor dinas dan seluruh UPT di lingkungan Disperindag Provinsi Jawa Timur.</p>
+            </div>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center shadow-sm" id="btnOpenAddLocModal" data-bs-toggle="modal" data-bs-target="#modalLocationForm">
+                    <i class="fas fa-plus me-2"></i>
+                    <span>Tambah Lokasi Baru</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
+                <h5 class="card-title mb-0 fs-6 fw-bold text-gray-800">Daftar Titik Lokasi Layanan Fisik</h5>
+                <span class="badge bg-soft-primary text-primary" id="badgeTotalLocations">0 Lokasi Terdaftar</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-bottom font-small text-uppercase" style="width: 80px;">ID</th>
+                            <th class="border-bottom font-small text-uppercase" style="width: 100px;">Kode</th>
+                            <th class="border-bottom font-small text-uppercase">Nama Kantor / UPT</th>
+                            <th class="border-bottom font-small text-uppercase">Alamat Lengkap</th>
+                            <th class="border-bottom font-small text-uppercase text-center" style="width: 110px;">Status</th>
+                            <th class="border-bottom font-small text-uppercase text-center" style="width: 110px;">Titik QR</th>
+                            <th class="border-bottom font-small text-uppercase text-end" style="width: 180px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyLocations">
+                        <!-- Dynamic -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL TAMBAH / EDIT LOKASI -->
+    <div class="modal fade" id="modalLocationForm" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title h6 mb-0" id="modalLocTitle"><i class="fas fa-building me-2"></i>Tambah Lokasi Baru</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="formLocation">
+                        <input type="hidden" id="editLocId">
+                        <div class="mb-3">
+                            <label for="inputLocName" class="form-label small fw-bold text-gray-800">
+                                Nama Lokasi / UPT: <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control form-control-sm" id="inputLocName" placeholder="Contoh: UPT Pengembangan Mutu Produk Industri" required>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label for="inputLocCode" class="form-label small fw-bold text-gray-800">
+                                    Kode Singkat: <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control form-control-sm text-uppercase" id="inputLocCode" placeholder="Contoh: UPT-MUTU" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="selectLocStatus" class="form-label small fw-bold text-gray-800">
+                                    Status Operasional:
+                                </label>
+                                <select class="form-select form-select-sm" id="selectLocStatus">
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Nonaktif">Nonaktif</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputLocAddress" class="form-label small fw-bold text-gray-800">
+                                Alamat Lengkap: <span class="text-danger">*</span>
+                            </label>
+                            <textarea class="form-control form-control-sm" id="inputLocAddress" rows="3" placeholder="Masukkan alamat lengkap kantor/UPT..." required></textarea>
+                        </div>
+                        <div class="alert alert-soft-primary p-2 mb-0 small">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Lokasi ini nantinya dapat dipilih saat resepsionis login, pembuatan QR Code pintu masuk, dan pembagian penugasan.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnSaveLocation">
+                        <i class="fas fa-save me-1"></i> Simpan Lokasi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            const tbody = document.getElementById('tbodyLocations');
+            const badgeTotal = document.getElementById('badgeTotalLocations');
+            const modalForm = new bootstrap.Modal(document.getElementById('modalLocationForm'));
+
+            function renderLocations() {
+                const db = SiTamuStore.getDb();
+                const locations = db.locations || [];
+                const qrCodes = db.qr_codes || [];
+
+                badgeTotal.textContent = `${locations.length} Lokasi Terdaftar`;
+
+                if (locations.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="fas fa-map-marker-alt fa-3x mb-2 text-gray-400 d-block"></i>
+                                Belum ada master lokasi yang dibuat.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tbody.innerHTML = locations.map(loc => {
+                    const countQr = qrCodes.filter(q => q.locationId === loc.id).length;
+                    const isAktif = loc.status === 'Aktif';
+
+                    return `
+                        <tr>
+                            <td><span class="badge bg-gray-200 text-gray-800 font-small px-2 py-1">${loc.id}</span></td>
+                            <td><strong class="text-primary font-small">${loc.code || '-'}</strong></td>
+                            <td><strong class="text-gray-900 fs-7">${loc.name}</strong></td>
+                            <td><span class="font-small text-muted">${loc.address}</span></td>
+                            <td class="text-center">
+                                <span class="badge ${isAktif ? 'bg-success' : 'bg-danger'} font-small px-2 py-1">${loc.status}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-soft-info text-info font-small px-2 py-1">${countQr} QR Code</span>
+                            </td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-outline-primary btn-xs me-1" onclick="window.editLocation('${loc.id}')">
+                                    <i class="fas fa-edit me-1"></i> Edit
+                                </button>
+                                <button type="button" class="btn ${isAktif ? 'btn-outline-danger' : 'btn-outline-success'} btn-xs" onclick="window.toggleLocation('${loc.id}')">
+                                    <i class="fas ${isAktif ? 'fa-ban' : 'fa-check'} me-1"></i> ${isAktif ? 'Nonaktifkan' : 'Aktifkan'}
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // ADD BUTTON
+            document.getElementById('btnOpenAddLocModal').addEventListener('click', function () {
+                document.getElementById('editLocId').value = '';
+                document.getElementById('inputLocName').value = '';
+                document.getElementById('inputLocCode').value = '';
+                document.getElementById('inputLocAddress').value = '';
+                document.getElementById('selectLocStatus').value = 'Aktif';
+                document.getElementById('modalLocTitle').innerHTML = '<i class="fas fa-plus-circle me-2"></i>Tambah Lokasi Baru';
+                modalForm.show();
+            });
+
+            // EDIT FUNCTION
+            window.editLocation = function (id) {
+                const db = SiTamuStore.getDb();
+                const loc = (db.locations || []).find(l => l.id === id);
+                if (!loc) return;
+
+                document.getElementById('editLocId').value = loc.id;
+                document.getElementById('inputLocName').value = loc.name;
+                document.getElementById('inputLocCode').value = loc.code || '';
+                document.getElementById('inputLocAddress').value = loc.address;
+                document.getElementById('selectLocStatus').value = loc.status;
+                document.getElementById('modalLocTitle').innerHTML = '<i class="fas fa-edit me-2"></i>Edit Data Lokasi';
+                modalForm.show();
+            };
+
+            // TOGGLE FUNCTION
+            window.toggleLocation = function (id) {
+                const loc = SiTamuStore.toggleLocationStatus(id, 'Bambang Soediro (Super Admin)');
+                if (loc) {
+                    SiTamuUI.showToast('Status Diubah', `Lokasi "${loc.name}" kini berstatus ${loc.status}.`, 'info');
+                    renderLocations();
+                }
+            };
+
+            // SAVE SUBMIT
+            document.getElementById('btnSaveLocation').addEventListener('click', function () {
+                const id = document.getElementById('editLocId').value;
+                const name = document.getElementById('inputLocName').value.trim();
+                const code = document.getElementById('inputLocCode').value.trim().toUpperCase();
+                const address = document.getElementById('inputLocAddress').value.trim();
+                const status = document.getElementById('selectLocStatus').value;
+
+                if (!name || !code || !address) {
+                    SiTamuUI.showToast('Data Tidak Lengkap', 'Nama, Kode, dan Alamat lokasi wajib diisi.', 'danger');
+                    return;
+                }
+
+                SiTamuStore.saveLocation({
+                    id: id || undefined,
+                    name: name,
+                    code: code,
+                    address: address,
+                    status: status
+                }, 'Bambang Soediro (Super Admin)');
+
+                modalForm.hide();
+                SiTamuUI.showToast('Berhasil Disimpan', `Data lokasi "${name}" berhasil disimpan.`, 'success');
+                renderLocations();
+            });
+
+            renderLocations();
+        });
+    </script>
+</body>
+
+</html>
