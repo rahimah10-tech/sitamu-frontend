@@ -6,12 +6,22 @@
         "path": "../..",
         "title": "SiTamu — Dashboard PIC Departemen"
     })
+    <!-- SiTamu Petugas Theme Override (#0B3D7B Navy Dark) -->
+    <link type="text/css" href="../../css/sitamu-petugas.css" rel="stylesheet">
     <style>
-        .pic-active-banner {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #ffffff;
-            border-radius: 12px;
-            padding: 20px 24px;
+        #picTabs .nav-link.active,
+        .nav-tabs .nav-link.active,
+        .card-header-tabs .nav-link.active {
+            background-color: #0B3D7B !important;
+            color: #ffffff !important;
+            border-color: #0B3D7B !important;
+        }
+        #picTabs .nav-link {
+            color: #4b5563;
+            font-weight: 600;
+        }
+        #picTabs .nav-link:hover {
+            color: #0B3D7B;
         }
         .urgent-pulse {
             animation: pulse-ring 2s infinite;
@@ -39,36 +49,12 @@
             "role": "pic"
         })
 
-        <!-- PIC Identity & Fast Switcher Banner -->
-        <div class="pic-active-banner shadow-sm my-4">
-            <div class="row align-items-center g-3">
-                <div class="col-12 col-md-7">
-                    <div class="d-flex align-items-center">
-                        <div class="avatar-lg bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center fw-bold fs-5" id="bannerAvatar">
-                            AP
-                        </div>
-                        <div>
-                            <span class="badge bg-info text-dark font-small text-uppercase mb-1" id="bannerRoleBadge">
-                                <i class="fas fa-user-tie me-1"></i>Akun PIC Aktif
-                            </span>
-                            <h2 class="h5 fw-bold mb-0 text-white" id="bannerPicName">Andri Prasetyo, S.E.</h2>
-                            <p class="text-white-50 font-small mb-0" id="bannerPicDept">
-                                <i class="fas fa-sitemap me-1 text-primary"></i> Departemen: <strong>Perdagangan Luar Negeri</strong>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12 col-md-5 text-md-end">
-                    <div class="d-inline-block text-start bg-gray-800 p-2 rounded-2 border border-gray-700 w-100 w-sm-auto">
-                        <label class="form-label font-small text-muted mb-1 d-block" style="font-size: 11px;">
-                            <i class="fas fa-random me-1 text-warning"></i>Ganti Akun PIC (Demo Switcher):
-                        </label>
-                        <select class="form-select form-select-sm" id="selectPicAccount">
-                            <!-- Rendered dynamically -->
-                        </select>
-                    </div>
-                </div>
+        <!-- Header Title -->
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+            <div>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">
+                    DASHBOARD PIC
+                </h1>
             </div>
         </div>
 
@@ -77,16 +63,9 @@
             <div class="col-12 col-sm-6 col-xl-3">
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-body p-3">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Penugasan Baru</h6>
-                                <h3 class="fw-bolder mb-0 text-warning" id="kpiNewAssigned">0</h3>
-                                <span class="font-small text-warning fw-bold"><i class="fas fa-bell me-1"></i>Perlu Diterima</span>
-                            </div>
-                            <div class="avatar bg-soft-warning text-warning rounded-circle p-3 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-inbox fa-lg"></i>
-                            </div>
-                        </div>
+                        <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Penugasan Baru</h6>
+                        <h3 class="fw-bolder mb-0 text-warning" id="kpiNewAssigned">0</h3>
+                        <span class="font-small text-warning fw-bold">Perlu Diterima</span>
                     </div>
                 </div>
             </div>
@@ -94,16 +73,9 @@
             <div class="col-12 col-sm-6 col-xl-3">
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-body p-3">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Sedang Dilayani</h6>
-                                <h3 class="fw-bolder mb-0 text-info" id="kpiProcessing">0</h3>
-                                <span class="font-small text-info fw-bold"><i class="fas fa-spinner fa-spin me-1"></i>Status Diproses</span>
-                            </div>
-                            <div class="avatar bg-soft-info text-info rounded-circle p-3 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-comments fa-lg"></i>
-                            </div>
-                        </div>
+                        <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Sedang Dilayani</h6>
+                        <h3 class="fw-bolder mb-0 text-info" id="kpiProcessing">0</h3>
+                        <span class="font-small text-info fw-bold">Status Diproses</span>
                     </div>
                 </div>
             </div>
@@ -111,16 +83,9 @@
             <div class="col-12 col-sm-6 col-xl-3">
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-body p-3">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Selesai Dilayani</h6>
-                                <h3 class="fw-bolder mb-0 text-success" id="kpiCompleted">0</h3>
-                                <span class="font-small text-success fw-bold"><i class="fas fa-check-circle me-1"></i>Hasil Tersimpan</span>
-                            </div>
-                            <div class="avatar bg-soft-success text-success rounded-circle p-3 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-clipboard-check fa-lg"></i>
-                            </div>
-                        </div>
+                        <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Selesai Dilayani</h6>
+                        <h3 class="fw-bolder mb-0 text-success" id="kpiCompleted">0</h3>
+                        <span class="font-small text-success fw-bold">Hasil Tersimpan</span>
                     </div>
                 </div>
             </div>
@@ -128,18 +93,11 @@
             <div class="col-12 col-sm-6 col-xl-3">
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-body p-3">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div>
-                                <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Status Ketersediaan</h6>
-                                <div class="mt-1">
-                                    <span class="badge bg-success fs-7" id="displayPicStatus">🟢 Tersedia</span>
-                                </div>
-                                <span class="font-small text-muted">Tampil di meja resepsionis</span>
-                            </div>
-                            <div class="avatar bg-soft-primary text-primary rounded-circle p-3 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-user-check fa-lg"></i>
-                            </div>
+                        <h6 class="text-muted font-small mb-1 text-uppercase fw-bold">Status Ketersediaan</h6>
+                        <div class="mt-1">
+                            <span class="badge bg-success fs-7" id="displayPicStatus">Tersedia</span>
                         </div>
+                        <span class="font-small text-muted">Tampil di meja resepsionis</span>
                     </div>
                 </div>
             </div>
@@ -151,19 +109,19 @@
                 <ul class="nav nav-tabs card-header-tabs" id="picTabs" role="tablist">
                     <li class="nav-item">
                         <button class="nav-link active fw-bold position-relative" id="tab-incoming-tab" data-bs-toggle="tab" data-bs-target="#tab-incoming" type="button" role="tab">
-                            <i class="fas fa-inbox me-2 text-warning"></i>Penugasan Masuk
+                            Penugasan Masuk
                             <span class="badge bg-danger rounded-pill ms-1" id="badgeCountIncoming">0</span>
                         </button>
                     </li>
                     <li class="nav-item">
                         <button class="nav-link fw-bold position-relative" id="tab-active-tab" data-bs-toggle="tab" data-bs-target="#tab-active" type="button" role="tab">
-                            <i class="fas fa-comments me-2 text-info"></i>Sedang Dilayani (Diproses)
+                            Sedang Dilayani (Diproses)
                             <span class="badge bg-info text-dark rounded-pill ms-1" id="badgeCountActive">0</span>
                         </button>
                     </li>
                     <li class="nav-item">
                         <button class="nav-link fw-bold" id="tab-completed-tab" data-bs-toggle="tab" data-bs-target="#tab-completed" type="button" role="tab">
-                            <i class="fas fa-check-double me-2 text-success"></i>Selesai Dilayani
+                            Selesai Dilayani
                             <span class="badge bg-success rounded-pill ms-1" id="badgeCountCompleted">0</span>
                         </button>
                     </li>
@@ -175,8 +133,7 @@
 
                     <!-- TAB 1: PENUGASAN MASUK (MENUNGGU PENERIMAAN) -->
                     <div class="tab-pane fade show active" id="tab-incoming" role="tabpanel">
-                        <div class="alert alert-soft-warning py-2 px-3 small d-flex align-items-center mb-3">
-                            <i class="fas fa-info-circle fa-lg me-2 text-warning"></i>
+                        <div class="alert alert-soft-warning py-2 px-3 small mb-3">
                             <div>
                                 Kunjungan di bawah telah ditugaskan oleh Resepsionis ke departemen Anda. Tekan <strong>"Terima Penugasan"</strong> untuk langsung memulai pelayanan (status otomatis menjadi <em>Diproses</em>).
                             </div>
@@ -189,8 +146,7 @@
 
                     <!-- TAB 2: SEDANG DILAYANI (DIPROSES) -->
                     <div class="tab-pane fade" id="tab-active" role="tabpanel">
-                        <div class="alert alert-soft-info py-2 px-3 small d-flex align-items-center mb-3">
-                            <i class="fas fa-info-circle fa-lg me-2 text-info"></i>
+                        <div class="alert alert-soft-info py-2 px-3 small mb-3">
                             <div>
                                 Anda sedang melayani tamu di bawah. Setelah sesi pelayanan berakhir, klik <strong>"Tulis Hasil Pelayanan"</strong>. Saat Anda menyimpan hasil, status kunjungan <strong>OTOMATIS berubah menjadi Selesai</strong>.
                             </div>
@@ -203,8 +159,7 @@
 
                     <!-- TAB 3: SELESAI DILAYANI -->
                     <div class="tab-pane fade" id="tab-completed" role="tabpanel">
-                        <div class="alert alert-soft-success py-2 px-3 small d-flex align-items-center mb-3">
-                            <i class="fas fa-check-circle fa-lg me-2 text-success"></i>
+                        <div class="alert alert-soft-success py-2 px-3 small mb-3">
                             <div>
                                 Arsip tamu yang telah selesai Anda layani. Hasil dan solusi yang Anda berikan telah tersimpan dan dapat dilihat langsung oleh tamu di halaman riwayatnya.
                             </div>
@@ -226,9 +181,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title h6 mb-0">
-                        <i class="fas fa-clipboard-check me-2"></i>Tulis Hasil & Selesaikan Pelayanan
-                    </h5>
+                    <h5 class="modal-title h6 mb-0">Tulis Hasil & Selesaikan Pelayanan</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
@@ -246,12 +199,11 @@
                             <textarea class="form-control" id="textareaHasil" rows="4" placeholder="Tuliskan secara jelas hasil layanan, solusi yang diberikan, berkas yang diserahkan/diterima, atau saran tindak lanjut bagi tamu..." required></textarea>
                             <div class="invalid-feedback">Hasil pelayanan wajib diisi sebelum kunjungan dapat diselesaikan.</div>
                             <div class="form-text font-small text-muted mt-1">
-                                <i class="fas fa-eye me-1 text-primary"></i>Catatan ini akan langsung tampil di <strong>Halaman Riwayat Kunjungan Tamu</strong> dan tercatat dalam laporan buku tamu.
+                                Catatan ini akan langsung tampil di <strong>Halaman Riwayat Kunjungan Tamu</strong> dan tercatat dalam laporan buku tamu.
                             </div>
                         </div>
 
-                        <div class="alert alert-info py-2 px-3 small mb-0 d-flex align-items-center">
-                            <i class="fas fa-check-double text-success fa-lg me-2"></i>
+                        <div class="alert alert-info py-2 px-3 small mb-0">
                             <div>
                                 <strong>Logika Otomatisasi Alur:</strong> Menekan tombol di bawah akan menyimpan hasil dan <strong>OTOMATIS mengubah status kunjungan menjadi Selesai</strong> tanpa langkah manual tambahan.
                             </div>
@@ -261,7 +213,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-success btn-sm fw-bold shadow-sm" id="btnSaveHasil">
-                        <i class="fas fa-check me-1"></i> Simpan Hasil & Selesaikan Kunjungan
+                        Simpan Hasil & Selesaikan Kunjungan
                     </button>
                 </div>
             </div>
@@ -272,8 +224,8 @@
     <div class="modal fade" id="modalDetailPic" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-gray-800 text-white">
-                    <h5 class="modal-title h6 mb-0"><i class="fas fa-id-card me-2"></i>Detail Kunjungan Tamu</h5>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title h6 mb-0">Detail Kunjungan Tamu</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4" id="modalDetailPicContent">
@@ -296,60 +248,37 @@
         document.addEventListener('DOMContentLoaded', function () {
             SiTamuStore.init();
 
-            // Active PIC in session (defaults to Andri Prasetyo / pic-1)
-            const session = SiTamuStore.getSession();
-            let currentPicId = session.picId || 'pic-1';
+            // Active PIC in session (defaults to Siti Rahmawati / pic-2)
+            const activePicId = sessionStorage.getItem('sitamu_active_pic_id') || 'pic-2';
+            let currentPicId = activePicId;
 
             const pics = SiTamuStore.getPICs();
-            const selectPicAccount = document.getElementById('selectPicAccount');
-
-            // Populate PIC Account Switcher
-            selectPicAccount.innerHTML = pics.map(p => `
-                <option value="${p.id}" ${p.id === currentPicId ? 'selected' : ''}>
-                    ${p.name} (${p.department})
-                </option>
-            `).join('');
 
             function getActivePic() {
-                return SiTamuStore.getPICById(currentPicId) || pics[0];
+                return SiTamuStore.getPICById(currentPicId) || pics.find(p => p.id === 'pic-2') || pics[0];
             }
 
-            // Update Header Banner
-            function updateBanner() {
+            // Sync topbar with active PIC info
+            function updateTopbarProfile() {
                 const pic = getActivePic();
-                document.getElementById('bannerPicName').textContent = pic.name;
-                document.getElementById('bannerPicDept').innerHTML = `<i class="fas fa-sitemap me-1 text-primary"></i> Departemen: <strong>${pic.department}</strong>`;
-
                 const initials = pic.name.split(' ').map(n => n[0]).slice(0, 2).join('');
-                document.getElementById('bannerAvatar').textContent = initials;
-                document.getElementById('displayPicStatus').textContent = pic.status;
+                
+                const displayPicStatus = document.getElementById('displayPicStatus');
+                if (displayPicStatus) displayPicStatus.textContent = pic.status;
 
                 // Sync topbar
                 const topbarName = document.getElementById('topbarUserName');
                 const topbarRole = document.getElementById('topbarUserRole');
                 const topbarAvatar = document.getElementById('topbarAvatar');
+                const menuName = document.getElementById('menuUserName');
+                const menuEmail = document.getElementById('menuUserEmail');
+
                 if (topbarName) topbarName.textContent = pic.name;
                 if (topbarRole) topbarRole.textContent = `PIC ${pic.department}`;
                 if (topbarAvatar) topbarAvatar.textContent = initials;
+                if (menuName) menuName.textContent = pic.name;
+                if (menuEmail) menuEmail.textContent = pic.email;
             }
-
-            // Switch PIC Account Event
-            selectPicAccount.addEventListener('change', function () {
-                currentPicId = this.value;
-                const pic = getActivePic();
-
-                SiTamuStore.setSession({
-                    role: 'pic',
-                    picId: pic.id,
-                    email: pic.email,
-                    name: pic.name,
-                    department: pic.department
-                });
-
-                updateBanner();
-                renderAllTabs();
-                SiTamuUI.showToast('Akun PIC Dialihkan', `Masuk sebagai: ${pic.name}`, 'info');
-            });
 
             // Containers
             const incomingContainer = document.getElementById('incomingContainer');
@@ -360,7 +289,7 @@
 
             // Render All Tabs
             function renderAllTabs() {
-                updateBanner();
+                updateTopbarProfile();
                 const allVisits = SiTamuStore.getVisits();
 
                 // Filter visits assigned to this PIC
@@ -388,7 +317,6 @@
                 if (incoming.length === 0) {
                     incomingContainer.innerHTML = `
                         <div class="text-center py-5 text-muted">
-                            <i class="fas fa-inbox fa-3x mb-3 text-gray-400 d-block"></i>
                             <h6 class="fw-bold mb-1">Tidak Ada Penugasan Masuk</h6>
                             <p class="small mb-0">Belum ada penugasan baru dari resepsionis untuk departemen Anda.</p>
                         </div>
@@ -400,7 +328,7 @@
 
                         let vulBadge = '';
                         if (v.guestCategory && v.guestCategory !== 'Bukan Kelompok Rentan') {
-                            vulBadge = `<span class="badge bg-warning text-dark font-small ms-1"><i class="fas fa-heart me-1"></i>${v.guestCategory}</span>`;
+                            vulBadge = `<span class="badge bg-warning text-dark font-small ms-1">${v.guestCategory}</span>`;
                         }
 
                         return `
@@ -409,10 +337,10 @@
                                     <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
                                         <div class="d-flex align-items-center mb-2 mb-sm-0">
                                             <span class="badge bg-gray-800 text-white font-small px-3 py-1 me-2">#${v.queueNumber}</span>
-                                            <span class="badge bg-warning text-dark font-small"><i class="fas fa-clock me-1"></i>Menunggu Diterima</span>
+                                            <span class="badge bg-warning text-dark font-small">Menunggu Diterima</span>
                                         </div>
                                         <div class="font-small text-muted">
-                                            <i class="far fa-clock me-1"></i>Jam Datang: ${timeOnly} (${waitDuration})
+                                            Jam Datang: ${timeOnly} (${waitDuration})
                                         </div>
                                     </div>
 
@@ -426,10 +354,10 @@
 
                                     <div class="d-flex justify-content-end gap-2">
                                         <button type="button" class="btn btn-outline-gray-600 btn-sm" onclick="window.viewDetailPic('${v.id}')">
-                                            <i class="fas fa-eye me-1"></i> Detail
+                                            Detail
                                         </button>
                                         <button type="button" class="btn btn-primary btn-sm fw-bold px-3 shadow-sm" onclick="window.acceptAssignment('${v.id}')">
-                                            <i class="fas fa-check-circle me-1"></i> Terima Penugasan
+                                            Terima Penugasan
                                         </button>
                                     </div>
                                 </div>
@@ -442,7 +370,6 @@
                 if (active.length === 0) {
                     activeContainer.innerHTML = `
                         <div class="text-center py-5 text-muted">
-                            <i class="fas fa-user-clock fa-3x mb-3 text-gray-400 d-block"></i>
                             <h6 class="fw-bold mb-1">Tidak Ada Tamu yang Sedang Dilayani</h6>
                             <p class="small mb-0">Klik "Terima Penugasan" pada tab penugasan masuk untuk mulai melayani tamu.</p>
                         </div>
@@ -457,10 +384,10 @@
                                     <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
                                         <div class="d-flex align-items-center mb-2 mb-sm-0">
                                             <span class="badge bg-gray-800 text-white font-small px-3 py-1 me-2">#${v.queueNumber}</span>
-                                            <span class="badge bg-info text-dark font-small"><i class="fas fa-spinner fa-spin me-1"></i>Sedang Dilayani</span>
+                                            <span class="badge bg-info text-dark font-small">Sedang Dilayani</span>
                                         </div>
                                         <div class="font-small text-info fw-bold">
-                                            <i class="fas fa-stopwatch me-1"></i>Lama Sesi: ${waitDuration}
+                                            Lama Sesi: ${waitDuration}
                                         </div>
                                     </div>
 
@@ -474,10 +401,10 @@
 
                                     <div class="d-flex justify-content-end gap-2">
                                         <button type="button" class="btn btn-outline-gray-600 btn-sm" onclick="window.viewDetailPic('${v.id}')">
-                                            <i class="fas fa-eye me-1"></i> Detail
+                                            Detail
                                         </button>
                                         <button type="button" class="btn btn-success btn-sm fw-bold px-3 shadow-sm" onclick="window.openWriteHasilModal('${v.id}')">
-                                            <i class="fas fa-clipboard-check me-1"></i> Tulis Hasil & Selesaikan
+                                            Tulis Hasil & Selesaikan
                                         </button>
                                     </div>
                                 </div>
@@ -490,7 +417,6 @@
                 if (completed.length === 0) {
                     completedContainer.innerHTML = `
                         <div class="text-center py-5 text-muted">
-                            <i class="fas fa-clipboard fa-3x mb-3 text-gray-400 d-block"></i>
                             <h6 class="fw-bold mb-1">Belum Ada Pelayanan Selesai</h6>
                             <p class="small mb-0">Kunjungan yang telah selesai Anda layani akan tercatat di sini.</p>
                         </div>
@@ -503,10 +429,10 @@
                                     <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
                                         <div>
                                             <span class="badge bg-gray-800 text-white font-small px-3 py-1 me-2">#${v.queueNumber}</span>
-                                            <span class="badge bg-success font-small"><i class="fas fa-check-circle me-1"></i>Selesai</span>
+                                            <span class="badge bg-success font-small">Selesai</span>
                                         </div>
                                         <div class="font-small text-muted">
-                                            <i class="far fa-calendar-check me-1"></i>Selesai: ${SiTamuUI.formatDateTime(v.completedAt)}
+                                            Selesai: ${SiTamuUI.formatDateTime(v.completedAt)}
                                         </div>
                                     </div>
 
@@ -515,7 +441,7 @@
 
                                     <div class="p-3 bg-soft-success border border-success rounded-2 mb-2">
                                         <div class="small fw-bold text-success mb-1">
-                                            <i class="fas fa-check me-1"></i>Hasil / Solusi yang Diberikan:
+                                            Hasil / Solusi yang Diberikan:
                                         </div>
                                         <div class="small text-gray-900">${v.hasil || '-'}</div>
                                     </div>
@@ -647,7 +573,7 @@
                         <div class="col-12 border-top pt-2">
                             <label class="text-muted font-small d-block mb-1">Tanda Tangan Tamu & Persetujuan UU PDP:</label>
                             ${sigPreview}
-                            <div class="text-success font-small mt-1"><i class="fas fa-check-circle me-1"></i>Persetujuan UU PDP No. 27 Tahun 2022 terverifikasi.</div>
+                            <div class="text-success font-small mt-1">Persetujuan UU PDP No. 27 Tahun 2022 terverifikasi.</div>
                         </div>
                     </div>
                 `;

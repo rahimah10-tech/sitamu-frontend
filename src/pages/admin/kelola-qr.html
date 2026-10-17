@@ -6,6 +6,8 @@
         "path": "../..",
         "title": "SiTamu — Kelola QR Code Lokasi"
     })
+    <!-- SiTamu Petugas Theme Override (#0B3D7B Navy Dark) -->
+    <link type="text/css" href="../../css/sitamu-petugas.css" rel="stylesheet">
     <style>
         .qr-preview-box {
             background-color: #ffffff;
@@ -35,21 +37,11 @@
         <!-- Header -->
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
             <div>
-                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
-                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="dashboard.html">Admin</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Kelola QR Code</li>
-                    </ol>
-                </nav>
-                <h1 class="h3 fw-bold mb-0 text-gray-900">
-                    <i class="fas fa-qrcode me-2 text-primary"></i>Kelola QR Code per Lokasi
-                </h1>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">Kelola QR Code per Lokasi</h1>
                 <p class="text-muted small mb-0">Buat dan kelola QR Code untuk setiap pintu masuk lokasi. Satu lokasi dapat memiliki beberapa QR Code.</p>
             </div>
             <div>
                 <button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCreateQR">
-                    <i class="fas fa-plus me-2"></i>
                     <span>Buat QR Code Baru</span>
                 </button>
             </div>
@@ -87,7 +79,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title h6 mb-0"><i class="fas fa-qrcode me-2"></i>Buat QR Code Lokasi Baru</h5>
+                    <h5 class="modal-title h6 mb-0">Buat QR Code Lokasi Baru</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
@@ -118,14 +110,14 @@
                             </div>
                         </div>
                         <div class="alert alert-info py-2 px-3 small mb-0">
-                            <i class="fas fa-info-circle me-1"></i> QR Code yang dibuat dapat langsung dicetak atau diunduh untuk dipasang di meja/dinding.
+                            QR Code yang dibuat dapat langsung dicetak atau diunduh untuk dipasang di meja/dinding.
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-primary btn-sm" id="btnSaveNewQR">
-                        <i class="fas fa-save me-1"></i> Simpan & Buat QR
+                        Simpan & Buat QR
                     </button>
                 </div>
             </div>
@@ -137,7 +129,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-gray-800 text-white">
-                    <h5 class="modal-title h6 mb-0"><i class="fas fa-print me-2"></i>Poster SiTamu Siap Tempel</h5>
+                    <h5 class="modal-title h6 mb-0">Poster SiTamu Siap Tempel</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4 text-center" id="posterPrintArea">
@@ -170,7 +162,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
                     <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">
-                        <i class="fas fa-print me-1"></i> Cetak Poster
+                        Cetak Poster
                     </button>
                 </div>
             </div>
@@ -218,16 +210,22 @@
                     return `
                         <tr>
                             <td>
-                                <div class="bg-light p-1 rounded border text-center" style="width: 44px; height: 44px;">
-                                    <i class="fas fa-qrcode fa-2x text-primary mt-1"></i>
+                                <div class="bg-white p-1 rounded border d-inline-block text-center shadow-xs" style="width: 42px; height: 42px;">
+                                    <svg viewBox="0 0 100 100" width="32" height="32">
+                                        <rect width="100" height="100" fill="#f8fafc"/>
+                                        <rect x="10" y="10" width="25" height="25" fill="#1e293b"/>
+                                        <rect x="65" y="10" width="25" height="25" fill="#1e293b"/>
+                                        <rect x="10" y="65" width="25" height="25" fill="#1e293b"/>
+                                        <circle cx="50" cy="50" r="10" fill="#2563eb"/>
+                                    </svg>
                                 </div>
                             </td>
                             <td>
                                 <div class="fw-bold text-gray-900 fs-7">${qr.label}</div>
-                                <div class="font-small text-muted"><i class="far fa-calendar-alt me-1"></i>Dibuat: ${SiTamuUI.formatDateTime(qr.createdAt)}</div>
+                                <div class="font-small text-muted">Dibuat: ${SiTamuUI.formatDateTime(qr.createdAt)}</div>
                             </td>
                             <td>
-                                <div class="font-small text-gray-900"><i class="fas fa-map-marker-alt text-danger me-1"></i>${qr.locationName}</div>
+                                <div class="font-small text-gray-900">${qr.locationName}</div>
                             </td>
                             <td>
                                 <code class="font-small bg-light px-2 py-1 rounded text-dark">${qr.token}</code>
@@ -241,10 +239,10 @@
                             <td class="text-end">
                                 <div class="btn-group btn-group-sm">
                                     <button type="button" class="btn btn-outline-primary btn-xs" onclick="window.previewPoster('${qr.id}')" title="Lihat Poster Siap Cetak">
-                                        <i class="fas fa-print me-1"></i>Cetak
+                                        Cetak
                                     </button>
                                     <a href="../tamu/scan.html" class="btn btn-outline-success btn-xs" title="Uji Scan QR ini di Portal Tamu" target="_blank">
-                                        <i class="fas fa-external-link-alt me-1"></i>Uji Scan
+                                        Uji Scan
                                     </a>
                                 </div>
                             </td>

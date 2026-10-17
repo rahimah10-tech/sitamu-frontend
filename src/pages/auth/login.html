@@ -6,6 +6,8 @@
         "path": "../..",
         "title": "SiTamu — Portal Masuk Petugas (Login)"
     })
+    <!-- SiTamu Petugas Theme Override (#0B3D7B Navy Dark) -->
+    <link type="text/css" href="../../css/sitamu-petugas.css" rel="stylesheet">
 </head>
 
 <body class="bg-soft">
@@ -13,111 +15,102 @@
         <section class="min-vh-100 d-flex align-items-center py-5">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+                        <!-- Brand Header -->
                         <div class="text-center mb-4">
-                            <span class="badge bg-primary text-white px-3 py-1 font-small mb-2 text-uppercase">
-                                <i class="fas fa-book-open me-1"></i>Sistem Buku Tamu Digital
-                            </span>
-                            <h2 class="h3 fw-bold text-gray-900 mb-1">Masuk Petugas SiTamu</h2>
+                            <img src="../../assets/img/brand/logo-jatim.png" alt="Lambang Daerah Provinsi Jawa Timur" style="height: 64px; width: auto; object-fit: contain;" class="mb-3">
+                            <div>
+                                <span class="badge bg-primary text-white px-3 py-1 font-small mb-2 text-uppercase d-inline-block">
+                                    Sistem Buku Tamu Digital
+                                </span>
+                            </div>
+                            <h1 class="h3 fw-bold text-gray-900 mb-1">SiTamu Disperindag Jatim</h1>
                             <p class="text-muted small mb-0">Dinas Perindustrian dan Perdagangan Provinsi Jawa Timur</p>
                         </div>
 
+                        <!-- Role Selection Card -->
                         <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 bg-white mb-4">
-                            <!-- Quick Role Switcher Buttons for Easy Testing -->
-                            <div class="mb-4 text-center">
-                                <label class="form-label small fw-bold text-gray-700 d-block mb-2">
-                                    <i class="fas fa-bolt text-warning me-1"></i>Pilih Masuk Cepat sebagai Peran:
-                                </label>
-                                <div class="btn-group w-100 shadow-sm" role="group">
-                                    <button type="button" class="btn btn-outline-info btn-sm active" id="btnRoleResp" onclick="selectRole('resepsionis')">
-                                        <i class="fas fa-concierge-bell d-block mb-1"></i>
-                                        <span>Resepsionis</span>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-success btn-sm" id="btnRolePic" onclick="selectRole('pic')">
-                                        <i class="fas fa-user-tie d-block mb-1"></i>
-                                        <span>PIC</span>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-primary btn-sm" id="btnRoleAdmin" onclick="selectRole('admin')">
-                                        <i class="fas fa-user-shield d-block mb-1"></i>
-                                        <span>Admin</span>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-dark btn-sm" id="btnRoleSA" onclick="selectRole('superadmin')">
-                                        <i class="fas fa-crown d-block mb-1 text-warning"></i>
-                                        <span>Super Admin</span>
-                                    </button>
-                                </div>
+                            <div class="text-center mb-4">
+                                <h2 class="h5 fw-bold text-gray-900 mb-1">Portal Masuk Petugas Kedinasan</h2>
+                                <p class="text-muted small mb-0">Silakan pilih peran akun petugas Anda untuk melanjutkan ke halaman login:</p>
                             </div>
 
-                            <form id="formLogin">
-                                <div class="mb-3">
-                                    <label for="inputEmail" class="form-label small fw-bold text-gray-800">Email Kedinasan / Username</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-user text-muted"></i></span>
-                                        <input type="text" class="form-control form-control-sm" id="inputEmail" required>
+                            <div class="row g-3">
+                                <!-- 1. Resepsionis -->
+                                <div class="col-12 col-md-6">
+                                    <div class="card border border-2 border-info rounded-3 h-100 p-3 bg-white shadow-xs d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <span class="badge bg-info text-white font-small">Front Desk</span>
+                                            <div class="avatar bg-info text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 11px;">RS</div>
+                                        </div>
+                                        <h3 class="fs-6 fw-bold text-gray-900 mb-1">Resepsionis</h3>
+                                        <p class="font-small text-muted mb-3 flex-grow-1">
+                                            Kelola antrean kunjungan aktif, pembagian penugasan PIC, pendaftaran tamu manual, & penerbitan QR darurat.
+                                        </p>
+                                        <a href="login-resepsionis.html" class="btn btn-outline-info btn-sm w-100 fw-bold">
+                                            Masuk Resepsionis &rarr;
+                                        </a>
                                     </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="inputPassword" class="form-label small fw-bold text-gray-800">Kata Sandi</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-lock text-muted"></i></span>
-                                        <input type="password" class="form-control form-control-sm" id="inputPassword" value="password123" required>
+                                <!-- 2. PIC Departemen -->
+                                <div class="col-12 col-md-6">
+                                    <div class="card border border-2 border-success rounded-3 h-100 p-3 bg-white shadow-xs d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <span class="badge bg-success text-white font-small">Petugas Bidang</span>
+                                            <div class="avatar bg-success text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 11px;">PIC</div>
+                                        </div>
+                                        <h3 class="fs-6 fw-bold text-gray-900 mb-1">PIC Departemen</h3>
+                                        <p class="font-small text-muted mb-3 flex-grow-1">
+                                            Penerimaan disposisi konsultasi tamu, tindak lanjut bidang, & pengisian hasil solusi (otomatis Selesai).
+                                        </p>
+                                        <a href="login-pic.html" class="btn btn-outline-success btn-sm w-100 fw-bold">
+                                            Masuk PIC &rarr;
+                                        </a>
                                     </div>
                                 </div>
 
-                                <!-- Dynamic role-specific description box -->
-                                <div class="alert alert-soft-info p-2 mb-3 small" id="roleInfoBox">
-                                    <!-- Dynamic -->
+                                <!-- 3. Admin Operasional -->
+                                <div class="col-12 col-md-6">
+                                    <div class="card border border-2 border-primary rounded-3 h-100 p-3 bg-white shadow-xs d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <span class="badge bg-primary text-white font-small">Semua Lokasi</span>
+                                            <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 11px;">AD</div>
+                                        </div>
+                                        <h3 class="fs-6 fw-bold text-gray-900 mb-1">Admin Operasional</h3>
+                                        <p class="font-small text-muted mb-3 flex-grow-1">
+                                            Pemantauan kunjungan lintas lokasi, ubah status antrean, batalkan kunjungan, kelola form, & ekspor laporan.
+                                        </p>
+                                        <a href="login-admin.html" class="btn btn-outline-primary btn-sm w-100 fw-bold">
+                                            Masuk Admin &rarr;
+                                        </a>
+                                    </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary btn-sm w-100 py-2 shadow-sm fw-bold">
-                                    <i class="fas fa-sign-in-alt me-2"></i>Masuk ke Dashboard
-                                </button>
-                            </form>
-                        </div>
-
-                        <!-- Dedicated Role Login Links Card -->
-                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
-                            <h6 class="fw-bold fs-7 text-gray-800 mb-3 text-center">
-                                <i class="fas fa-external-link-alt text-primary me-2"></i>Halaman Login Khusus per Peran
-                            </h6>
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <a href="login-resepsionis.html" class="btn btn-outline-info btn-xs w-100 py-2 text-start">
-                                        <i class="fas fa-concierge-bell me-1"></i>
-                                        <strong class="font-small d-block">Login Resepsionis</strong>
-                                        <small class="text-muted font-small">Meja front desk</small>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="login-pic.html" class="btn btn-outline-success btn-xs w-100 py-2 text-start">
-                                        <i class="fas fa-user-tie me-1"></i>
-                                        <strong class="font-small d-block">Login PIC</strong>
-                                        <small class="text-muted font-small">Petugas bidang</small>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="login-admin.html" class="btn btn-outline-primary btn-xs w-100 py-2 text-start">
-                                        <i class="fas fa-user-shield me-1"></i>
-                                        <strong class="font-small d-block">Login Admin</strong>
-                                        <small class="text-muted font-small">Semua lokasi</small>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="login-superadmin.html" class="btn btn-outline-dark btn-xs w-100 py-2 text-start">
-                                        <i class="fas fa-crown text-warning me-1"></i>
-                                        <strong class="font-small d-block">Login Super Admin</strong>
-                                        <small class="text-muted font-small">Pusat kontrol</small>
-                                    </a>
+                                <!-- 4. Super Admin -->
+                                <div class="col-12 col-md-6">
+                                    <div class="card border border-2 border-dark rounded-3 h-100 p-3 bg-white shadow-xs d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <span class="badge bg-dark text-white font-small">Master Sistem</span>
+                                            <div class="avatar bg-dark text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 11px;">SA</div>
+                                        </div>
+                                        <h3 class="fs-6 fw-bold text-gray-900 mb-1">Super Administrator</h3>
+                                        <p class="font-small text-muted mb-3 flex-grow-1">
+                                            Pengaturan master lokasi fisik & UPT, regenerasi token QR, manajemen akun petugas, reopen, & audit log.
+                                        </p>
+                                        <a href="login-superadmin.html" class="btn btn-outline-dark btn-sm w-100 fw-bold">
+                                            Masuk Super Admin &rarr;
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Guest entry link -->
-                        <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
-                            <span class="small text-muted mb-2 d-block">Anda adalah Tamu / Pengunjung?</span>
-                            <a href="../tamu/scan.html" class="btn btn-outline-primary btn-sm fw-bold">
-                                <i class="fas fa-qrcode me-2"></i>Menuju Alur Scan QR Tamu
+                        <!-- Guest Access Link Card -->
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white text-center">
+                            <span class="small text-muted mb-2 d-block">Simulasi Alur Tamu / Pengunjung (Scan QR Titik Masuk):</span>
+                            <a href="../tamu/scan.html" class="btn btn-outline-gray-600 btn-sm fw-bold">
+                                Buka Simulasi Scan QR Tamu
                             </a>
                         </div>
                     </div>
@@ -130,63 +123,6 @@
     @@include('./_scripts.html', {
         "path": "../.."
     })
-
-    <script src="../../assets/js/sitamu-store.js"></script>
-    <script src="../../assets/js/sitamu-ui.js"></script>
-
-    <script>
-        const roleData = {
-            resepsionis: {
-                email: 'resepsionis@disperindag.jatimprov.go.id',
-                name: 'Mega Wijaya (Resepsionis Lobby)',
-                info: '<strong>Akses Resepsionis:</strong> Penugasan PIC, antrean berjalan, penerbitan QR darurat, pendaftaran tamu manual.',
-                targetUrl: '../resepsionis/dashboard.html',
-                btnId: 'btnRoleResp'
-            },
-            pic: {
-                email: 'andri.pic@disperindag.jatimprov.go.id',
-                name: 'Andri Prasetyo, S.E. (PIC Ekspor)',
-                info: '<strong>Akses PIC:</strong> Penerimaan disposisi tamu, pengisian hasil/solusi konsultasi (status otomatis Selesai).',
-                targetUrl: '../pic/dashboard.html',
-                btnId: 'btnRolePic'
-            },
-            admin: {
-                email: 'admin@disperindag.jatimprov.go.id',
-                name: 'Ahmad Zaki, S.Kom. (Admin Operasional)',
-                info: '<strong>Akses Admin:</strong> Monitoring seluruh lokasi (tanpa batas lokasi), ubah status (Menunggu/Diproses), batalkan kunjungan, turunkan ke draf, kelola QR & pertanyaan form.',
-                targetUrl: '../admin/dashboard.html',
-                btnId: 'btnRoleAdmin'
-            },
-            superadmin: {
-                email: 'superadmin@disperindag.jatimprov.go.id',
-                name: 'Bambang Soediro, M.M. (Super Admin)',
-                info: '<strong>Akses Super Admin:</strong> Master lokasi, regenerasi token QR (cabut QR lama), kelola akun petugas, reopen kunjungan tanpa syarat alasan, dan audit log sistem.',
-                targetUrl: '../superadmin/dashboard.html',
-                btnId: 'btnRoleSA'
-            }
-        };
-
-        let currentRole = 'resepsionis';
-
-        function selectRole(role) {
-            currentRole = role;
-            document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(roleData[role].btnId).classList.add('active');
-            document.getElementById('inputEmail').value = roleData[role].email;
-            document.getElementById('roleInfoBox').innerHTML = `<i class="fas fa-info-circle me-1"></i>${roleData[role].info}`;
-        }
-
-        document.getElementById('formLogin').addEventListener('submit', function (e) {
-            e.preventDefault();
-            SiTamuUI.showToast('Login Berhasil', `Selamat datang, ${roleData[currentRole].name}. Mengarahkan ke dashboard...`, 'success');
-            setTimeout(function () {
-                window.location.href = roleData[currentRole].targetUrl;
-            }, 500);
-        });
-
-        // Initialize default
-        selectRole('resepsionis');
-    </script>
 </body>
 
 </html>

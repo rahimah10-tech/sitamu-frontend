@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    @@include('./_head.html', {
+        "path": "../..",
+        "title": "SiTamu — Bantuan Kendala Login Google (UC-RESP-02)"
+    })
+    <style>
+        body {
+            background-color: #f0f4f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 430px;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #ffffff;
+            border: none;
+            box-shadow: 0 10px 30px rgba(10, 38, 71, 0.08), 0 2px 6px rgba(10, 38, 71, 0.04);
+        }
+
+        .brand-header {
+            background-color: #0b3a75;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo-img {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            flex-shrink: 0;
+        }
+
+        .brand-title-sub {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.25;
+            margin-bottom: 2px;
+            letter-spacing: -0.1px;
+        }
+
+        .brand-title-main {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -0.2px;
+        }
+
+        .auth-card-body {
+            padding: 32px 30px 28px 30px;
+        }
+
+        .badge-location-pill {
+            display: inline-block;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 50rem;
+            padding: 5px 18px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 14px;
+            letter-spacing: 0.1px;
+        }
+
+        .help-step-item {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            text-align: left;
+        }
+
+        .step-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #0b3a75;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .app-footer {
+            color: #718096;
+            font-size: 0.8rem;
+            line-height: 1.45;
+            text-align: center;
+            margin-top: 22px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="min-vh-100 d-flex flex-column justify-content-center align-items-center py-4 px-3">
+        <!-- Main Help Card -->
+        <div class="auth-card">
+            <!-- Brand Header Disperindag Jatim -->
+            <div class="brand-header">
+                <img src="../../assets/img/brand/logo-jatim.png" alt="Lambang Daerah Provinsi Jawa Timur" class="brand-logo-img">
+                <div class="brand-title-wrap">
+                    <div class="brand-title-sub">Dinas Perindustrian Dan Perdagangan</div>
+                    <div class="brand-title-main">Provinsi Jawa Timur</div>
+                </div>
+            </div>
+
+            <!-- Card Body Content -->
+            <div class="auth-card-body text-center">
+                <!-- Location Pill Badge -->
+                <div>
+                    <span id="locationBadge" class="badge-location-pill">Lobby Utama</span>
+                </div>
+
+                <h1 class="h4 fw-bold text-gray-900 mb-2">Bantuan Kendala Login Google</h1>
+                <p class="text-muted small mb-4">
+                    Tidak memiliki akun Google, lupa sandi, atau terkendala smartphone? Anda dapat memanfaatkan <strong>Layanan Asistensi Petugas Resepsionis (UC-RESP-02)</strong>.
+                </p>
+
+                <!-- Step-by-Step Instructions -->
+                <div class="mb-4">
+                    <div class="help-step-item">
+                        <div class="step-badge">1</div>
+                        <div>
+                            <div class="fw-bold text-gray-900 small">Datangi Meja Resepsionis / Petugas Keamanan</div>
+                            <div class="text-muted small" style="font-size: 0.82rem;">
+                                Kunjungi petugas resepsionis yang berjaga di lobby utama atau pintu masuk dinas.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-step-item">
+                        <div class="step-badge">2</div>
+                        <div>
+                            <div class="fw-bold text-gray-900 small">Tunjukkan Identitas Diri (KTP / SIM / Kartu Pegawai)</div>
+                            <div class="text-muted small" style="font-size: 0.82rem;">
+                                Petugas akan mencocokkan data identitas Anda untuk penerbitan izin buku tamu yang sah.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-step-item">
+                        <div class="step-badge" style="background-color: #d97706;">3</div>
+                        <div>
+                            <div class="fw-bold text-gray-900 small">Dapatkan QR Darurat atau Pendaftaran Manual (UC-RESP-02)</div>
+                            <div class="text-muted small" style="font-size: 0.82rem;">
+                                Petugas akan mencetak/menampilkan <strong>QR Code Darurat Sekali Pakai</strong> untuk Anda pindai, atau mengisikan buku tamu Anda secara <strong>Manual via Kios Resepsionis</strong>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Alert -->
+                <div class="alert alert-warning py-2 px-3 small mb-4 text-start d-flex align-items-center">
+                    <i class="fas fa-headset text-warning me-2 fa-lg flex-shrink-0"></i>
+                    <div style="font-size: 0.83rem;">
+                        <strong>Catatan Petugas:</strong> Alur darurat tetap mencatat riwayat kunjungan dan memberikan nomor antrean resmi pelayanan.
+                    </div>
+                </div>
+
+                <!-- Action CTA Buttons -->
+                <div class="d-grid gap-2">
+                    <a href="../resepsionis/qr-darurat.html" id="btnGoToEmergency" class="btn btn-warning text-dark fw-bold py-2-5 shadow-sm">
+                        <i class="fas fa-first-aid me-2"></i> Buka Alur Layanan Petugas Resepsionis (UC-RESP-02)
+                    </a>
+                    <a href="login-google.html" id="btnBackToLogin" class="btn btn-outline-secondary py-2 small fw-semibold">
+                        <i class="fas fa-arrow-left me-2"></i> Kembali ke Halaman Login Google
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Copyright -->
+        <footer class="app-footer">
+            &copy; 2026 Dinas Perindustrian dan Perdagangan<br>Provinsi Jawa Timur
+        </footer>
+    </main>
+
+    @@include('./_scripts.html', {
+        "path": "../.."
+    })
+    <script src="../../assets/js/sitamu-store.js"></script>
+    <script src="../../assets/js/sitamu-ui.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            SiTamuStore.init();
+
+            // Extract query parameters (token, locId)
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token') || 'QR-DISPERINDAG-LOBBY-UTAMA';
+            const locId = urlParams.get('locId') || 'LOC-01';
+
+            // Resolve location and update badge display
+            const location = SiTamuStore.getLocationById(locId);
+            const qr = SiTamuStore.getQRByToken(token);
+            const locationBadge = document.getElementById('locationBadge');
+
+            if (qr && qr.label) {
+                const shortLabel = qr.label.split('(')[0].trim();
+                locationBadge.textContent = shortLabel || qr.label;
+            } else if (location && location.name) {
+                locationBadge.textContent = location.name;
+            } else {
+                locationBadge.textContent = 'Lobby Utama';
+            }
+
+            // Back button preserves parameters
+            const btnBackToLogin = document.getElementById('btnBackToLogin');
+            if (btnBackToLogin) {
+                btnBackToLogin.href = `login-google.html?locId=${encodeURIComponent(locId)}&token=${encodeURIComponent(token)}`;
+            }
+
+            const btnGoToEmergency = document.getElementById('btnGoToEmergency');
+            if (btnGoToEmergency) {
+                btnGoToEmergency.href = `../resepsionis/qr-darurat.html?locId=${encodeURIComponent(locId)}&token=${encodeURIComponent(token)}`;
+            }
+        });
+    </script>
+</body>
+
+</html>

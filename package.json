@@ -3,6 +3,13 @@
     "version": "1.4.1",
     "description": "Volt - Bootstrap 5 Dashboard",
     "main": "gulpfile.js",
+    "scripts": {
+        "start": "gulp",
+        "dev": "gulp",
+        "serve": "node server.js",
+        "build": "gulp build:dist",
+        "build:dev": "gulp build:dev"
+    },
     "author": "Themesberg",
     "keywords": [
         "bootstrap",

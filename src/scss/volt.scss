@@ -87,3 +87,124 @@
 @import "volt/forms";
 
 // write your custom styles here!
+// SiTamu Brand Header Disperindag Jatim
+.brand-header-card {
+    border-radius: 16px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 10px 30px rgba(10, 38, 71, 0.08), 0 2px 6px rgba(10, 38, 71, 0.04);
+}
+
+.brand-header {
+    background-color: #0b3a75;
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand-logo-img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    flex-shrink: 0;
+}
+
+.brand-title-sub {
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.25;
+    margin-bottom: 2px;
+    letter-spacing: -0.1px;
+}
+
+.brand-title-main {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+    letter-spacing: -0.2px;
+}
+
+@media (max-width: 480px) {
+    .brand-header {
+        padding: 16px 18px;
+        gap: 12px;
+    }
+    .brand-logo-img {
+        height: 44px;
+    }
+    .brand-title-sub {
+        font-size: 0.8rem;
+    }
+    .brand-title-main {
+        font-size: 1.05rem;
+    }
+}
+
+// Mobile-First Guest Flow Layout (~430px Container)
+.tamu-body {
+    background-color: #f0f4f9;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1f2937;
+    margin: 0;
+    padding: 0;
+}
+
+.tamu-main-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #f0f4f9;
+    padding: 20px 14px 40px 14px;
+}
+
+.tamu-mobile-wrapper {
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    .form-control,
+    .form-select {
+        min-height: 48px;
+        font-size: 0.95rem;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+
+        &:focus {
+            border-color: #0b3a75;
+            box-shadow: 0 0 0 3px rgba(11, 58, 117, 0.15);
+        }
+    }
+
+    textarea.form-control {
+        min-height: 80px;
+    }
+
+    .input-group-text {
+        min-height: 48px;
+        padding: 10px 14px;
+        border-radius: 10px;
+    }
+
+    .btn-touch {
+        min-height: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+

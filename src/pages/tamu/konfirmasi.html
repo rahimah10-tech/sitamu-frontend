@@ -19,15 +19,110 @@
             .no-print { display: none !important; }
             .card { box-shadow: none !important; border: 1px solid #ddd !important; }
         }
+
+        .tamu-body {
+            background-color: #f0f4f9;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1f2937;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tamu-main-layout {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #f0f4f9;
+            padding: 20px 14px 40px 14px;
+        }
+
+        .tamu-mobile-wrapper {
+            width: 100%;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-header-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 10px 30px rgba(10, 38, 71, 0.08), 0 2px 6px rgba(10, 38, 71, 0.04);
+        }
+
+        .brand-header {
+            background-color: #0b3a75;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo-img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            flex-shrink: 0;
+        }
+
+        .brand-title-sub {
+            font-size: 0.86rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.25;
+            margin-bottom: 2px;
+            letter-spacing: -0.1px;
+        }
+
+        .brand-title-main {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -0.2px;
+        }
+
+        .btn-touch {
+            min-height: 48px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+            .tamu-main-layout {
+                padding: 12px 10px 30px 10px;
+            }
+            .brand-header {
+                padding: 16px 18px;
+                gap: 12px;
+            }
+            .brand-logo-img {
+                height: 44px;
+            }
+            .brand-title-sub {
+                font-size: 0.8rem;
+            }
+            .brand-title-main {
+                font-size: 1.05rem;
+            }
+        }
     </style>
 </head>
 
-<body class="bg-soft">
-    <main>
-        <section class="min-vh-100 py-4 py-lg-5 d-flex align-items-center">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+<body class="tamu-body">
+    <main class="tamu-main-layout">
+        <div class="tamu-mobile-wrapper">
 
                         <!-- Success Icon Header -->
                         <div class="text-center mb-4 no-print">
@@ -42,7 +137,10 @@
                         <div class="card border-0 shadow-sm rounded-3 mb-3 overflow-hidden">
                             <div class="queue-badge-box text-center">
                                 <span class="badge bg-white text-dark mb-2 px-3 py-1 font-small text-uppercase fw-bold">Bukti Kunjungan Digital</span>
-                                <div class="text-white-50 font-small mb-1">NOMOR URUT PENCATATAN</div>
+                                <div class="text-white-50 font-small mb-1 text-uppercase letter-spacing-1">NOMOR URUT PENCATATAN</div>
+                                <div class="text-white fw-bold px-2 mb-2" id="displayOfficeName" style="font-size: 0.95rem; line-height: 1.35;">
+                                    Dinas Perindustrian Dan Perdagangan Provinsi Jawa Timur
+                                </div>
                                 <h1 class="display-3 fw-bolder mb-0 text-white letter-spacing-1" id="displayQueueNumber">#A-015</h1>
                                 <div class="mt-2 text-white-50 font-small" id="displayTimestamp">
                                     <i class="far fa-clock me-1"></i> Jam Datang: 16 Okt 2026, 10:45 WIB
@@ -63,42 +161,42 @@
                                     Rincian Data Kunjungan
                                 </h6>
 
-                                <div class="table-responsive">
-                                    <table class="table table-borderless table-sm mb-0">
+                                <div class="table-responsive" style="overflow-x: hidden;">
+                                    <table class="table table-borderless table-sm mb-0" style="table-layout: fixed; width: 100%;">
                                         <tbody>
                                             <tr>
-                                                <td class="text-muted small" style="width: 35%;">Status Kunjungan</td>
-                                                <td class="small fw-bold">
+                                                <td class="text-muted small ps-0" style="width: 36%;">Status</td>
+                                                <td class="small fw-bold text-end pe-0">
                                                     <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Menunggu</span>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-muted small">Lokasi</td>
-                                                <td class="small fw-bold text-gray-900" id="detailLocation">-</td>
+                                                <td class="text-muted small ps-0">Lokasi</td>
+                                                <td class="small fw-bold text-gray-900 text-end pe-0" style="word-break: break-word;" id="detailLocation">-</td>
                                             </tr>
                                             <tr>
-                                                <td class="text-muted small">Nama Tamu</td>
-                                                <td class="small fw-bold text-gray-900" id="detailName">-</td>
+                                                <td class="text-muted small ps-0">Nama Tamu</td>
+                                                <td class="small fw-bold text-gray-900 text-end pe-0" id="detailName">-</td>
                                             </tr>
                                             <tr>
-                                                <td class="text-muted small">Kelompok Rentan</td>
-                                                <td class="small text-gray-800" id="detailVulnerable">-</td>
+                                                <td class="text-muted small ps-0">Kelompok Rentan</td>
+                                                <td class="small text-gray-800 text-end pe-0" id="detailVulnerable">-</td>
                                             </tr>
                                             <tr>
-                                                <td class="text-muted small">Instansi / Perusahaan</td>
-                                                <td class="small text-gray-800" id="detailAgency">-</td>
+                                                <td class="text-muted small ps-0">Instansi</td>
+                                                <td class="small text-gray-800 text-end pe-0" style="word-break: break-word;" id="detailAgency">-</td>
                                             </tr>
                                             <tr>
-                                                <td class="text-muted small">Email & Telepon</td>
-                                                <td class="small text-gray-800" id="detailContact">-</td>
+                                                <td class="text-muted small ps-0">Kontak</td>
+                                                <td class="small text-gray-800 text-end pe-0" style="word-break: break-word;" id="detailContact">-</td>
                                             </tr>
                                             <tr>
-                                                <td class="text-muted small">Keperluan</td>
-                                                <td class="small fw-bold text-primary" id="detailCategory">-</td>
+                                                <td class="text-muted small ps-0">Keperluan</td>
+                                                <td class="small fw-bold text-primary text-end pe-0" style="word-break: break-word;" id="detailCategory">-</td>
                                             </tr>
                                             <tr>
-                                                <td class="text-muted small align-top">Rincian</td>
-                                                <td class="small text-gray-700" id="detailDetails">-</td>
+                                                <td class="text-muted small ps-0 align-top">Rincian</td>
+                                                <td class="small text-gray-700 text-end pe-0" style="word-break: break-word;" id="detailDetails">-</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -107,20 +205,20 @@
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="card border-0 shadow-sm rounded-3 p-3 no-print">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 mb-3 no-print">
                             <div class="d-grid gap-2">
-                                <a id="btnViewHistory" href="riwayat.html" class="btn btn-primary d-flex align-items-center justify-content-center py-2">
+                                <a id="btnViewHistory" href="riwayat.html" class="btn btn-primary btn-touch py-3 shadow-sm">
                                     <i class="fas fa-history me-2"></i>
                                     <span>Lihat Riwayat Kunjungan Saya</span>
                                 </a>
                                 <div class="row g-2">
                                     <div class="col-6">
-                                        <button class="btn btn-outline-gray-600 w-100 btn-sm py-2" onclick="window.print()">
+                                        <button class="btn btn-outline-gray-600 w-100 btn-touch py-2" onclick="window.print()">
                                             <i class="fas fa-print me-1"></i> Cetak / Simpan
                                         </button>
                                     </div>
                                     <div class="col-6">
-                                        <a href="../../index.html" class="btn btn-outline-secondary w-100 btn-sm py-2">
+                                        <a href="../../index.html" class="btn btn-outline-secondary w-100 btn-touch py-2">
                                             <i class="fas fa-home me-1"></i> Selesai
                                         </a>
                                     </div>
@@ -129,14 +227,11 @@
                         </div>
 
                         <!-- Footer assistance -->
-                        <div class="text-center mt-3 text-muted font-small no-print">
+                        <div class="text-center mt-2 pb-3 text-muted font-small no-print">
                             Silakan menunggu di area lobby. Petugas resepsionis atau PIC akan segera memanggil nama Anda.
                         </div>
 
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
     </main>
 
     @@include('./_scripts.html', {

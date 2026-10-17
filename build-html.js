@@ -21,5 +21,11 @@ vfs.src(['./src/pages/**/*.html'])
       .pipe(vfs.dest('./.temp/'))
       .on('end', () => {
         console.log('Index HTML compiled to .temp successfully!');
+        // Copy custom css
+        vfs.src(['./src/css/**/*.css'])
+          .pipe(vfs.dest('./.temp/css'))
+          .on('end', () => {
+            console.log('CSS copied to .temp/css successfully!');
+          });
       });
   });

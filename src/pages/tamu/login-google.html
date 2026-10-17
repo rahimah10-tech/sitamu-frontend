@@ -4,157 +4,422 @@
 <head>
     @@include('./_head.html', {
         "path": "../..",
-        "title": "SiTamu — Verifikasi Akun Google Tamu"
+        "title": "SiTamu — Masuk Buku Tamu Disperindag Jatim"
     })
     <style>
-        .google-account-card {
+        body {
+            background-color: #f0f4f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1f2937;
+            overflow-x: hidden;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 430px;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #ffffff;
+            border: none;
+            box-shadow: 0 10px 30px rgba(10, 38, 71, 0.08), 0 2px 6px rgba(10, 38, 71, 0.04);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .brand-header {
+            background-color: #0b3a75;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo-img {
+            height: 52px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            flex-shrink: 0;
+        }
+
+        .brand-title-sub {
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.25;
+            margin-bottom: 2px;
+            letter-spacing: -0.1px;
+        }
+
+        .brand-title-main {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -0.2px;
+        }
+
+        .auth-card-body {
+            padding: 34px 32px 28px 32px;
+            text-align: center;
+        }
+
+        .badge-location-pill {
+            display: inline-block;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 50rem;
+            padding: 5px 18px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 14px;
+            letter-spacing: 0.1px;
+        }
+
+        .welcome-title {
+            color: #0f2b48;
+            font-size: 1.68rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .welcome-desc {
+            color: #5a6a85;
+            font-size: 0.91rem;
+            line-height: 1.55;
+            max-width: 320px;
+            margin: 0 auto 26px auto;
+        }
+
+        .btn-google-auth {
+            background-color: #ffffff;
+            border: 1px solid #dadce0;
+            border-radius: 12px;
+            padding: 13px 18px;
+            min-height: 50px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #202124;
+            font-size: 0.98rem;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 1px 2px rgba(60, 64, 67, 0.08);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-google-auth:hover {
+            background-color: #f8fafc;
+            border-color: #bdc1c6;
+            box-shadow: 0 2px 6px rgba(60, 64, 67, 0.15);
+            color: #202124;
+            transform: translateY(-1px);
+        }
+
+        .btn-google-auth:active {
+            background-color: #f1f3f4;
+            transform: translateY(0);
+        }
+
+        .card-divider {
+            border: 0;
+            border-top: 1px solid #edf2f7;
+            margin: 24px 0 20px 0;
+            opacity: 1;
+        }
+
+        .link-help {
+            color: #2563eb;
+            font-size: 0.88rem;
+            font-weight: 500;
+            text-decoration: underline;
+            transition: color 0.15s ease;
+        }
+
+        .link-help:hover {
+            color: #1d4ed8;
+        }
+
+        .app-footer {
+            color: #718096;
+            font-size: 0.8rem;
+            line-height: 1.45;
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        /* Modal Google Picker Styles */
+        .google-modal .modal-dialog {
+            max-width: 430px;
+            margin: 1.25rem auto;
+            padding: 0 10px;
+        }
+
+        .google-modal .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+            overflow: hidden;
+        }
+
+        .google-account-item {
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 12px 16px;
+            margin-bottom: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.18s ease;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .google-account-card:hover {
-            border-color: #0369a1;
+
+        .google-account-item:hover {
+            border-color: #2563eb;
             background-color: #f8fafc;
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
         }
-        .google-account-card.active {
-            border-color: #0369a1;
+
+        .google-account-item:active {
+            transform: translateY(0);
+            background-color: #eff6ff;
+        }
+
+        .account-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            margin-right: 14px;
+        }
+
+        .avatar-indigo {
+            background-color: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .avatar-emerald {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .avatar-sky {
             background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .avatar-neutral {
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Loading Overlay inside Modal */
+        .picker-loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(2px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1050;
+            border-radius: 20px;
+        }
+
+        .picker-loading-overlay.active {
+            display: flex;
         }
     </style>
 </head>
 
-<body class="bg-soft">
-    <main>
-        <section class="min-vh-100 d-flex align-items-center py-4">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+<body>
+    <main class="min-vh-100 d-flex flex-column justify-content-center align-items-center py-4 px-3">
+        <!-- Main Card Component -->
+        <div class="auth-card">
+            <!-- Brand Header Disperindag Jatim -->
+            <div class="brand-header">
+                <img src="../../assets/img/brand/logo-jatim.png" alt="Lambang Daerah Provinsi Jawa Timur" class="brand-logo-img">
+                <div class="brand-title-wrap">
+                    <div class="brand-title-sub">Dinas Perindustrian Dan Perdagangan</div>
+                    <div class="brand-title-main">Provinsi Jawa Timur</div>
+                </div>
+            </div>
 
-                        <!-- Brand Header -->
-                        <div class="text-center mb-4">
-                            <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle p-3 mb-2 shadow-sm" style="width: 60px; height: 60px;">
-                                <i class="fas fa-qrcode fa-2x"></i>
+            <!-- Card Body Content -->
+            <div class="auth-card-body">
+                <!-- Greeting & Subtitle -->
+                <h1 class="welcome-title">Selamat Datang</h1>
+                <p class="welcome-desc">Silakan verifikasi email Anda menggunakan akun Google untuk mengisi buku tamu.</p>
+
+                <!-- Action Button Google -->
+                <div>
+                    <button type="button" id="btnOpenGooglePicker" class="btn-google-auth" aria-label="Lanjutkan dengan Google">
+                        <!-- Authentic Google 4-Color SVG Icon -->
+                        <svg class="me-2 flex-shrink-0" width="22" height="22" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                        <span>Lanjutkan dengan Google</span>
+                    </button>
+                </div>
+
+                <!-- Divider -->
+                <hr class="card-divider">
+
+                <!-- Help Link -->
+                <div>
+                    <a href="bantuan.html" id="linkHelp" class="link-help">Tidak bisa login Google?</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Copyright -->
+        <footer class="app-footer">
+            &copy; 2026 Dinas Perindustrian dan Perdagangan<br>Provinsi Jawa Timur
+        </footer>
+    </main>
+
+    <!-- Google Account Picker Simulation Modal -->
+    <div class="modal fade google-modal" id="modalGooglePicker" tabindex="-1" aria-labelledby="modalGooglePickerLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+            <div class="modal-content position-relative">
+                <!-- Loading State Overlay -->
+                <div id="pickerLoading" class="picker-loading-overlay">
+                    <div class="spinner-border text-primary mb-3" role="status" style="width: 2.8rem; height: 2.8rem;">
+                        <span class="visually-hidden">Memuat...</span>
+                    </div>
+                    <div class="fw-bold text-gray-900" id="loadingAccountName">Menghubungkan Akun Google...</div>
+                    <div class="small text-muted mt-1" id="loadingAccountSub">Memeriksa status riwayat buku tamu</div>
+                </div>
+
+                <!-- Modal Header -->
+                <div class="modal-header border-0 pb-1 pt-4 px-4 d-flex flex-column align-items-center text-center position-relative">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    <!-- Google Logo Icon -->
+                    <svg class="mb-2" width="34" height="34" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    <h2 class="h5 fw-bold text-gray-900 mb-1" id="modalGooglePickerLabel">Pilih akun</h2>
+                    <p class="small text-muted mb-0">untuk melanjutkan ke <span class="fw-semibold text-gray-800">SiTamu Disperindag Jatim</span></p>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body px-4 pt-3 pb-4">
+                    <!-- Presets Account List -->
+                    <div id="accountsListGroup">
+                        <!-- Option 1: Dewi Lestari (Tamu Lama) -->
+                        <div class="google-account-item" data-email="dewi.lestari@gmail.com" data-name="Dewi Lestari, S.T.">
+                            <div class="d-flex align-items-center">
+                                <div class="account-avatar avatar-indigo">DL</div>
+                                <div class="text-start">
+                                    <div class="fw-bold text-gray-900" style="font-size: 0.92rem;">Dewi Lestari, S.T.</div>
+                                    <div class="text-muted" style="font-size: 0.8rem;">dewi.lestari@gmail.com</div>
+                                </div>
                             </div>
-                            <h2 class="h4 fw-bolder mb-1 text-gray-900">SiTamu</h2>
-                            <p class="text-muted small mb-0">Sistem Informasi Buku Tamu Digital</p>
-                            <span class="badge bg-secondary text-dark mt-1" id="locationBadge">
-                                <i class="fas fa-map-marker-alt text-danger me-1"></i> Kantor Dinas Perindustrian & Perdagangan Prov. Jatim
+                            <span class="badge bg-info-subtle text-info border border-info border-opacity-25" style="font-size: 0.72rem;">
+                                <i class="fas fa-history me-1"></i>Pernah Lapor
                             </span>
                         </div>
 
-                        <!-- Google Auth Card -->
-                        <div class="card border-0 shadow-sm rounded-3">
-                            <div class="card-body p-4">
-                                <div class="text-center mb-3">
-                                    <!-- Google Logo SVG -->
-                                    <svg class="mb-2" width="40" height="40" viewBox="0 0 48 48">
-                                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                                    </svg>
-                                    <h5 class="fw-bold mb-1">Pilih Akun Google</h5>
-                                    <p class="text-muted small mb-0">Verifikasi email untuk mengisi buku tamu digital SiTamu</p>
+                        <!-- Option 2: Rian Pratama (Tamu Baru) -->
+                        <div class="google-account-item" data-email="rian.pratama@gmail.com" data-name="Rian Pratama">
+                            <div class="d-flex align-items-center">
+                                <div class="account-avatar avatar-emerald">RP</div>
+                                <div class="text-start">
+                                    <div class="fw-bold text-gray-900" style="font-size: 0.92rem;">Rian Pratama</div>
+                                    <div class="text-muted" style="font-size: 0.8rem;">rian.pratama@gmail.com</div>
                                 </div>
+                            </div>
+                            <span class="badge bg-success-subtle text-success border border-success border-opacity-25" style="font-size: 0.72rem;">
+                                <i class="fas fa-user-plus me-1"></i>Tamu Baru
+                            </span>
+                        </div>
 
-                                <div class="alert alert-soft-primary p-2 small mb-3 text-center">
-                                    <i class="fas fa-shield-alt me-1 text-primary"></i> Email terverifikasi akan <strong>terkunci di formulir</strong> demi keabsahan data.
+                        <!-- Option 3: Fajar Prasetya (Tamu Lama) -->
+                        <div class="google-account-item" data-email="fajar.prasetya@cakrawala.co.id" data-name="Fajar Prasetya">
+                            <div class="d-flex align-items-center">
+                                <div class="account-avatar avatar-sky">FP</div>
+                                <div class="text-start">
+                                    <div class="fw-bold text-gray-900" style="font-size: 0.92rem;">Fajar Prasetya</div>
+                                    <div class="text-muted" style="font-size: 0.8rem;">fajar.prasetya@cakrawala.co.id</div>
                                 </div>
+                            </div>
+                            <span class="badge bg-info-subtle text-info border border-info border-opacity-25" style="font-size: 0.72rem;">
+                                <i class="fas fa-history me-1"></i>Pernah Lapor
+                            </span>
+                        </div>
 
-                                <!-- Preset Mock Google Accounts for instant testing -->
-                                <div class="mb-3">
-                                    <label class="form-label small fw-bold text-gray-700">Pilih Akun untuk Simulasi:</label>
-
-                                    <!-- Option 1: Returning Guest -->
-                                    <div class="google-account-card mb-2" id="accReturning" data-email="dewi.lestari@gmail.com" data-name="Dewi Lestari, S.T.">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar bg-soft-success text-success rounded-circle me-3 d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px;">
-                                                    DL
-                                                </div>
-                                                <div>
-                                                    <div class="fw-bold text-gray-900 fs-7">Dewi Lestari, S.T.</div>
-                                                    <div class="font-small text-muted">dewi.lestari@gmail.com</div>
-                                                </div>
-                                            </div>
-                                            <span class="badge bg-info text-dark" title="Pernah berkunjung sebelumnya">Pernah Lapor</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Option 2: New Guest -->
-                                    <div class="google-account-card mb-2 active" id="accNew" data-email="rian.pratama@gmail.com" data-name="Rian Pratama">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar bg-soft-primary text-primary rounded-circle me-3 d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px;">
-                                                    RP
-                                                </div>
-                                                <div>
-                                                    <div class="fw-bold text-gray-900 fs-7">Rian Pratama</div>
-                                                    <div class="font-small text-muted">rian.pratama@gmail.com</div>
-                                                </div>
-                                            </div>
-                                            <span class="badge bg-secondary text-dark">Tamu Baru</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Option 3: Custom email input toggle -->
-                                    <div class="mt-2 text-end">
-                                        <button class="btn btn-link btn-xs text-primary p-0" type="button" data-bs-toggle="collapse" data-bs-target="#customEmailCollapse">
-                                            <i class="fas fa-plus-circle me-1"></i> Gunakan Akun Google Lainnya
-                                        </button>
-                                    </div>
-
-                                    <div class="collapse mt-2" id="customEmailCollapse">
-                                        <div class="p-3 bg-light rounded-2 border">
-                                            <div class="mb-2">
-                                                <label class="form-label font-small mb-1">Email Google:</label>
-                                                <input type="email" class="form-control form-control-sm" id="customEmailInput" placeholder="nama@gmail.com">
-                                            </div>
-                                            <div class="mb-2">
-                                                <label class="form-label font-small mb-1">Nama Lengkap (Akun Google):</label>
-                                                <input type="text" class="form-control form-control-sm" id="customNameInput" placeholder="Nama Anda">
-                                            </div>
-                                        </div>
-                                    </div>
+                        <!-- Option 4: Gunakan Akun Google Lainnya Toggle -->
+                        <div class="google-account-item mt-2" id="btnToggleCustomAccount">
+                            <div class="d-flex align-items-center">
+                                <div class="account-avatar avatar-neutral">
+                                    <i class="fas fa-user-plus"></i>
                                 </div>
-
-                                <!-- Automatic Check Info Notice -->
-                                <div id="noticeCheck" class="small alert alert-secondary py-2 px-3 mb-3 d-flex align-items-center">
-                                    <i class="fas fa-robot text-primary me-2 fa-lg"></i>
-                                    <div>
-                                        <strong>Deteksi Otomatis:</strong> Sistem akan memeriksa apakah Anda tamu baru atau pernah lapor sebelumnya.
-                                    </div>
+                                <div class="text-start">
+                                    <div class="fw-bold text-primary" style="font-size: 0.92rem;">Gunakan Akun Google Lainnya</div>
+                                    <div class="text-muted" style="font-size: 0.78rem;">Ketik email sendiri untuk simulasi tamu baru</div>
                                 </div>
+                            </div>
+                            <i class="fas fa-chevron-right text-muted small" id="chevronIcon"></i>
+                        </div>
+                    </div>
 
-                                <!-- Action Buttons -->
-                                <div class="d-grid gap-2">
-                                    <button id="btnLoginGoogle" class="btn btn-primary d-flex align-items-center justify-content-center py-2">
-                                        <i class="fab fa-google me-2"></i>
-                                        <span id="btnText">Lanjutkan sebagai Rian Pratama</span>
-                                    </button>
-                                </div>
+                    <!-- Custom Account Interactive Form Section (Collapsible) -->
+                    <div id="customAccountSection" class="mt-3 p-3 bg-light rounded-3 border" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="fw-bold text-gray-800 small">
+                                <i class="fab fa-google text-primary me-1"></i> Masukkan Akun Google Kustom
+                            </div>
+                            <button type="button" class="btn btn-sm btn-link p-0 text-muted small" id="btnCancelCustom">Batal</button>
+                        </div>
 
-                                <div class="text-center mt-3 pt-3 border-top">
-                                    <a href="scan.html" class="text-muted small">
-                                        <i class="fas fa-arrow-left me-1"></i> Kembali ke Pemilihan QR
-                                    </a>
-                                </div>
+                        <div class="mb-2 text-start">
+                            <label for="customEmailInput" class="form-label small fw-semibold text-gray-700 mb-1">Alamat Email Google:</label>
+                            <input type="email" class="form-control form-control-sm" id="customEmailInput" placeholder="contoh: nama.anda@gmail.com" autocomplete="email">
+                        </div>
+
+                        <div class="mb-3 text-start">
+                            <label for="customNameInput" class="form-label small fw-semibold text-gray-700 mb-1">Nama Lengkap (Opsional):</label>
+                            <input type="text" class="form-control form-control-sm" id="customNameInput" placeholder="Nama Anda (otomatis dari email jika kosong)">
+                        </div>
+
+                        <!-- Real-time Live Detection Alert -->
+                        <div id="customDetectionAlert" class="alert alert-secondary py-2 px-3 small mb-3 text-start d-flex align-items-start">
+                            <i class="fas fa-info-circle text-primary me-2 mt-1 flex-shrink-0"></i>
+                            <div id="customDetectionText">
+                                Masukkan alamat email Anda. Jika email belum pernah berkunjung, Anda akan diarahkan ke <strong>Formulir Kosong</strong> sebagai Tamu Baru.
                             </div>
                         </div>
 
-                        <!-- Help / Emergency Contact -->
-                        <div class="text-center mt-3 text-muted font-small">
-                            Tidak memiliki akun Google? <a href="../resepsionis/dashboard.html" class="text-primary fw-bold">Minta bantuan petugas resepsionis (QR Darurat)</a>
-                        </div>
+                        <button type="button" id="btnSubmitCustomAccount" class="btn btn-primary w-100 btn-sm py-2 fw-semibold d-flex align-items-center justify-content-center">
+                            <i class="fab fa-google me-2"></i> Lanjutkan Masuk dengan Email Ini
+                        </button>
+                    </div>
 
+                    <!-- Privacy Notice Footer -->
+                    <div class="text-muted small mt-3 pt-3 border-top text-center" style="font-size: 0.74rem; line-height: 1.45;">
+                        Untuk melanjutkan, Google akan memverifikasi alamat email Anda ke sistem <strong>SiTamu Disperindag Jatim</strong> sesuai standar keamanan data tamu.
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
 
     @@include('./_scripts.html', {
         "path": "../.."
@@ -164,6 +429,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize SiTamu Mock Store
             SiTamuStore.init();
 
             // Extract query parameters (token, locId)
@@ -171,100 +437,172 @@
             const token = urlParams.get('token') || 'QR-DISPERINDAG-LOBBY-UTAMA';
             const locId = urlParams.get('locId') || 'LOC-01';
 
+            // Resolve location
             const location = SiTamuStore.getLocationById(locId);
-            if (location) {
-                document.getElementById('locationBadge').innerHTML = `<i class="fas fa-map-marker-alt text-danger me-1"></i> ${location.name}`;
+
+            // Sync help link with query parameters
+            const linkHelp = document.getElementById('linkHelp');
+            if (linkHelp) {
+                linkHelp.href = `bantuan.html?locId=${encodeURIComponent(locId)}&token=${encodeURIComponent(token)}`;
             }
 
-            let selectedAccount = {
-                email: 'rian.pratama@gmail.com',
-                name: 'Rian Pratama',
-                type: 'new'
-            };
+            // Bootstrap Modal instance
+            const modalEl = document.getElementById('modalGooglePicker');
+            const googleModal = new bootstrap.Modal(modalEl);
 
-            const accReturning = document.getElementById('accReturning');
-            const accNew = document.getElementById('accNew');
-            const btnLogin = document.getElementById('btnLoginGoogle');
-            const btnText = document.getElementById('btnText');
-            const noticeCheck = document.getElementById('noticeCheck');
+            const btnOpenGooglePicker = document.getElementById('btnOpenGooglePicker');
+            btnOpenGooglePicker.addEventListener('click', function () {
+                googleModal.show();
+            });
 
-            function updateSelection(card, email, name, type) {
-                document.querySelectorAll('.google-account-card').forEach(c => c.classList.remove('active'));
-                if (card) card.classList.add('active');
+            // Loading overlay elements
+            const pickerLoading = document.getElementById('pickerLoading');
+            const loadingAccountName = document.getElementById('loadingAccountName');
+            const loadingAccountSub = document.getElementById('loadingAccountSub');
 
-                selectedAccount = { email, name, type };
-                btnText.textContent = `Lanjutkan sebagai ${name}`;
+            // Handle Account Selection and Flow Routing
+            function proceedWithAccount(email, name) {
+                if (!email) return;
 
-                // Preview automatic flow
-                const prev = SiTamuStore.findGuestPreviousProfile(email);
-                if (prev) {
-                    noticeCheck.className = 'small alert alert-info py-2 px-3 mb-3 d-flex align-items-center';
-                    noticeCheck.innerHTML = `
-                        <i class="fas fa-history text-info me-2 fa-lg"></i>
-                        <div>
-                            <strong>Tamu Pernah Melapor Terdeteksi:</strong> Ditemukan riwayat (${prev.previousVisitsCount} kunjungan). Anda akan diarahkan ke <strong>Halaman Riwayat</strong> terlebih dahulu.
-                        </div>
-                    `;
-                } else {
-                    noticeCheck.className = 'small alert alert-success py-2 px-3 mb-3 d-flex align-items-center';
-                    noticeCheck.innerHTML = `
-                        <i class="fas fa-user-plus text-success me-2 fa-lg"></i>
-                        <div>
-                            <strong>Tamu Baru Terdeteksi:</strong> Anda akan langsung diarahkan ke <strong>Formulir Buku Tamu</strong>.
-                        </div>
-                    `;
+                const trimmedEmail = email.trim();
+                let trimmedName = name ? name.trim() : '';
+                if (!trimmedName) {
+                    // Extract name from email username (e.g., budi.santoso@gmail.com -> Budi Santoso)
+                    const userPart = trimmedEmail.split('@')[0];
+                    trimmedName = userPart.split(/[._-]/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') || 'Tamu Pengunjung';
                 }
+
+                // Show loading state for authentic simulation feel
+                loadingAccountName.textContent = trimmedName;
+                loadingAccountSub.textContent = `Memeriksa profil ${trimmedEmail}...`;
+                pickerLoading.classList.add('active');
+
+                setTimeout(function () {
+                    // Save active guest session
+                    SiTamuStore.setSession({
+                        role: 'tamu',
+                        email: trimmedEmail,
+                        name: trimmedName,
+                        token: token,
+                        locId: locId,
+                        locationName: location ? location.name : 'Kantor Dinas Perindustrian dan Perdagangan Prov. Jatim'
+                    });
+
+                    // Check if guest has previous visit history
+                    const prev = SiTamuStore.findGuestPreviousProfile(trimmedEmail);
+
+                    if (prev) {
+                        // Returning guest -> Route to Visit History (riwayat.html)
+                        window.location.href = `riwayat.html?email=${encodeURIComponent(trimmedEmail)}&locId=${encodeURIComponent(locId)}&token=${encodeURIComponent(token)}`;
+                    } else {
+                        // New guest -> Route to Blank Registration Form (form.html)
+                        window.location.href = `form.html?email=${encodeURIComponent(trimmedEmail)}&locId=${encodeURIComponent(locId)}&token=${encodeURIComponent(token)}`;
+                    }
+                }, 450);
             }
 
-            // Click preset returning
-            accReturning.addEventListener('click', function () {
-                updateSelection(this, this.dataset.email, this.dataset.name, 'returning');
+            // Click listener for preset mock account cards
+            const accountItems = document.querySelectorAll('.google-account-item[data-email]');
+            accountItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    const email = this.getAttribute('data-email');
+                    const name = this.getAttribute('data-name');
+                    proceedWithAccount(email, name);
+                });
             });
 
-            // Click preset new
-            accNew.addEventListener('click', function () {
-                updateSelection(this, this.dataset.email, this.dataset.name, 'new');
-            });
-
-            // Custom email inputs
+            // Toggle Custom Account Section
+            const btnToggleCustomAccount = document.getElementById('btnToggleCustomAccount');
+            const customAccountSection = document.getElementById('customAccountSection');
+            const btnCancelCustom = document.getElementById('btnCancelCustom');
+            const chevronIcon = document.getElementById('chevronIcon');
             const customEmailInput = document.getElementById('customEmailInput');
             const customNameInput = document.getElementById('customNameInput');
+            const customDetectionAlert = document.getElementById('customDetectionAlert');
+            const customDetectionText = document.getElementById('customDetectionText');
+            const btnSubmitCustomAccount = document.getElementById('btnSubmitCustomAccount');
 
-            function handleCustom() {
-                const em = customEmailInput.value.trim();
-                const nm = customNameInput.value.trim() || 'Tamu';
-                if (em) {
-                    updateSelection(null, em, nm, 'custom');
+            function toggleCustomForm(show) {
+                if (show) {
+                    customAccountSection.style.display = 'block';
+                    btnToggleCustomAccount.classList.add('d-none');
+                    customEmailInput.focus();
+                } else {
+                    customAccountSection.style.display = 'none';
+                    btnToggleCustomAccount.classList.remove('d-none');
                 }
             }
-            customEmailInput.addEventListener('input', handleCustom);
-            customNameInput.addEventListener('input', handleCustom);
 
-            // Default initial check
-            updateSelection(accNew, 'rian.pratama@gmail.com', 'Rian Pratama', 'new');
+            btnToggleCustomAccount.addEventListener('click', function () {
+                toggleCustomForm(true);
+            });
 
-            // Handle Login action
-            btnLogin.addEventListener('click', function () {
-                if (!selectedAccount.email) return;
+            btnCancelCustom.addEventListener('click', function () {
+                toggleCustomForm(false);
+            });
 
-                // Save active guest session
-                SiTamuStore.setSession({
-                    role: 'tamu',
-                    email: selectedAccount.email,
-                    name: selectedAccount.name,
-                    token: token,
-                    locId: locId,
-                    locationName: location ? location.name : 'Kantor Dinas Perindustrian dan Perdagangan Prov. Jatim'
-                });
+            // Live detection feedback while typing custom email
+            customEmailInput.addEventListener('input', function () {
+                const em = this.value.trim();
+                if (!em) {
+                    customDetectionAlert.className = 'alert alert-secondary py-2 px-3 small mb-3 text-start d-flex align-items-start';
+                    customDetectionText.innerHTML = 'Masukkan alamat email Anda. Jika email belum pernah berkunjung, Anda akan diarahkan ke <strong>Formulir Kosong</strong> sebagai Tamu Baru.';
+                    return;
+                }
 
-                // Check automatically: pernah lapor sebelumnya?
-                const prev = SiTamuStore.findGuestPreviousProfile(selectedAccount.email);
+                // Check in store
+                const prev = SiTamuStore.findGuestPreviousProfile(em);
                 if (prev) {
-                    // Tamu yang pernah melapor otomatis melihat history kunjungannya
-                    window.location.href = `riwayat.html?email=${encodeURIComponent(selectedAccount.email)}&locId=${encodeURIComponent(locId)}&token=${encodeURIComponent(token)}`;
+                    customDetectionAlert.className = 'alert alert-info py-2 px-3 small mb-3 text-start d-flex align-items-start';
+                    customDetectionText.innerHTML = `
+                        <div>
+                            <strong><i class="fas fa-history me-1"></i> Tamu Lama Terdeteksi:</strong> Ditemukan riwayat (${prev.previousVisitsCount} kunjungan sebelumnya). Anda akan diarahkan ke <strong>Riwayat Kunjungan</strong>.
+                        </div>
+                    `;
                 } else {
-                    // Tamu baru otomatis diarahkan ke form pengisian
-                    window.location.href = `form.html?email=${encodeURIComponent(selectedAccount.email)}&locId=${encodeURIComponent(locId)}&token=${encodeURIComponent(token)}`;
+                    customDetectionAlert.className = 'alert alert-success py-2 px-3 small mb-3 text-start d-flex align-items-start';
+                    customDetectionText.innerHTML = `
+                        <div>
+                            <strong><i class="fas fa-user-plus me-1"></i> Tamu Baru Terdeteksi:</strong> Belum ada riwayat tercatat. Anda akan langsung diarahkan ke <strong>Formulir Kosong</strong>.
+                        </div>
+                    `;
+                }
+            });
+
+            // Submit custom account
+            function submitCustom() {
+                const em = customEmailInput.value.trim();
+                if (!em) {
+                    customEmailInput.classList.add('is-invalid');
+                    customEmailInput.focus();
+                    return;
+                }
+                customEmailInput.classList.remove('is-invalid');
+
+                // Basic email format check
+                if (!em.includes('@') || !em.includes('.')) {
+                    customEmailInput.classList.add('is-invalid');
+                    customDetectionAlert.className = 'alert alert-danger py-2 px-3 small mb-3 text-start d-flex align-items-start';
+                    customDetectionText.innerHTML = 'Mohon masukkan format email yang valid (contoh: nama@gmail.com).';
+                    customEmailInput.focus();
+                    return;
+                }
+
+                const nm = customNameInput.value.trim();
+                proceedWithAccount(em, nm);
+            }
+
+            btnSubmitCustomAccount.addEventListener('click', submitCustom);
+            customEmailInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitCustom();
+                }
+            });
+            customNameInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitCustom();
                 }
             });
         });

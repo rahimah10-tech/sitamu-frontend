@@ -6,6 +6,8 @@
         "path": "../..",
         "title": "SiTamu — Kelola Pertanyaan & Keperluan Form"
     })
+    <!-- SiTamu Petugas Theme Override (#0B3D7B Navy Dark) -->
+    <link type="text/css" href="../../css/sitamu-petugas.css" rel="stylesheet">
 </head>
 
 <body>
@@ -26,29 +28,18 @@
         <!-- Header -->
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
             <div>
-                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
-                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="dashboard.html">Admin</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Kelola Pertanyaan</li>
-                    </ol>
-                </nav>
-                <h1 class="h3 fw-bold mb-0 text-gray-900">
-                    <i class="fas fa-question-circle me-2 text-primary"></i>Kelola Pertanyaan & Kategori Form
-                </h1>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">Kelola Pertanyaan & Kategori Form</h1>
                 <p class="text-muted small mb-0">Atur opsi kategori keperluan kunjungan yang tampil pada formulir tamu dan pemetaan otomatis ke bidang tujuan.</p>
             </div>
             <div>
                 <button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center shadow-sm" id="btnOpenAddCategory">
-                    <i class="fas fa-plus me-2"></i>
                     <span>Tambah Kategori Baru</span>
                 </button>
             </div>
         </div>
 
         <!-- Info Alert -->
-        <div class="alert alert-soft-primary border-0 shadow-sm rounded-3 py-3 px-4 mb-4 d-flex align-items-center">
-            <i class="fas fa-info-circle fa-2x text-primary me-3"></i>
+        <div class="alert alert-soft-primary border-0 shadow-sm rounded-3 py-3 px-4 mb-4">
             <div>
                 <h6 class="fw-bold mb-1">Pemetaan Bidang Otomatis</h6>
                 <p class="small mb-0 text-muted">
@@ -87,9 +78,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title h6 mb-0" id="modalCategoryTitle">
-                        <i class="fas fa-edit me-2"></i>Tambah Kategori Keperluan
-                    </h5>
+                    <h5 class="modal-title h6 mb-0" id="modalCategoryTitle">Tambah Kategori Keperluan</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
@@ -123,7 +112,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-primary btn-sm" id="btnSaveCategory">
-                        <i class="fas fa-save me-1"></i> Simpan Kategori
+                        Simpan Kategori
                     </button>
                 </div>
             </div>
@@ -156,7 +145,7 @@
                             </td>
                             <td>
                                 <span class="badge bg-soft-primary text-primary border border-primary font-small">
-                                    <i class="fas fa-sitemap me-1"></i>${c.bidang}
+                                    ${c.bidang}
                                 </span>
                             </td>
                             <td>
@@ -167,10 +156,10 @@
                             <td class="text-end">
                                 <div class="btn-group btn-group-sm">
                                     <button type="button" class="btn btn-outline-gray-600 btn-xs" onclick="window.editCategory('${c.id}')" title="Edit">
-                                        <i class="fas fa-edit"></i>
+                                        Edit
                                     </button>
                                     <button type="button" class="btn btn-outline-danger btn-xs" onclick="window.deleteCategory('${c.id}')" title="Hapus">
-                                        <i class="fas fa-trash"></i>
+                                        Hapus
                                     </button>
                                 </div>
                             </td>
@@ -181,7 +170,7 @@
 
             // Open Add Modal
             document.getElementById('btnOpenAddCategory').addEventListener('click', function () {
-                document.getElementById('modalCategoryTitle').innerHTML = '<i class="fas fa-plus me-2"></i>Tambah Kategori Keperluan Baru';
+                document.getElementById('modalCategoryTitle').textContent = 'Tambah Kategori Keperluan Baru';
                 document.getElementById('editCategoryId').value = '';
                 document.getElementById('inputCategoryName').value = '';
                 document.getElementById('inputCategoryBidang').value = '';
@@ -196,7 +185,7 @@
                 const cat = SiTamuStore.getCategoryById(id);
                 if (!cat) return;
 
-                document.getElementById('modalCategoryTitle').innerHTML = '<i class="fas fa-edit me-2"></i>Edit Kategori Keperluan';
+                document.getElementById('modalCategoryTitle').textContent = 'Edit Kategori Keperluan';
                 document.getElementById('editCategoryId').value = cat.id;
                 document.getElementById('inputCategoryName').value = cat.name;
                 document.getElementById('inputCategoryBidang').value = cat.bidang;

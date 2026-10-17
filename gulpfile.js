@@ -117,12 +117,18 @@ gulp.task('assets', function () {
         .pipe(browserSync.stream());
 });
 
+gulp.task('css', function () {
+    return gulp.src(['./src/css/**/*.css'])
+        .pipe(gulp.dest(paths.temp.css))
+        .pipe(browserSync.stream());
+});
+
 gulp.task('vendor', function() {
     return gulp.src(npmDist(), { base: paths.src.node_modules })
       .pipe(gulp.dest(paths.temp.vendor));
 });
 
-gulp.task('serve', gulp.series('scss', 'html', 'index', 'assets', 'vendor', function() {
+gulp.task('serve', gulp.series('scss', 'html', 'index', 'assets', 'css', 'vendor', function() {
     browserSync.init({
         server: paths.temp.base
     });
@@ -130,6 +136,7 @@ gulp.task('serve', gulp.series('scss', 'html', 'index', 'assets', 'vendor', func
     gulp.watch([paths.src.scss + '/volt/**/*.scss', paths.src.scss + '/custom/**/*.scss', paths.src.scss + '/volt.scss'], gulp.series('scss'));
     gulp.watch([paths.src.html, paths.src.base + '*.html', paths.src.partials], gulp.series('html', 'index'));
     gulp.watch([paths.src.assets], gulp.series('assets'));
+    gulp.watch(['./src/css/**/*.css'], gulp.series('css'));
     gulp.watch([paths.src.vendor], gulp.series('vendor'));
 }));
 

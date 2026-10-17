@@ -1,0 +1,471 @@
+/* ==========================================================================
+   SiTamu Petugas - Theme Override (#0B3D7B Navy Dark)
+   Dinas Perindustrian dan Perdagangan Provinsi Jawa Timur
+   Khusus untuk halaman peran Petugas:
+   - resepsionis/
+   - pic/
+   - admin/
+   - superadmin/
+   - auth/ (login petugas)
+
+   Halaman Tamu (folder tamu/) TIDAK memuat stylesheet ini.
+   ========================================================================== */
+
+:root {
+    --petugas-navy-base: #0B3D7B;
+    --petugas-navy-hover: #082d5b;
+    --petugas-navy-active: #062246;
+    --petugas-navy-light: #124d99;
+    --petugas-navy-soft: rgba(11, 61, 123, 0.10);
+    --petugas-navy-soft-border: rgba(11, 61, 123, 0.22);
+}
+
+/* --------------------------------------------------------------------------
+   1. GLOBAL PRIMARY & ACCENT COLORS
+   -------------------------------------------------------------------------- */
+.text-primary {
+    color: #0B3D7B !important;
+}
+
+.bg-primary {
+    background-color: #0B3D7B !important;
+    color: #ffffff !important;
+}
+
+.border-primary {
+    border-color: #0B3D7B !important;
+}
+
+.bg-soft-primary {
+    background-color: rgba(11, 61, 123, 0.10) !important;
+    color: #0B3D7B !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. SIDEBAR NAVIGATION
+   -------------------------------------------------------------------------- */
+.sidebar,
+#sidebarMenu,
+.sidebar.bg-gray-800,
+.sidebar.bg-dark {
+    background: #0B3D7B !important;
+    background: linear-gradient(180deg, #0B3D7B 0%, #072b59 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 2px 0 16px rgba(11, 61, 123, 0.15) !important;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.88) !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.sidebar .nav-item.active > .nav-link,
+.sidebar .nav-link.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.18) !important;
+    font-weight: 600 !important;
+    box-shadow: inset 4px 0 0 0 #f0bc74, 0 2px 6px rgba(0, 0, 0, 0.18) !important;
+}
+
+.sidebar .nav-item .sidebar-icon,
+.sidebar .nav-link .sidebar-icon {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.sidebar .nav-item.active .sidebar-icon,
+.sidebar .nav-link.active .sidebar-icon,
+.sidebar .nav-link:hover .sidebar-icon {
+    color: #ffffff !important;
+}
+
+.sidebar .sidebar-text {
+    color: #ffffff !important;
+}
+
+.sidebar-brand-logo {
+    height: 38px !important;
+    width: auto !important;
+    max-width: 32px !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+    flex-shrink: 0 !important;
+    margin-right: 10px !important;
+}
+
+.sidebar .bg-gray-700,
+.sidebar .bg-gray-800,
+.sidebar .bg-dark {
+    background-color: rgba(0, 0, 0, 0.20) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.sidebar .badge.bg-primary {
+    background-color: rgba(255, 255, 255, 0.20) !important;
+    border: 1px solid rgba(255, 255, 255, 0.30) !important;
+    color: #ffffff !important;
+}
+
+.sidebar .avatar.bg-primary,
+.sidebar .avatar-lg.bg-primary {
+    background-color: rgba(255, 255, 255, 0.20) !important;
+    border: 2px solid rgba(255, 255, 255, 0.35) !important;
+    color: #ffffff !important;
+}
+
+.sidebar hr {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.sidebar .user-card {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.sidebar .collapse-close a {
+    color: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. TOPBAR (HEADER PETUGAS)
+   -------------------------------------------------------------------------- */
+.navbar-top,
+.navbar-dashboard {
+    background: linear-gradient(90deg, #0B3D7B 0%, #0d468c 100%) !important;
+    border-radius: 12px !important;
+    padding: 0.65rem 1.25rem !important;
+    margin-bottom: 1.5rem !important;
+    box-shadow: 0 4px 15px rgba(11, 61, 123, 0.15) !important;
+}
+
+.navbar-top,
+.navbar-top .text-gray-800,
+.navbar-top .text-gray-900,
+.navbar-top .text-dark,
+.navbar-top #topbarLocationName,
+.navbar-top #topbarUserName,
+.navbar-top #clockText {
+    color: #ffffff !important;
+}
+
+.navbar-top .text-muted,
+.navbar-top #topbarUserRole,
+.navbar-top #topbarLiveClock {
+    color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.navbar-top .badge.bg-soft-primary {
+    background-color: rgba(255, 255, 255, 0.18) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+.navbar-top .badge.bg-soft-primary i,
+.navbar-top .badge.bg-soft-primary .fa-map-marker-alt {
+    color: #ffffff !important;
+}
+
+.navbar-top #topbarLiveClock .fa-clock {
+    color: #f0bc74 !important; /* Gold accent for clock visibility */
+}
+
+/* Role pill in topbar: crisp white pill with navy text */
+.navbar-top .badge.bg-primary {
+    background-color: #ffffff !important;
+    color: #0B3D7B !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20) !important;
+    border: none !important;
+}
+
+.navbar-top .avatar.bg-gray-800,
+.navbar-top .avatar.bg-primary,
+.navbar-top .avatar.bg-dark {
+    background-color: rgba(255, 255, 255, 0.22) !important;
+    color: #ffffff !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.40) !important;
+}
+
+.navbar-top #sidebar-toggle {
+    background-color: rgba(255, 255, 255, 0.16) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+}
+
+.navbar-top #sidebar-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.28) !important;
+    color: #ffffff !important;
+}
+
+.navbar-top .nav-link.dropdown-toggle {
+    color: #ffffff !important;
+}
+
+/* User dropdown menu (opened state) - clean white card with dark text */
+.navbar-top .dropdown-menu {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 10px 30px rgba(11, 61, 123, 0.18) !important;
+}
+
+.navbar-top .dropdown-menu #menuUserName {
+    color: #111827 !important;
+}
+
+.navbar-top .dropdown-menu #menuUserEmail {
+    color: #6b7280 !important;
+}
+
+.navbar-top .dropdown-menu .dropdown-item {
+    color: #374151 !important;
+}
+
+.navbar-top .dropdown-menu .dropdown-item:hover,
+.navbar-top .dropdown-menu .dropdown-item:focus {
+    background-color: rgba(11, 61, 123, 0.08) !important;
+    color: #0B3D7B !important;
+}
+
+.navbar-top .dropdown-menu .avatar.bg-primary {
+    background-color: #0B3D7B !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. BUTTONS (PRIMARY, DARK, GRAY-800, OUTLINE)
+   -------------------------------------------------------------------------- */
+.btn-primary {
+    background-color: #0B3D7B !important;
+    border-color: #0B3D7B !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(11, 61, 123, 0.25);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+    background-color: #082d5b !important;
+    border-color: #082d5b !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(11, 61, 123, 0.35) !important;
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.25rem rgba(11, 61, 123, 0.35) !important;
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+    background-color: #0B3D7B !important;
+    border-color: #0B3D7B !important;
+    color: #ffffff !important;
+    opacity: 0.65;
+}
+
+.btn-outline-primary {
+    color: #0B3D7B !important;
+    border-color: #0B3D7B !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary.active {
+    background-color: #0B3D7B !important;
+    border-color: #0B3D7B !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(11, 61, 123, 0.30);
+}
+
+.btn-group .btn-outline-primary.active {
+    background-color: #0B3D7B !important;
+    border-color: #0B3D7B !important;
+    color: #ffffff !important;
+}
+
+/* Template dark/gray buttons overridden to primary navy */
+.btn-dark,
+.btn-gray-800 {
+    background-color: #0B3D7B !important;
+    border-color: #0B3D7B !important;
+    color: #ffffff !important;
+}
+
+.btn-dark:hover,
+.btn-dark:focus,
+.btn-dark:active,
+.btn-gray-800:hover,
+.btn-gray-800:focus,
+.btn-gray-800:active {
+    background-color: #082d5b !important;
+    border-color: #082d5b !important;
+    color: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. BADGES & QUEUE NUMBER LABELS
+   -------------------------------------------------------------------------- */
+.badge.bg-primary,
+.badge-primary,
+.badge.bg-gray-800,
+.badge.bg-dark {
+    background-color: #0B3D7B !important;
+    color: #ffffff !important;
+}
+
+.badge.bg-soft-primary {
+    background-color: rgba(11, 61, 123, 0.12) !important;
+    color: #0B3D7B !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. AVATARS & STATUS ICONS
+   -------------------------------------------------------------------------- */
+.avatar.bg-primary,
+.avatar.bg-gray-800,
+.avatar.bg-dark {
+    background-color: #0B3D7B !important;
+    color: #ffffff !important;
+}
+
+.avatar.bg-soft-primary {
+    background-color: rgba(11, 61, 123, 0.12) !important;
+    color: #0B3D7B !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. FORM CONTROLS & PAGINATION
+   -------------------------------------------------------------------------- */
+.form-control:focus,
+.form-select:focus {
+    border-color: #0B3D7B !important;
+    box-shadow: 0 0 0 0.2rem rgba(11, 61, 123, 0.20) !important;
+}
+
+.form-check-input:checked {
+    background-color: #0B3D7B !important;
+    border-color: #0B3D7B !important;
+}
+
+.page-item.active .page-link {
+    background-color: #0B3D7B !important;
+    border-color: #0B3D7B !important;
+    color: #ffffff !important;
+}
+
+.page-link {
+    color: #0B3D7B;
+}
+
+.page-link:hover {
+    color: #082d5b;
+}
+
+/* --------------------------------------------------------------------------
+   8. ALERTS, MODALS & CARDS
+   -------------------------------------------------------------------------- */
+.alert-soft-primary {
+    background-color: rgba(11, 61, 123, 0.08) !important;
+    border-color: rgba(11, 61, 123, 0.22) !important;
+    color: #082d5b !important;
+}
+
+.alert-primary {
+    background-color: #0B3D7B !important;
+    color: #ffffff !important;
+}
+
+.modal-header.bg-primary {
+    background-color: #0B3D7B !important;
+    color: #ffffff !important;
+}
+
+.card-header.bg-primary {
+    background-color: #0B3D7B !important;
+    color: #ffffff !important;
+}
+
+.breadcrumb-item a {
+    color: #0B3D7B;
+}
+
+.breadcrumb-item a:hover {
+    color: #082d5b;
+}
+
+/* --------------------------------------------------------------------------
+   9. ROLE-SPECIFIC CARD & BANNER OVERRIDES
+   -------------------------------------------------------------------------- */
+.pic-active-banner {
+    background: linear-gradient(135deg, #0B3D7B 0%, #062246 100%) !important;
+    color: #ffffff !important;
+}
+
+.pic-card-option.selected {
+    border-color: #0B3D7B !important;
+    background-color: rgba(11, 61, 123, 0.08) !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. TABLE HEADER CLEAN WHITE STYLING
+   -------------------------------------------------------------------------- */
+.table thead th,
+.table thead.bg-white th,
+.table thead.table-light th {
+    background-color: #ffffff !important;
+    color: #2e384d !important;
+    border-bottom: 2px solid #eaedf2 !important;
+}
+
+/* --------------------------------------------------------------------------
+   11. PIC WORKFLOW TABS STYLING
+   -------------------------------------------------------------------------- */
+
+/* Tab active color #0B3D7B */
+.nav-tabs .nav-link.active,
+.card-header-tabs .nav-link.active,
+#picTabs .nav-link.active {
+    background-color: #0B3D7B !important;
+    color: #ffffff !important;
+    border-color: #0B3D7B !important;
+}
+
+#picTabs .nav-link {
+    color: #4b5563;
+    font-weight: 600;
+}
+
+#picTabs .nav-link:hover {
+    color: #0B3D7B;
+}
+
+/* --------------------------------------------------------------------------
+   12. MODAL HEADER NAVY DARK (#0B3D7B)
+   -------------------------------------------------------------------------- */
+.modal-header.bg-gray-800,
+.modal-header.bg-dark,
+.modal-header.modal-header-navy,
+#modalDetailVisit .modal-header,
+#modalDetailPic .modal-header,
+#modalAdminDetail .modal-header {
+    background-color: #0B3D7B !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.modal-header.bg-gray-800 .modal-title,
+.modal-header.bg-dark .modal-title,
+.modal-header.modal-header-navy .modal-title,
+#modalDetailVisit .modal-title,
+#modalDetailPic .modal-title,
+#modalAdminDetail .modal-title {
+    color: #ffffff !important;
+}
+

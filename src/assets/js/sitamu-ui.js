@@ -133,18 +133,19 @@ const SiTamuUI = {
     },
 
     // Status Badge Component
-    getStatusBadge: function (status) {
+    getStatusBadge: function (status, withIcon = false) {
+        const iconHtml = (icon) => withIcon ? `<i class="${icon} me-1"></i>` : '';
         switch (status) {
             case 'Menunggu':
-                return '<span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>Menunggu</span>';
+                return `<span class="badge bg-warning text-dark">${iconHtml('fas fa-clock')}Menunggu</span>`;
             case 'Diproses':
-                return '<span class="badge bg-info text-dark"><i class="fas fa-spinner fa-spin me-1"></i>Diproses</span>';
+                return `<span class="badge bg-info text-dark">${iconHtml('fas fa-spinner fa-spin')}Diproses</span>`;
             case 'Selesai':
-                return '<span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Selesai</span>';
+                return `<span class="badge bg-success">${iconHtml('fas fa-check-circle')}Selesai</span>`;
             case 'Dibatalkan':
-                return '<span class="badge bg-danger"><i class="fas fa-times-circle me-1"></i>Dibatalkan</span>';
+                return `<span class="badge bg-danger">${iconHtml('fas fa-times-circle')}Dibatalkan</span>`;
             case 'Draf':
-                return '<span class="badge bg-secondary"><i class="fas fa-file-alt me-1"></i>Draf</span>';
+                return `<span class="badge bg-secondary">${iconHtml('fas fa-file-alt')}Draf</span>`;
             default:
                 return `<span class="badge bg-gray-500">${status || '-'}</span>`;
         }

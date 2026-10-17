@@ -23,15 +23,121 @@
         .timeline-card.status-dibatalkan {
             border-left-color: #ef4444;
         }
+
+        .tamu-body {
+            background-color: #f0f4f9;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1f2937;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tamu-main-layout {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #f0f4f9;
+            padding: 20px 14px 40px 14px;
+        }
+
+        .tamu-mobile-wrapper {
+            width: 100%;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-header-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 10px 30px rgba(10, 38, 71, 0.08), 0 2px 6px rgba(10, 38, 71, 0.04);
+        }
+
+        .brand-header {
+            background-color: #0b3a75;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo-img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            flex-shrink: 0;
+        }
+
+        .brand-title-sub {
+            font-size: 0.86rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.25;
+            margin-bottom: 2px;
+            letter-spacing: -0.1px;
+        }
+
+        .brand-title-main {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -0.2px;
+        }
+
+        .btn-touch {
+            min-height: 48px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+            .tamu-main-layout {
+                padding: 12px 10px 30px 10px;
+            }
+            .brand-header {
+                padding: 16px 18px;
+                gap: 12px;
+            }
+            .brand-logo-img {
+                height: 44px;
+            }
+            .brand-title-sub {
+                font-size: 0.8rem;
+            }
+            .brand-title-main {
+                font-size: 1.05rem;
+            }
+        }
     </style>
 </head>
 
-<body class="bg-soft">
-    <main>
-        <section class="min-vh-100 py-4 py-lg-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+<body class="tamu-body">
+    <main class="tamu-main-layout">
+        <div class="tamu-mobile-wrapper">
+
+            <!-- Brand Header Disperindag Jatim -->
+            <div class="card brand-header-card mb-3">
+                <div class="brand-header">
+                    <img src="../../assets/img/brand/logo-jatim.png" alt="Lambang Daerah Provinsi Jawa Timur" class="brand-logo-img">
+                    <div class="brand-title-wrap">
+                        <div class="brand-title-sub">Dinas Perindustrian Dan Perdagangan</div>
+                        <div class="brand-title-main">Provinsi Jawa Timur</div>
+                    </div>
+                </div>
+            </div>
 
                         <!-- Brand Header -->
                         <div class="d-flex align-items-center justify-content-between mb-4">
@@ -93,20 +199,17 @@
                             <!-- Rendered dynamically -->
                         </div>
 
-                        <!-- Help footer -->
-                        <div class="text-center mt-4">
-                            <p class="text-muted small mb-1">
-                                Butuh informasi lebih lanjut mengenai status kunjungan Anda?
-                            </p>
-                            <span class="text-muted font-small">
-                                Hubungi Meja Resepsionis Disperindag Jatim di (031) 8432417 atau datang langsung ke Lobby.
-                            </span>
-                        </div>
-
-                    </div>
-                </div>
+            <!-- Help footer -->
+            <div class="text-center mt-3 pb-3">
+                <p class="text-muted small mb-1">
+                    Butuh informasi lebih lanjut mengenai status kunjungan Anda?
+                </p>
+                <span class="text-muted font-small">
+                    Hubungi Meja Resepsionis Disperindag Jatim di (031) 8432417 atau datang langsung ke Lobby.
+                </span>
             </div>
-        </section>
+
+        </div>
     </main>
 
     @@include('./_scripts.html', {

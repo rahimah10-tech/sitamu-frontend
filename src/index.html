@@ -1,191 +1,117 @@
 <!DOCTYPE html>
 <html lang="id">
 
-<head> 
+<head>
     @@include('./_head.html', {
         "path": ".",
-        "title": "SiTamu — Sistem Buku Tamu Digital Disperindag Prov. Jatim"
+        "title": "SiTamu — Portal Masuk Petugas (Login)"
     })
+    <!-- SiTamu Petugas Theme Override (#0B3D7B Navy Dark) -->
+    <link type="text/css" href="./css/sitamu-petugas.css" rel="stylesheet">
 </head>
 
-<body>
-    @@include('./_navigation.html', {
-        "path": ".",
-        "classes": "navbar-dark"
-    })
-
+<body class="bg-soft">
     <main>
-        <!-- Hero Section -->
-        <section class="section-header overflow-hidden pt-6 pt-lg-7 pb-8 pb-lg-10 bg-primary text-white position-relative">
-            <div class="container position-relative z-2">
+        <section class="min-vh-100 d-flex align-items-center py-5">
+            <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-xl-10 text-center">
-                        <span class="badge bg-warning text-dark px-3 py-2 font-small fw-bold mb-3 text-uppercase shadow-sm">
-                            <i class="fas fa-shield-alt me-1"></i>Sistem Buku Tamu Digital Terintegrasi
-                        </span>
-                        <h1 class="display-4 fw-bolder mb-2 text-white">SiTamu Disperindag Jatim</h1>
-                        <p class="lead fw-normal text-white-50 mb-5 max-w-700 mx-auto">
-                            Dinas Perindustrian dan Perdagangan Provinsi Jawa Timur. Menghadirkan pelayanan buku tamu modern, cepat, transparan, dan patuh UU Perlindungan Data Pribadi (UU PDP).
-                        </p>
+                    <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+                        <!-- Brand Header -->
+                        <div class="text-center mb-4">
+                            <img src="./assets/img/brand/logo-jatim.png" alt="Lambang Daerah Provinsi Jawa Timur" style="height: 64px; width: auto; object-fit: contain;" class="mb-3">
+                            <div>
+                                <span class="badge bg-primary text-white px-3 py-1 font-small mb-2 text-uppercase d-inline-block">
+                                    Sistem Buku Tamu Digital
+                                </span>
+                            </div>
+                            <h1 class="h3 fw-bold text-gray-900 mb-1">SiTamu Disperindag Jatim</h1>
+                            <p class="text-muted small mb-0">Dinas Perindustrian dan Perdagangan Provinsi Jawa Timur</p>
+                        </div>
 
-                        <!-- SiTamu Role Launchpad -->
-                        <div class="card border-0 shadow-lg rounded-4 p-4 text-start bg-white text-gray-900 mx-auto mb-4" style="max-width: 860px;">
-                            <div class="d-flex flex-wrap align-items-center justify-content-between border-bottom pb-3 mb-3 gap-2">
-                                <div>
-                                    <h5 class="fw-bold mb-0 text-primary">
-                                        <i class="fas fa-compass me-2"></i>Pusat Akses Peran Pengguna
-                                    </h5>
-                                    <small class="text-muted">Pilih alur peran yang ingin Anda akses atau uji coba:</small>
-                                </div>
-                                <a href="./pages/auth/login.html" class="btn btn-sm btn-outline-primary fw-bold">
-                                    <i class="fas fa-sign-in-alt me-1"></i>Portal Login Petugas
-                                </a>
+                        <!-- Role Selection Card -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 bg-white mb-4">
+                            <div class="text-center mb-4">
+                                <h2 class="h5 fw-bold text-gray-900 mb-1">Portal Masuk Petugas Kedinasan</h2>
+                                <p class="text-muted small mb-0">Silakan pilih peran akun petugas Anda untuk melanjutkan ke halaman login:</p>
                             </div>
 
                             <div class="row g-3">
-                                <!-- 1. Tamu -->
-                                <div class="col-12 col-md-4">
-                                    <a href="./pages/tamu/scan.html" class="btn btn-warning text-dark w-100 p-3 shadow-sm text-start h-100 rounded-3">
-                                        <div class="d-flex align-items-center mb-1">
-                                            <i class="fas fa-qrcode fa-2x me-2 text-dark"></i>
-                                            <strong class="fs-6 text-dark">1. Alur Tamu</strong>
-                                        </div>
-                                        <span class="d-block small text-dark-50">Scan QR titik masuk, Google Auth, formulir digital, & kartu nomor antrean.</span>
-                                    </a>
-                                </div>
-
-                                <!-- 2. Resepsionis -->
-                                <div class="col-12 col-md-4">
-                                    <a href="./pages/resepsionis/dashboard.html" class="btn btn-info text-white w-100 p-3 shadow-sm text-start h-100 rounded-3">
-                                        <div class="d-flex align-items-center mb-1">
-                                            <i class="fas fa-concierge-bell fa-2x me-2 text-white"></i>
-                                            <strong class="fs-6 text-white">2. Resepsionis</strong>
-                                        </div>
-                                        <span class="d-block small text-white-50">Pengelolaan antrean berjalan, disposisi PIC, & penerbitan QR darurat.</span>
-                                    </a>
-                                </div>
-
-                                <!-- 3. PIC Departemen -->
-                                <div class="col-12 col-md-4">
-                                    <a href="./pages/pic/dashboard.html" class="btn btn-success text-white w-100 p-3 shadow-sm text-start h-100 rounded-3">
-                                        <div class="d-flex align-items-center mb-1">
-                                            <i class="fas fa-user-tie fa-2x me-2 text-white"></i>
-                                            <strong class="fs-6 text-white">3. PIC Departemen</strong>
-                                        </div>
-                                        <span class="d-block small text-white-50">Penerimaan penugasan, pengisian hasil/solusi (otomatis status Selesai).</span>
-                                    </a>
-                                </div>
-
-                                <!-- 4. Admin -->
+                                <!-- 1. Resepsionis -->
                                 <div class="col-12 col-md-6">
-                                    <a href="./pages/admin/dashboard.html" class="btn btn-primary text-white w-100 p-3 shadow-sm text-start h-100 rounded-3">
-                                        <div class="d-flex align-items-center mb-1">
-                                            <i class="fas fa-user-shield fa-2x me-2 text-white"></i>
-                                            <strong class="fs-6 text-white">4. Dashboard Admin</strong>
+                                    <div class="card border border-2 border-info rounded-3 h-100 p-3 bg-white shadow-xs d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <span class="badge bg-info text-white font-small">Front Desk</span>
+                                            <div class="avatar bg-info text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 11px;">RS</div>
                                         </div>
-                                        <span class="d-block small text-white-50">Monitoring semua lokasi (tanpa batas lokasi), ubah status, turunkan ke draf, kelola pertanyaan, & ekspor laporan.</span>
-                                    </a>
+                                        <h3 class="fs-6 fw-bold text-gray-900 mb-1">Resepsionis</h3>
+                                        <p class="font-small text-muted mb-3 flex-grow-1">
+                                            Kelola antrean kunjungan aktif, pembagian penugasan PIC, pendaftaran tamu manual, & penerbitan QR darurat.
+                                        </p>
+                                        <a href="./pages/auth/login-resepsionis.html" class="btn btn-outline-info btn-sm w-100 fw-bold">
+                                            Masuk Resepsionis &rarr;
+                                        </a>
+                                    </div>
                                 </div>
 
-                                <!-- 5. Super Admin -->
+                                <!-- 2. PIC Departemen -->
                                 <div class="col-12 col-md-6">
-                                    <a href="./pages/superadmin/dashboard.html" class="btn btn-dark text-white w-100 p-3 shadow-sm text-start h-100 rounded-3">
-                                        <div class="d-flex align-items-center mb-1">
-                                            <i class="fas fa-crown fa-2x me-2 text-warning"></i>
-                                            <strong class="fs-6 text-white">5. Super Administrator</strong>
+                                    <div class="card border border-2 border-success rounded-3 h-100 p-3 bg-white shadow-xs d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <span class="badge bg-success text-white font-small">Petugas Bidang</span>
+                                            <div class="avatar bg-success text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 11px;">PIC</div>
                                         </div>
-                                        <span class="d-block small text-white-50">Pusat kontrol master lokasi, regenerasi token QR (cabut QR lama), kelola akun petugas, reopen kunjungan, & audit log.</span>
-                                    </a>
+                                        <h3 class="fs-6 fw-bold text-gray-900 mb-1">PIC Departemen</h3>
+                                        <p class="font-small text-muted mb-3 flex-grow-1">
+                                            Penerimaan disposisi konsultasi tamu, tindak lanjut bidang, & pengisian hasil solusi (otomatis Selesai).
+                                        </p>
+                                        <a href="./pages/auth/login-pic.html" class="btn btn-outline-success btn-sm w-100 fw-bold">
+                                            Masuk PIC &rarr;
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- 3. Admin Operasional -->
+                                <div class="col-12 col-md-6">
+                                    <div class="card border border-2 border-primary rounded-3 h-100 p-3 bg-white shadow-xs d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <span class="badge bg-primary text-white font-small">Semua Lokasi</span>
+                                            <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 11px;">AD</div>
+                                        </div>
+                                        <h3 class="fs-6 fw-bold text-gray-900 mb-1">Admin Operasional</h3>
+                                        <p class="font-small text-muted mb-3 flex-grow-1">
+                                            Pemantauan kunjungan lintas lokasi, ubah status antrean, batalkan kunjungan, kelola form, & ekspor laporan.
+                                        </p>
+                                        <a href="./pages/auth/login-admin.html" class="btn btn-outline-primary btn-sm w-100 fw-bold">
+                                            Masuk Admin &rarr;
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- 4. Super Admin -->
+                                <div class="col-12 col-md-6">
+                                    <div class="card border border-2 border-dark rounded-3 h-100 p-3 bg-white shadow-xs d-flex flex-column">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <span class="badge bg-dark text-white font-small">Master Sistem</span>
+                                            <div class="avatar bg-dark text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; font-size: 11px;">SA</div>
+                                        </div>
+                                        <h3 class="fs-6 fw-bold text-gray-900 mb-1">Super Administrator</h3>
+                                        <p class="font-small text-muted mb-3 flex-grow-1">
+                                            Pengaturan master lokasi fisik & UPT, regenerasi token QR, manajemen akun petugas, reopen, & audit log.
+                                        </p>
+                                        <a href="./pages/auth/login-superadmin.html" class="btn btn-outline-dark btn-sm w-100 fw-bold">
+                                            Masuk Super Admin &rarr;
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Sub navigation info -->
-                        <div class="d-flex flex-wrap justify-content-center align-items-center gap-3 text-white-50 small">
-                            <span><i class="fas fa-check-circle text-warning me-1"></i>Pure Client-Side (HTML/CSS/JS)</span>
-                            <span>•</span>
-                            <span><i class="fas fa-check-circle text-warning me-1"></i>Bootstrap 5 Responsive</span>
-                            <span>•</span>
-                            <span><i class="fas fa-check-circle text-warning me-1"></i>State Mock localStorage</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <figure class="position-absolute bottom-0 left-0 w-100 d-none d-md-block mb-n2">
-                <svg class="home-pattern" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 185.4">
-                    <path d="M3000,0v185.4H0V0c496.4,115.6,996.4,173.4,1500,173.4S2503.6,115.6,3000,0z"></path>
-                </svg>
-            </figure>
-        </section>
-
-        <!-- Features Overview Section -->
-        <section class="section section-md bg-soft pt-5 pb-6">
-            <div class="container">
-                <div class="row justify-content-center mb-5">
-                    <div class="col-12 col-md-8 text-center">
-                        <h2 class="h2 fw-bold text-gray-900 mb-2">Arsitektur & Keunggulan SiTamu</h2>
-                        <p class="text-muted">Dirancang khusus menjawab kebutuhan transparansi dan efisiensi birokrasi Disperindag Jawa Timur.</p>
-                    </div>
-                </div>
-
-                <div class="row g-4">
-                    <div class="col-12 col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
-                            <div class="avatar bg-soft-warning text-warning rounded-circle p-3 mb-3 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
-                                <i class="fas fa-qrcode fa-lg"></i>
-                            </div>
-                            <h5 class="fw-bold text-gray-900 mb-2">Multi-Titik Masuk QR</h5>
-                            <p class="small text-muted mb-0">Setiap gerbang, lobby, dan UPT memiliki token QR unik. Tamu cukup memindai dengan kamera smartphone tanpa perlu mengunduh aplikasi tambahan.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
-                            <div class="avatar bg-soft-info text-info rounded-circle p-3 mb-3 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
-                                <i class="fas fa-signature fa-lg"></i>
-                            </div>
-                            <h5 class="fw-bold text-gray-900 mb-2">Tanda Tangan Digital & UU PDP</h5>
-                            <p class="small text-muted mb-0">Formulir dilengkapi canvas tanda tangan digital interaktif dan klausul persetujuan UU Perlindungan Data Pribadi demi kepatuhan hukum.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
-                            <div class="avatar bg-soft-success text-success rounded-circle p-3 mb-3 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
-                                <i class="fas fa-user-check fa-lg"></i>
-                            </div>
-                            <h5 class="fw-bold text-gray-900 mb-2">Disposisi Cepat PIC</h5>
-                            <p class="small text-muted mb-0">Resepsionis dapat melihat status ketersediaan PIC secara real-time dan langsung mengarahkan tamu ke bidang teknis yang tepat.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
-                            <div class="avatar bg-soft-primary text-primary rounded-circle p-3 mb-3 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
-                                <i class="fas fa-tasks fa-lg"></i>
-                            </div>
-                            <h5 class="fw-bold text-gray-900 mb-2">Hasil Pelayanan Otomatis</h5>
-                            <p class="small text-muted mb-0">Status kunjungan otomatis menjadi Selesai saat PIC menyimpan hasil konsultasi, dan hasil langsung tampil transparan di riwayat tamu.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
-                            <div class="avatar bg-soft-danger text-danger rounded-circle p-3 mb-3 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
-                                <i class="fas fa-file-alt fa-lg"></i>
-                            </div>
-                            <h5 class="fw-bold text-gray-900 mb-2">Penyesuaian Status Draf</h5>
-                            <p class="small text-muted mb-0">Admin dapat menurunkan status kunjungan ke Draf untuk koreksi data jika ada kekeliruan input sebelum dilayani oleh petugas.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white">
-                            <div class="avatar bg-soft-dark text-dark rounded-circle p-3 mb-3 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
-                                <i class="fas fa-shield-alt fa-lg text-warning"></i>
-                            </div>
-                            <h5 class="fw-bold text-gray-900 mb-2">Regenerasi Token & Audit Trail</h5>
-                            <p class="small text-muted mb-0">Super Admin memiliki wewenang mencabut token QR lama dengan regenerasi instan dan membuka kembali kunjungan tertutup tanpa syarat alasan.</p>
+                        <!-- Guest Access Link Card -->
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white text-center">
+                            <span class="small text-muted mb-2 d-block">Simulasi Alur Tamu / Pengunjung (Scan QR Titik Masuk):</span>
+                            <a href="./pages/tamu/scan.html" class="btn btn-outline-gray-600 btn-sm fw-bold">
+                                Buka Simulasi Scan QR Tamu
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -193,25 +119,7 @@
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-white py-5">
-        <div class="container text-center">
-            <h5 class="fw-bold mb-1 text-white">DINAS PERINDUSTRIAN DAN PERDAGANGAN PROVINSI JAWA TIMUR</h5>
-            <p class="text-muted small mb-3">Jl. Siwalankerto No. 4-6, Wonocolo, Surabaya, Jawa Timur 60236 • Telp: (031) 8432417</p>
-            <div class="d-flex justify-content-center gap-3 font-small mb-3">
-                <a href="./pages/tamu/scan.html" class="text-white-50 text-decoration-none">Alur Tamu</a>
-                <span class="text-muted">•</span>
-                <a href="./pages/auth/login-resepsionis.html" class="text-white-50 text-decoration-none">Login Resepsionis</a>
-                <span class="text-muted">•</span>
-                <a href="./pages/auth/login-pic.html" class="text-white-50 text-decoration-none">Login PIC</a>
-                <span class="text-muted">•</span>
-                <a href="./pages/auth/login-admin.html" class="text-white-50 text-decoration-none">Login Admin</a>
-                <span class="text-muted">•</span>
-                <a href="./pages/auth/login-superadmin.html" class="text-white-50 text-decoration-none">Login Super Admin</a>
-            </div>
-            <p class="text-muted font-small mb-0">© 2026 SiTamu — Sistem Buku Tamu Digital Disperindag Prov. Jatim. Hak Cipta Dilindungi.</p>
-        </div>
-    </footer>
-
+    <!-- Core Scripts -->
     @@include('./_scripts.html', {
         "path": "."
     })

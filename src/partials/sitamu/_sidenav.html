@@ -22,40 +22,25 @@
     <ul class="nav flex-column pt-3 pt-md-0">
       <!-- Brand Logo -->
       <li class="nav-item mb-3">
-        <a href="@@path/index.html" class="nav-link d-flex align-items-center ps-0">
-          <span class="sidebar-icon me-2">
-            <span class="badge bg-primary text-white p-2 rounded-circle">
-              <i class="fas fa-qrcode fa-lg"></i>
-            </span>
-          </span>
+        <a href="@@path/index.html" class="nav-link d-flex align-items-center ps-0 py-1">
+          <img src="@@path/assets/img/brand/logo-jatim.png" alt="Lambang Daerah Provinsi Jawa Timur" class="sidebar-brand-logo me-2" style="height: 38px; width: auto; max-width: 32px; object-fit: contain; flex-shrink: 0;">
           <div>
-            <span class="sidebar-text fw-bolder fs-6 text-white letter-spacing-1">SiTamu</span>
-            <div class="font-small text-muted" style="font-size: 11px;">Disperindag Jatim</div>
+            <span class="sidebar-text fw-bolder text-white letter-spacing-1 d-block" style="font-size: 1.05rem; line-height: 1.15;">SiTamu</span>
+            <span class="text-white-50 font-small d-block" style="font-size: 11px; letter-spacing: 0.2px; line-height: 1.2; margin-top: 2px;">Disperindag Jatim</span>
           </div>
         </a>
       </li>
 
-      <!-- Role Badge Header -->
-      <li class="nav-item mb-2">
-        <div class="bg-gray-700 p-2 rounded-2 text-center">
-          <span class="font-small text-muted text-uppercase d-block mb-1" style="font-size: 10px;">Panel Operasional</span>
-          <span class="badge bg-info text-dark text-uppercase px-3 py-1 fw-bold">
-            <i class="fas fa-user-shield me-1"></i> @@role
-          </span>
-        </div>
-      </li>
 
       @@if (context.role === 'resepsionis') {
         <!-- Resepsionis Menus -->
         <li class="nav-item @@if (context.page === 'dashboard') { active }">
           <a href="@@path/pages/resepsionis/dashboard.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-concierge-bell me-2"></i></span>
             <span class="sidebar-text">Tamu Aktif</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'qr-darurat') { active }">
           <a href="@@path/pages/resepsionis/qr-darurat.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-first-aid me-2 text-warning"></i></span>
             <span class="sidebar-text">QR Darurat / Manual</span>
           </a>
         </li>
@@ -65,13 +50,11 @@
         <!-- PIC Menus -->
         <li class="nav-item @@if (context.page === 'dashboard') { active }">
           <a href="@@path/pages/pic/dashboard.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-tasks me-2"></i></span>
             <span class="sidebar-text">Penugasan Saya</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'riwayat-pelayanan') { active }">
           <a href="@@path/pages/pic/riwayat-pelayanan.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-clipboard-check me-2"></i></span>
             <span class="sidebar-text">Riwayat Pelayanan</span>
           </a>
         </li>
@@ -81,25 +64,21 @@
         <!-- Admin Menus -->
         <li class="nav-item @@if (context.page === 'dashboard') { active }">
           <a href="@@path/pages/admin/dashboard.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-chart-line me-2"></i></span>
             <span class="sidebar-text">Pantau Semua Lokasi</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'kelola-qr') { active }">
           <a href="@@path/pages/admin/kelola-qr.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-qrcode me-2"></i></span>
             <span class="sidebar-text">Buat QR Lokasi</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'kelola-pertanyaan') { active }">
           <a href="@@path/pages/admin/kelola-pertanyaan.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-question-circle me-2"></i></span>
             <span class="sidebar-text">Kelola Pertanyaan Form</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'history') { active }">
           <a href="@@path/pages/admin/history.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-file-export me-2"></i></span>
             <span class="sidebar-text">History & Ekspor</span>
           </a>
         </li>
@@ -109,87 +88,35 @@
         <!-- Super Admin Menus -->
         <li class="nav-item @@if (context.page === 'dashboard') { active }">
           <a href="@@path/pages/superadmin/dashboard.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-tachometer-alt me-2"></i></span>
             <span class="sidebar-text">Overview Sistem</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'kelola-lokasi') { active }">
           <a href="@@path/pages/superadmin/kelola-lokasi.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-map-marked-alt me-2"></i></span>
             <span class="sidebar-text">Kelola Lokasi</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'kelola-qr') { active }">
           <a href="@@path/pages/superadmin/kelola-qr.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-qrcode me-2"></i></span>
             <span class="sidebar-text">Kelola QR Code</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'kelola-akun') { active }">
           <a href="@@path/pages/superadmin/kelola-akun.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-users-cog me-2"></i></span>
             <span class="sidebar-text">Kelola Akun Petugas</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'history-reopen') { active }">
           <a href="@@path/pages/superadmin/history-reopen.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-redo-alt me-2 text-warning"></i></span>
             <span class="sidebar-text">Buka Kembali Kunjungan</span>
           </a>
         </li>
         <li class="nav-item @@if (context.page === 'audit-log') { active }">
           <a href="@@path/pages/superadmin/audit-log.html" class="nav-link">
-            <span class="sidebar-icon"><i class="fas fa-history me-2 text-info"></i></span>
             <span class="sidebar-text">Audit Log Sistem</span>
           </a>
         </li>
       }
-
-      <!-- Separator for Quick Role Switcher -->
-      <li role="separator" class="dropdown-divider my-3 border-gray-700"></li>
-
-      <li class="nav-item">
-        <span class="font-small text-muted text-uppercase px-3 d-block mb-1" style="font-size: 10px;">
-          Ganti Peran Cepat (Demo):
-        </span>
-      </li>
-      <li class="nav-item">
-        <a href="@@path/pages/tamu/scan.html" class="nav-link py-1 font-small text-gray-300">
-          <span class="sidebar-icon"><i class="fas fa-mobile-alt me-2 text-success"></i></span>
-          <span class="sidebar-text">Portal Tamu (Scan)</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="@@path/pages/resepsionis/dashboard.html" class="nav-link py-1 font-small @@if (context.role === 'resepsionis') { text-warning fw-bold } else { text-gray-300 }">
-          <span class="sidebar-icon"><i class="fas fa-bell me-2"></i></span>
-          <span class="sidebar-text">Resepsionis</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="@@path/pages/pic/dashboard.html" class="nav-link py-1 font-small @@if (context.role === 'pic') { text-warning fw-bold } else { text-gray-300 }">
-          <span class="sidebar-icon"><i class="fas fa-user-tie me-2"></i></span>
-          <span class="sidebar-text">PIC Departemen</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="@@path/pages/admin/dashboard.html" class="nav-link py-1 font-small @@if (context.role === 'admin') { text-warning fw-bold } else { text-gray-300 }">
-          <span class="sidebar-icon"><i class="fas fa-user-shield me-2"></i></span>
-          <span class="sidebar-text">Admin Lokasi</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="@@path/pages/superadmin/dashboard.html" class="nav-link py-1 font-small @@if (context.role === 'superadmin') { text-warning fw-bold } else { text-gray-300 }">
-          <span class="sidebar-icon"><i class="fas fa-crown me-2 text-warning"></i></span>
-          <span class="sidebar-text">Super Admin</span>
-        </a>
-      </li>
-
-      <!-- Reset Mock Data Button -->
-      <li class="nav-item mt-4 pt-2 border-top border-gray-700">
-        <button type="button" class="btn btn-outline-danger btn-xs w-100 d-flex align-items-center justify-content-center" onclick="if(confirm('Reset semua data mock SiTamu ke kondisi awal?')){SiTamuStore.reset();location.reload();}">
-          <i class="fas fa-undo-alt me-1"></i> Reset Data Mock
-        </button>
-      </li>
 
     </ul>
   </div>

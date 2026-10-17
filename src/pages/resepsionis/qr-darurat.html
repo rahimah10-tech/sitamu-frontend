@@ -6,6 +6,8 @@
         "path": "../..",
         "title": "SiTamu — QR Darurat & Pendaftaran Manual"
     })
+    <!-- SiTamu Petugas Theme Override (#0B3D7B Navy Dark) -->
+    <link type="text/css" href="../../css/sitamu-petugas.css" rel="stylesheet">
     <style>
         .emergency-qr-card {
             border: 2px dashed #f59e0b;
@@ -48,21 +50,12 @@
         <!-- Header -->
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
             <div>
-                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
-                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="dashboard.html">Resepsionis</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">QR Darurat / Manual</li>
-                    </ol>
-                </nav>
-                <h1 class="h3 fw-bold mb-0 text-gray-900">
-                    <i class="fas fa-first-aid me-2 text-warning"></i>QR Darurat & Pendaftaran Manual
-                </h1>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">QR Darurat & Pendaftaran Manual</h1>
                 <p class="text-muted small mb-0">Layanan asistensi bagi tamu yang tidak membawa smartphone atau terkendala login Google (UC-RESP-02).</p>
             </div>
             <div>
                 <a href="dashboard.html" class="btn btn-sm btn-outline-gray-600">
-                    <i class="fas fa-arrow-left me-1"></i> Kembali ke Antrean
+                    Kembali ke Antrean
                 </a>
             </div>
         </div>
@@ -73,7 +66,7 @@
                 <div class="card border-0 shadow-sm rounded-3 h-100">
                     <div class="card-header bg-white border-bottom py-3">
                         <h5 class="card-title mb-0 fs-6 fw-bold text-gray-800">
-                            <i class="fas fa-qrcode text-warning me-2"></i>1. Terbitkan QR Darurat Sekali Pakai
+                            1. Terbitkan QR Darurat Sekali Pakai
                         </h5>
                     </div>
                     <div class="card-body p-4 text-center">
@@ -118,10 +111,10 @@
 
                         <div class="d-grid gap-2">
                             <button type="button" class="btn btn-warning text-dark fw-bold btn-sm" id="btnRegenerateEmergency">
-                                <i class="fas fa-sync-alt me-1"></i> Terbitkan Token Baru
+                                Terbitkan Token Baru
                             </button>
                             <button type="button" class="btn btn-outline-gray-600 btn-sm" onclick="window.print()">
-                                <i class="fas fa-print me-1"></i> Cetak Lembar Darurat
+                                Cetak Lembar Darurat
                             </button>
                         </div>
                     </div>
@@ -133,7 +126,7 @@
                 <div class="card border-0 shadow-sm rounded-3">
                     <div class="card-header bg-white border-bottom py-3">
                         <h5 class="card-title mb-0 fs-6 fw-bold text-gray-800">
-                            <i class="fas fa-user-edit text-primary me-2"></i>2. Form Pendaftaran Tamu Langsung oleh Petugas
+                            2. Form Pendaftaran Tamu Langsung oleh Petugas
                         </h5>
                     </div>
                     <div class="card-body p-4">
@@ -220,7 +213,7 @@
 
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary" id="btnSubmitManual">
-                                    <i class="fas fa-check-circle me-1"></i> Daftarkan Kunjungan & Berikan Nomor Urut
+                                    Daftarkan Kunjungan & Berikan Nomor Urut
                                 </button>
                             </div>
                         </form>

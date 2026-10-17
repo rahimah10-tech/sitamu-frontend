@@ -6,6 +6,8 @@
         "path": "../..",
         "title": "SiTamu — Audit Log & Jejak Aktivitas Sistem"
     })
+    <!-- SiTamu Petugas Theme Override (#0B3D7B Navy Dark) -->
+    <link type="text/css" href="../../css/sitamu-petugas.css" rel="stylesheet">
     <style>
         @media print {
             .sidebar, .navbar, .btn-toolbar, .no-print, .card-header {
@@ -37,25 +39,14 @@
         <!-- Header -->
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 no-print">
             <div>
-                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
-                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="dashboard.html">Super Admin</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Audit Log Sistem</li>
-                    </ol>
-                </nav>
-                <h1 class="h3 fw-bold mb-0 text-gray-900">
-                    <i class="fas fa-history me-2 text-info"></i>Audit Log & Jejak Aktivitas Sistem
-                </h1>
+                <h1 class="h3 fw-bold mb-0 text-gray-900">Audit Log & Jejak Aktivitas Sistem</h1>
                 <p class="text-muted small mb-0">Catatan kronologis tidak dapat diubah (immutable log) dari seluruh interaksi, penugasan, pembatalan, dan perubahan status.</p>
             </div>
             <div class="btn-toolbar mb-2 mb-md-0 gap-2">
                 <button type="button" class="btn btn-sm btn-outline-success d-inline-flex align-items-center shadow-sm" id="btnExportAuditCSV">
-                    <i class="fas fa-file-csv me-2"></i>
                     <span>Ekspor Log CSV</span>
                 </button>
                 <button type="button" class="btn btn-sm btn-outline-gray-600 d-inline-flex align-items-center" onclick="window.print()">
-                    <i class="fas fa-print me-2"></i>
                     <span>Cetak Log</span>
                 </button>
             </div>
@@ -66,10 +57,7 @@
             <div class="card-header bg-white border-bottom py-3 no-print">
                 <div class="row g-2 align-items-center justify-content-between">
                     <div class="col-12 col-md-5">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text"><i class="fas fa-search text-muted"></i></span>
-                            <input type="text" class="form-control" id="searchAudit" placeholder="Cari nama aktor, detail aksi, atau lokasi...">
-                        </div>
+                        <input type="text" class="form-control form-control-sm" id="searchAudit" placeholder="Cari nama aktor, detail aksi, atau lokasi...">
                     </div>
                     <div class="col-12 col-md-auto d-flex gap-2">
                         <select class="form-select form-select-sm" id="filterAuditRole">
@@ -81,7 +69,7 @@
                             <option value="Tamu">Tamu</option>
                         </select>
                         <button type="button" class="btn btn-sm btn-outline-gray-600" id="btnRefreshAudit">
-                            <i class="fas fa-sync-alt me-1"></i> Segarkan
+                            Segarkan
                         </button>
                     </div>
                 </div>
@@ -108,7 +96,7 @@
             <div class="card-footer bg-white border-top py-3 d-flex align-items-center justify-content-between no-print">
                 <span class="text-muted font-small" id="auditCountLabel">Menampilkan 0 entri log</span>
                 <span class="font-small text-muted">
-                    <i class="fas fa-shield-alt text-success me-1"></i>Integritas data terjamin oleh sistem audit trail SiTamu.
+                    Integritas data terjamin oleh sistem audit trail SiTamu.
                 </span>
             </div>
         </div>
@@ -152,7 +140,6 @@
                     tbody.innerHTML = `
                         <tr>
                             <td colspan="6" class="text-center py-5 text-muted">
-                                <i class="fas fa-inbox fa-3x mb-2 text-gray-400 d-block"></i>
                                 Tidak ada log audit yang sesuai dengan filter.
                             </td>
                         </tr>
@@ -164,11 +151,11 @@
                     const formattedDate = SiTamuUI.formatDateTime(log.timestamp);
 
                     let roleBadge = '<span class="badge bg-secondary font-small">System</span>';
-                    if (log.actorRole === 'Super Admin') roleBadge = '<span class="badge bg-dark font-small"><i class="fas fa-crown me-1 text-warning"></i>Super Admin</span>';
-                    else if (log.actorRole === 'Admin') roleBadge = '<span class="badge bg-primary font-small"><i class="fas fa-user-shield me-1"></i>Admin</span>';
-                    else if (log.actorRole === 'Resepsionis') roleBadge = '<span class="badge bg-info font-small"><i class="fas fa-concierge-bell me-1"></i>Resepsionis</span>';
-                    else if (log.actorRole === 'PIC') roleBadge = '<span class="badge bg-success font-small"><i class="fas fa-user-tie me-1"></i>PIC</span>';
-                    else if (log.actorRole === 'Tamu') roleBadge = '<span class="badge bg-gray-600 font-small"><i class="fas fa-user me-1"></i>Tamu</span>';
+                    if (log.actorRole === 'Super Admin') roleBadge = '<span class="badge bg-dark font-small">Super Admin</span>';
+                    else if (log.actorRole === 'Admin') roleBadge = '<span class="badge bg-primary font-small">Admin</span>';
+                    else if (log.actorRole === 'Resepsionis') roleBadge = '<span class="badge bg-info font-small">Resepsionis</span>';
+                    else if (log.actorRole === 'PIC') roleBadge = '<span class="badge bg-success font-small">PIC</span>';
+                    else if (log.actorRole === 'Tamu') roleBadge = '<span class="badge bg-gray-600 font-small">Tamu</span>';
 
                     return `
                         <tr>
@@ -177,7 +164,7 @@
                             <td><strong class="font-small text-gray-900">${log.actorName}</strong></td>
                             <td><code class="font-small text-primary">${log.action}</code></td>
                             <td><span class="font-small text-gray-800">${log.detail}</span></td>
-                            <td><span class="font-small text-muted"><i class="fas fa-map-marker-alt text-danger me-1"></i>${log.location || '-'}</span></td>
+                            <td><span class="font-small text-muted">${log.location || '-'}</span></td>
                         </tr>
                     `;
                 }).join('');

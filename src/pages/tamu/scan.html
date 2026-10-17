@@ -43,103 +43,195 @@
             border-radius: 12px;
             box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.45);
         }
+        .tamu-body {
+            background-color: #f0f4f9;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1f2937;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tamu-main-layout {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #f0f4f9;
+            padding: 20px 14px 36px 14px;
+        }
+
+        .tamu-mobile-wrapper {
+            width: 100%;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-header-card {
+            border-radius: 16px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 10px 30px rgba(10, 38, 71, 0.08), 0 2px 6px rgba(10, 38, 71, 0.04);
+        }
+
+        .brand-header {
+            background-color: #0b3a75;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo-img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            flex-shrink: 0;
+        }
+
+        .brand-title-sub {
+            font-size: 0.86rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.25;
+            margin-bottom: 2px;
+            letter-spacing: -0.1px;
+        }
+
+        .brand-title-main {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.25;
+            letter-spacing: -0.2px;
+        }
+
+        .btn-touch {
+            min-height: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+            .tamu-main-layout {
+                padding: 12px 10px 28px 10px;
+            }
+            .brand-header {
+                padding: 16px 18px;
+                gap: 12px;
+            }
+            .brand-logo-img {
+                height: 44px;
+            }
+            .brand-title-sub {
+                font-size: 0.8rem;
+            }
+            .brand-title-main {
+                font-size: 1.05rem;
+            }
+        }
     </style>
 </head>
 
-<body class="bg-soft">
-    <main>
-        <section class="min-vh-100 d-flex align-items-center py-4">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+<body class="tamu-body">
+    <main class="tamu-main-layout">
+        <div class="tamu-mobile-wrapper">
 
-                        <!-- Brand Header -->
-                        <div class="text-center mb-4">
-                            <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle p-3 mb-2 shadow-sm" style="width: 60px; height: 60px;">
-                                <i class="fas fa-qrcode fa-2x"></i>
-                            </div>
-                            <h2 class="h4 fw-bolder mb-1 text-gray-900">SiTamu</h2>
-                            <p class="text-muted small mb-0">Sistem Informasi Buku Tamu Digital</p>
-                            <span class="badge bg-secondary text-dark mt-1">Dinas Perindustrian & Perdagangan Prov. Jatim</span>
-                        </div>
-
-                        <!-- Scanner Card -->
-                        <div class="card border-0 shadow-sm rounded-3">
-                            <div class="card-body p-4 text-center">
-                                <h5 class="fw-bold mb-1">Pindai QR Code di Lokasi</h5>
-                                <p class="text-muted small mb-3">Arahkan kamera ke QR Code yang terpasang di meja resepsionis atau pintu masuk.</p>
-
-                                <!-- Visual Simulation of Camera Viewfinder -->
-                                <div class="scanner-box mb-3 text-white">
-                                    <div class="scanner-frame"></div>
-                                    <div class="scanner-laser"></div>
-                                    <div class="z-2">
-                                        <i class="fas fa-camera text-white-50 fa-2x mb-2 d-block"></i>
-                                        <span class="small text-white-50">Menunggu QR Code...</span>
-                                    </div>
-                                </div>
-
-                                <div class="alert alert-info py-2 px-3 small text-start d-flex align-items-center mb-3">
-                                    <i class="fas fa-info-circle fa-lg me-2 text-info"></i>
-                                    <div>
-                                        <strong>Mode Simulasi Pengujian:</strong> Pilih salah satu titik masuk aktif di bawah untuk melanjutkan pengisian form.
-                                    </div>
-                                </div>
-
-                                <!-- Entrance selector / mock scan triggers -->
-                                <div class="text-start mb-3">
-                                    <label class="form-label small fw-bold text-gray-700">Pilih Titik Lokasi Masuk:</label>
-                                    <div class="list-group list-group-flush border rounded-2" id="qrListContainer">
-                                        <!-- Rendered via JS -->
-                                    </div>
-                                </div>
-
-                                <!-- Action button -->
-                                <div class="d-grid gap-2">
-                                    <button id="btnContinue" class="btn btn-primary d-flex align-items-center justify-content-center" disabled>
-                                        <span>Lanjut Verifikasi Akun</span>
-                                        <i class="fas fa-arrow-right ms-2"></i>
-                                    </button>
-                                </div>
-
-                                <!-- QR Inactive Exception Test Button -->
-                                <div class="mt-3 pt-3 border-top">
-                                    <button class="btn btn-link btn-sm text-danger text-decoration-none" type="button" id="btnTestInvalidQR">
-                                        <i class="fas fa-exclamation-triangle me-1"></i> Uji Kasus: QR Tidak Aktif / Rusak
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <!-- Emergency Assistance / Petugas Callout -->
-                        <div class="card border-0 shadow-sm rounded-3 mt-3 bg-white">
-                            <div class="card-body p-3 d-flex align-items-center justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-soft-warning text-warning rounded-circle p-2 me-2">
-                                        <i class="fas fa-hands-helping fa-lg"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-0 fw-bold fs-7">Kendala Scan QR?</h6>
-                                        <span class="text-muted font-small">Hubungi petugas resepsionis untuk QR Darurat</span>
-                                    </div>
-                                </div>
-                                <a href="../auth/login.html" class="btn btn-outline-gray-600 btn-xs">
-                                    Login Petugas
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-4">
-                            <a href="../../index.html" class="text-muted small">
-                                <i class="fas fa-home me-1"></i> Kembali ke Demo Hub SiTamu
-                            </a>
-                        </div>
-
+            <!-- Brand Header Disperindag Jatim -->
+            <div class="card brand-header-card mb-3">
+                <div class="brand-header">
+                    <img src="../../assets/img/brand/logo-jatim.png" alt="Lambang Daerah Provinsi Jawa Timur" class="brand-logo-img">
+                    <div class="brand-title-wrap">
+                        <div class="brand-title-sub">Dinas Perindustrian Dan Perdagangan</div>
+                        <div class="brand-title-main">Provinsi Jawa Timur</div>
                     </div>
                 </div>
             </div>
-        </section>
+
+            <!-- Scanner Card -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-3">
+                <div class="card-body p-4 text-center">
+                    <h5 class="fw-bold mb-1">Pindai QR Code di Lokasi</h5>
+                    <p class="text-muted small mb-3">Arahkan kamera ke QR Code yang terpasang di meja resepsionis atau pintu masuk.</p>
+
+                    <!-- Visual Simulation of Camera Viewfinder -->
+                    <div class="scanner-box mb-3 text-white">
+                        <div class="scanner-frame"></div>
+                        <div class="scanner-laser"></div>
+                        <div class="z-2">
+                            <i class="fas fa-camera text-white-50 fa-2x mb-2 d-block"></i>
+                            <span class="small text-white-50">Menunggu QR Code...</span>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info py-2 px-3 small text-start d-flex align-items-center mb-3 rounded-3">
+                        <i class="fas fa-info-circle fa-lg me-2 text-info"></i>
+                        <div>
+                            <strong>Mode Simulasi Pengujian:</strong> Pilih salah satu titik masuk aktif di bawah untuk melanjutkan pengisian form.
+                        </div>
+                    </div>
+
+                    <!-- Entrance selector / mock scan triggers -->
+                    <div class="text-start mb-3">
+                        <label class="form-label small fw-bold text-gray-700 mb-2">Pilih Titik Lokasi Masuk:</label>
+                        <div class="list-group list-group-flush border rounded-3 overflow-hidden" id="qrListContainer">
+                            <!-- Rendered via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Action button -->
+                    <div class="d-grid gap-2">
+                        <button id="btnContinue" class="btn btn-primary btn-touch shadow-sm" disabled>
+                            <span>Lanjut Verifikasi Akun</span>
+                            <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+
+                    <!-- QR Inactive Exception Test Button -->
+                    <div class="mt-3 pt-3 border-top">
+                        <button class="btn btn-link btn-sm text-danger text-decoration-none py-2" type="button" id="btnTestInvalidQR">
+                            <i class="fas fa-exclamation-triangle me-1"></i> Uji Kasus: QR Tidak Aktif / Rusak
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Emergency Assistance / Petugas Callout -->
+            <div class="card border-0 shadow-sm rounded-4 mb-3 bg-white">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-soft-warning text-warning rounded-circle p-2 me-2">
+                            <i class="fas fa-hands-helping fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold fs-7">Kendala Scan QR?</h6>
+                            <span class="text-muted font-small">Hubungi resepsionis untuk QR Darurat</span>
+                        </div>
+                    </div>
+                    <a href="../auth/login.html" class="btn btn-outline-gray-600 btn-xs py-2 px-2">
+                        Petugas
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center mt-3 pb-3">
+                <a href="../../index.html" class="text-muted small">
+                    <i class="fas fa-home me-1"></i> Kembali ke Demo Hub SiTamu
+                </a>
+            </div>
+
+        </div>
     </main>
 
     <!-- Modal QR Inactive / Invalid Exception -->

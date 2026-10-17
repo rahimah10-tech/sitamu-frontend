@@ -6,6 +6,8 @@
         "path": "../..",
         "title": "SiTamu — Master Kelola & Regenerasi QR Code"
     })
+    <!-- SiTamu Petugas Theme Override (#0B3D7B Navy Dark) -->
+    <link type="text/css" href="../../css/sitamu-petugas.css" rel="stylesheet">
     <style>
         .qr-preview-box {
             background-color: #ffffff;
@@ -35,21 +37,13 @@
         <!-- Header -->
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
             <div>
-                <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-                    <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent mb-1">
-                        <li class="breadcrumb-item"><a href="../../index.html"><i class="fas fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="dashboard.html">Super Admin</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Kelola QR Code</li>
-                    </ol>
-                </nav>
                 <h1 class="h3 fw-bold mb-0 text-gray-900">
-                    <i class="fas fa-qrcode me-2 text-primary"></i>Master Kelola & Regenerasi QR Code
+                    Master Kelola & Regenerasi QR Code
                 </h1>
                 <p class="text-muted small mb-0">Pengaturan token akses buku tamu digital, penerbitan QR titik baru, dan regenerasi token keamanan untuk mencabut QR lama.</p>
             </div>
             <div>
                 <button type="button" class="btn btn-sm btn-primary d-inline-flex align-items-center shadow-sm" id="btnOpenAddQR" data-bs-toggle="modal" data-bs-target="#modalAddQR">
-                    <i class="fas fa-plus me-2"></i>
                     <span>Buat QR Titik Baru</span>
                 </button>
             </div>
@@ -57,7 +51,6 @@
 
         <!-- Security Alert Banner -->
         <div class="alert alert-soft-warning border-0 shadow-sm rounded-3 py-3 px-4 mb-4 d-flex align-items-center">
-            <i class="fas fa-shield-alt fa-2x text-warning me-3"></i>
             <div>
                 <h6 class="fw-bold mb-1 text-gray-900">Fitur Keamanan: Regenerasi Token QR Code</h6>
                 <p class="small mb-0 text-muted">
@@ -99,7 +92,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-warning text-dark">
                     <h5 class="modal-title h6 mb-0">
-                        <i class="fas fa-sync-alt me-2"></i>Konfirmasi Regenerasi Token QR Code
+                        Konfirmasi Regenerasi Token QR Code
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
@@ -111,14 +104,13 @@
                         Apakah Anda yakin ingin <strong>mencabut token QR saat ini</strong> dan menerbitkan token baru?
                     </p>
                     <div class="alert alert-danger py-2 px-3 small mb-0">
-                        <i class="fas fa-exclamation-triangle me-1"></i>
                         <strong>Perhatian:</strong> Setelah token diregenerasi, poster fisik yang sudah dicetak sebelumnya <strong>TIDAK AKAN BISA DIGUNAKAN LAGI</strong>. Anda harus mencetak ulang poster SiTamu dengan token baru.
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-warning btn-sm" id="btnConfirmRegenerate">
-                        <i class="fas fa-sync-alt me-1"></i> Ya, Cabut & Regenerasi Token
+                        Ya, Cabut & Regenerasi Token
                     </button>
                 </div>
             </div>
@@ -130,7 +122,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title h6 mb-0"><i class="fas fa-qrcode me-2"></i>Buat QR Code Titik Baru</h5>
+                    <h5 class="modal-title h6 mb-0">Buat QR Code Titik Baru</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
@@ -154,7 +146,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
                     <button type="button" class="btn btn-primary btn-sm" id="btnSaveNewQR">
-                        <i class="fas fa-plus me-1"></i> Terbitkan QR Code
+                        Terbitkan QR Code
                     </button>
                 </div>
             </div>
@@ -166,7 +158,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title h6 mb-0"><i class="fas fa-print me-2"></i>Pratinjau Signage Poster SiTamu</h5>
+                    <h5 class="modal-title h6 mb-0">Pratinjau Signage Poster SiTamu</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4 text-center bg-light" id="posterPrintArea">
@@ -215,7 +207,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
                     <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">
-                        <i class="fas fa-print me-1"></i> Cetak Poster Signage
+                        Cetak Poster Signage
                     </button>
                 </div>
             </div>
@@ -249,7 +241,6 @@
                     tbody.innerHTML = `
                         <tr>
                             <td colspan="7" class="text-center py-5 text-muted">
-                                <i class="fas fa-qrcode fa-3x mb-2 text-gray-400 d-block"></i>
                                 Belum ada QR Code terdaftar.
                             </td>
                         </tr>
@@ -276,7 +267,7 @@
                                 <strong class="text-gray-900 fs-7">${qr.label}</strong>
                             </td>
                             <td>
-                                <span class="font-small text-gray-900"><i class="fas fa-map-marker-alt text-danger me-1"></i>${qr.locationName}</span>
+                                <span class="font-small text-gray-900">${qr.locationName}</span>
                             </td>
                             <td>
                                 <code class="font-small text-primary fw-bold">${qr.token}</code>
@@ -287,13 +278,13 @@
                             <td class="text-center font-small fw-bold text-gray-800">${qr.scanCount || 0}</td>
                             <td class="text-end">
                                 <button type="button" class="btn btn-outline-warning btn-xs me-1" onclick="window.openRegenerateModal('${qr.id}')" title="Cabut token lama & buat baru">
-                                    <i class="fas fa-sync-alt me-1"></i> Regenerasi
+                                    Regenerasi
                                 </button>
                                 <button type="button" class="btn btn-outline-primary btn-xs me-1" onclick="window.previewPoster('${qr.id}')" title="Cetak poster signage">
-                                    <i class="fas fa-print me-1"></i> Poster
+                                    Poster
                                 </button>
                                 <button type="button" class="btn ${isAktif ? 'btn-outline-danger' : 'btn-outline-success'} btn-xs" onclick="window.toggleQR('${qr.id}')">
-                                    <i class="fas ${isAktif ? 'fa-ban' : 'fa-check'}"></i>
+                                    ${isAktif ? 'Nonaktifkan' : 'Aktifkan'}
                                 </button>
                             </td>
                         </tr>
@@ -312,7 +303,7 @@
                     <div class="fw-bold fs-7 text-gray-900">${qr.label}</div>
                     <div class="text-muted font-small">${qr.locationName}</div>
                     <div class="mt-2 text-danger fw-bold font-small">
-                        <i class="fas fa-ban me-1"></i>Token yang akan dicabut: <code>${qr.token}</code>
+                        Token yang akan dicabut: <code>${qr.token}</code>
                     </div>
                 `;
                 modalRegen.show();
